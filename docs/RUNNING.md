@@ -27,7 +27,7 @@ node verify-worker.mjs
 
 ## 운영 화면 접근
 
-[소유자 전용 웹 화면](https://popup-atelier-operations.sooyeon-jun-0389.chatgpt.site/#report)은 외부 방문자에게 공개되어 있지 않습니다. 제출에는 README의 PDF, Excel과 GitHub 주소를 사용합니다.
+소유자 전용 웹 화면은 외부 방문자에게 공개되어 있지 않습니다. 제출에는 README의 PDF, Excel과 GitHub 주소를 사용합니다.
 
 ## 저장소 구조
 
