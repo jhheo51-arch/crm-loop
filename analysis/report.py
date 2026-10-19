@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RESULT = ROOT / "analysis/results/hillstrom.json"
 DOC = ROOT / "docs/CAMPAIGN-MEASUREMENT.md"
 README = ROOT / "README.md"
+WEB = ROOT / "public/measurement-data.js"
 START, END = "<!-- results:start -->", "<!-- results:end -->"
 
 ARM_KO = {"mens": "남성용 메일", "womens": "여성용 메일"}
@@ -275,6 +276,30 @@ def doc(r: dict) -> str:
     return "\n".join(L)
 
 
+def web_data(r: dict) -> str:
+    """웹의 사례 A 화면이 읽는 값만 골라 JS 모듈로 만든다. 화면에도 숫자를 손으로 옮기지 않는다."""
+    keep_meta = ["dataset", "source", "sha256", "rows", "period", "currency", "note"]
+    arms = {}
+    for k, a in r["arms"].items():
+        u = a["uplift"]
+        arms[k] = {
+            "label": a["label"],
+            "ate": a["ate"],
+            "past_purchase": [{"level": x["level"], "n_treated": x["n_treated"], "n_control": x["n_control"],
+                               "visit": x["visit"]} for x in a["segments"]["past_purchase"]],
+            "uplift": {"chosen": u["chosen"], **{x: u["test"][x] for x in
+                       ["qini_visit", "qini_visit_lo", "qini_visit_hi", "share_of_incremental_visits_top30",
+                        "share_of_incremental_visits_top50", "curve"]}},
+            "budget": a["budget"],
+            "coupon_scenario": a["coupon_scenario"],
+            "sample_plan": a["sample_plan"],
+        }
+    data = {"meta": {k: r["meta"][k] for k in keep_meta}, "assumptions": r["assumptions"],
+            "assignment": r["assignment"], "arms": arms}
+    return ("// analysis/report.py가 analysis/results/hillstrom.json에서 만든 파일입니다. 직접 고치지 마세요.\n"
+            "export const measurement=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
+
+
 def render_readme(text: str, r: dict) -> str:
     head, rest = text.split(START, 1)
     _, tail = rest.split(END, 1)
@@ -285,6 +310,8 @@ def main():
     r = load()
     DOC.write_text(doc(r), encoding="utf-8")
     README.write_text(render_readme(README.read_text(encoding="utf-8"), r), encoding="utf-8")
+    WEB.write_text(web_data(r), encoding="utf-8")
+    print(WEB)
     print(DOC)
     print(README)
 
