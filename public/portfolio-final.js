@@ -3,7 +3,7 @@ export const finalPlan={
  subtitle:'TAMBURINS Car Diffuser Private Preview to Loyalty',
  status:'개인 포트폴리오 / 공개 자료 조사 및 가상 데이터 사용',
  nameMeaning:'SCENT는 현장에서 고른 향을, LOOP는 그 선택을 상담/예약/재방문으로 이어가는 과정을 뜻합니다. 연락은 마케팅 수신에 동의한 고객에게만 보낸다는 조건을 두었습니다.',
- nameNotice:'SCENT LOOP는 제가 붙인 프로젝트 이름입니다. 아이아이컴바인드나 탬버린즈가 실제로 사용한 행사명은 아닙니다.',
+ nameNotice:'SCENT LOOP는 제가 붙인 프로젝트 이름입니다. 공개 자료를 참고한 브랜드가 실제로 사용한 행사명은 아닙니다.',
  oneLine:'현장에서 확인한 향 선택을 고객의 동의 아래 상담, 예약과 재방문 기록으로 연결했습니다.',
  period:'가상 일정 / T-8주부터 행사 후 30일까지',
  location:'서울 성수 / 실제 공간 계약 전 가정',
@@ -64,12 +64,6 @@ export const finalPlan={
   {side:'Local 조정',items:'언어 / 예약 채널 / 발송 시각 / 현지 규정 문구 / 혜택 재고 / 직원 응대'},
   {side:'공통 검토',items:'세그먼트 크기 / 제외 고객 / 서비스 복구 / 결과 해석 / 다음 실험'}
  ],
- responsibilities:[
-  {jd:'고객 세그먼트, 마켓별 CRM 목표 기반 캠페인 기획',proof:'고객을 네 그룹으로 나누고, 각 그룹을 초대한 이유와 다음 연락 조건을 적었습니다.',deliverable:'고객 선정 규칙 / CRM 브리프 / KPI 정의',level:'기획안에 포함'},
-  {jd:'VIP/VIC 프리뷰, 론칭, 팝업, 매장 이벤트 고객 여정 기획',proof:'행사 8주 전부터 행사 후 30일까지 고객과 운영팀이 해야 할 일을 시간순으로 정리했습니다.',deliverable:'전체 일정 / 현장 기준 / 누락 고객 업무표',level:'기획안에 포함'},
-  {jd:'리테일, 콘텐츠, 디자인 등 유관부서 협업을 통한 고객 경험 구체화',proof:'수용 인원, 대기, 재고, 공개 범위, 초청물 승인처럼 팀끼리 먼저 맞춰야 할 항목을 나눴습니다.',deliverable:'부서별 확인 항목 / 승인 시점 / 인계 자료',level:'협업안으로 정리'},
-  {jd:'캠페인, 이벤트 결과 분석과 운영 인사이트 적용',proof:'단계마다 같은 분모를 쓰고, 어디서 고객이 빠졌는지에 따라 다음 확인 과제를 정했습니다.',deliverable:'성과표 / 이탈 원인 / 다음 시험안',level:'기획안에 포함'}
- ],
  collaboration:[
   {team:'리테일/현장',ask:'시간대별 수용량, 직원 배치, 혜택, 제품 재고, 품절 시 대체 가능 범위',decide:'대기 목표와 VIP 에스코트 기준, 재고 소진 시 고객 선택지',handoff:'정원표 / 인력표 / 서비스 복구 기준'},
   {team:'콘텐츠',ask:'공개 전후 메시지 범위, 엠바고, 필수 제품 정보, 시장별 표현',decide:'공개 티저와 VIP 선공개 정보의 차이, 후속 메시지 변형',handoff:'콘텐츠 캘린더 / 메시지 승인본 / 반응 태그'},
@@ -88,18 +82,18 @@ export const finalPlan={
   {question:'후속 메시지는 무엇을 기억시켜야 하는가?',a:'제품 기능 중심',b:'고객이 고른 향, 사용 장면 중심',metric:'클릭, 상담, 예약'}
  ],
  effort:[
-  '채용공고에서 반복되는 일을 고객 선정, 현장 경험, 후속 CRM, 결과 확인으로 나눴습니다.',
+  '행사 운영에서 반복되는 일을 고객 선정, 현장 경험, 후속 CRM, 결과 확인으로 나눴습니다.',
   '다섯 브랜드의 공식 자료와 공개 방문 후기를 따로 읽고, 제가 직접 확인하지 못한 내용은 가정으로 표시했습니다.',
   '대기, 품절, 체험 마감 사례를 현장 기록 항목과 후속 업무에 반영했습니다.',
   '전환율이 좋아 보이게 분모를 바꾸지 않도록 초청부터 30일 후 행동까지 계산 기준을 먼저 정했습니다.',
   '장소와 날씨를 함께 볼 수 있도록 서울시 공공데이터와 Open-Meteo를 웹 화면에 연결했습니다.'
  ],
- pitch:'실제 VIP 행사를 운영한 경험은 없습니다. 그래서 공고와 브랜드 공식 자료를 읽고, 공개 후기에서 확인한 대기, 품절과 체험 마감 사례를 운영표의 확인 항목으로 옮겼습니다. 입사 후에는 회사의 고객 기준과 시장별 규정을 확인한 뒤 작은 행사 한 건에서 선정, 체험, 동의와 후속 기록을 실제 데이터로 검증하겠습니다.'
+ pitch:'실제 VIP 행사를 운영한 경험은 없습니다. 그래서 브랜드 공식 자료를 읽고, 공개 후기에서 확인한 대기, 품절과 체험 마감 사례를 운영표의 확인 항목으로 옮겼습니다. 이 기준이 맞는지는 실제 고객 기준과 시장별 규정을 확인한 뒤, 작은 행사 한 건에서 선정, 체험, 동의와 후속 기록을 실제 데이터로 확인해야 알 수 있습니다.'
 };
 
 export function percent(current,base){return base?current/base*100:null;}
 export function validateFinalPlan(plan=finalPlan){const invited=plan.segments.reduce((n,x)=>n+x.invited,0);if(invited!==plan.funnel[0].count)throw Error('세그먼트 초청 합계가 퍼널과 다릅니다.');for(let i=1;i<plan.funnel.length;i++)if(plan.funnel[i].count>plan.funnel[i-1].count)throw Error('퍼널 단계가 역전되었습니다.');if(!plan.status.includes('가상 데이터'))throw Error('가상 데이터 표시가 필요합니다.');return true;}
 
-export function finalPortfolioReport(){validateFinalPlan();const p=finalPlan;return `# ${p.title}\n\n## ${p.subtitle}\n\n${p.status}\n\n${p.nameMeaning}\n\n${p.nameNotice}\n\n${p.oneLine}\n\n- 기간: ${p.period}\n- 장소: ${p.location}\n- 목표: ${p.objective}\n- 메시지: ${p.message}\n\n## 고객군\n\n${p.segments.map(x=>`### ${x.code} / ${x.name}\n- 가상 초청: ${x.invited}명\n- 선정 이유: ${x.reason}\n- 제공 가치: ${x.offer}\n- 다음 행동: ${x.next}`).join('\n\n')}\n\n## 공고의 업무를 프로젝트에 옮긴 방식\n\n${p.responsibilities.map(x=>`- ${x.jd}: ${x.proof} / 확인 자료 ${x.deliverable}`).join('\n')}\n\n## 가상 결과 퍼널\n\n${p.funnel.map(x=>`- ${x.stage}: ${x.count}명 / 분모 ${x.denominator} / ${x.rule}`).join('\n')}\n\n## 단계 사이 누락 관리\n\n${p.leaks.map(x=>`- ${x.between}: ${x.lost}명 / ${x.care} / 담당 ${x.owner}`).join('\n')}\n\n## KPI\n\n${p.kpis.map(x=>`- ${x.name}: ${x.value}% (가상 목표 ${x.target}%) / ${x.formula} / ${x.meaning}`).join('\n')}\n\n## 일정과 산출물\n\n${p.timeline.map(x=>`- ${x.when}: ${x.work} / ${x.output}`).join('\n')}\n\n## 본사와 현지팀의 역할\n\n${p.globalModel.map(x=>`- ${x.side}: ${x.items}`).join('\n')}\n\n## 위험 대응\n\n${p.risks.map(x=>`- ${x.trigger}: ${x.response} / ${x.measure}`).join('\n')}\n\n## 다음에 확인할 세 가지\n\n${p.experiments.map(x=>`- ${x.question} A=${x.a}, B=${x.b} / ${x.metric}`).join('\n')}\n\n## 제가 확인하고 정한 것\n\n${p.effort.map(x=>`- ${x}`).join('\n')}\n\n## 이 프로젝트를 만든 이유\n\n${p.pitch}\n\n## 읽기 전에\n\n모든 고객 수와 전환 결과는 계산 구조를 보여주기 위한 가상 데이터입니다. 실제 탬버린즈 또는 아이아이컴바인드의 고객, 매출, 행사 성과가 아닙니다. 공개 방문 후기는 제한된 개인 표본이며 전체 고객 경험으로 일반화하지 않습니다.\n`;}
+export function finalPortfolioReport(){validateFinalPlan();const p=finalPlan;return `# ${p.title}\n\n## ${p.subtitle}\n\n${p.status}\n\n${p.nameMeaning}\n\n${p.nameNotice}\n\n${p.oneLine}\n\n- 기간: ${p.period}\n- 장소: ${p.location}\n- 목표: ${p.objective}\n- 메시지: ${p.message}\n\n## 고객군\n\n${p.segments.map(x=>`### ${x.code} / ${x.name}\n- 가상 초청: ${x.invited}명\n- 선정 이유: ${x.reason}\n- 제공 가치: ${x.offer}\n- 다음 행동: ${x.next}`).join('\n\n')}\n\n## 팀마다 먼저 확인할 내용\n\n${p.collaboration.map(x=>`- ${x.team}: 먼저 확인 ${x.ask} / 함께 결정 ${x.decide} / 인계 ${x.handoff}`).join('\n')}\n\n## 가상 결과 퍼널\n\n${p.funnel.map(x=>`- ${x.stage}: ${x.count}명 / 분모 ${x.denominator} / ${x.rule}`).join('\n')}\n\n## 단계 사이 누락 관리\n\n${p.leaks.map(x=>`- ${x.between}: ${x.lost}명 / ${x.care} / 담당 ${x.owner}`).join('\n')}\n\n## KPI\n\n${p.kpis.map(x=>`- ${x.name}: ${x.value}% (가상 목표 ${x.target}%) / ${x.formula} / ${x.meaning}`).join('\n')}\n\n## 일정과 산출물\n\n${p.timeline.map(x=>`- ${x.when}: ${x.work} / ${x.output}`).join('\n')}\n\n## 본사와 현지팀의 역할\n\n${p.globalModel.map(x=>`- ${x.side}: ${x.items}`).join('\n')}\n\n## 위험 대응\n\n${p.risks.map(x=>`- ${x.trigger}: ${x.response} / ${x.measure}`).join('\n')}\n\n## 다음에 확인할 세 가지\n\n${p.experiments.map(x=>`- ${x.question} A=${x.a}, B=${x.b} / ${x.metric}`).join('\n')}\n\n## 제가 확인하고 정한 것\n\n${p.effort.map(x=>`- ${x}`).join('\n')}\n\n## 이 프로젝트를 만든 이유\n\n${p.pitch}\n\n## 읽기 전에\n\n모든 고객 수와 전환 결과는 계산 구조를 보여주기 위한 가상 데이터입니다. 실제 브랜드의 고객, 매출, 행사 성과가 아닙니다. 공개 방문 후기는 제한된 개인 표본이며 전체 고객 경험으로 일반화하지 않습니다.\n`;}
 
 

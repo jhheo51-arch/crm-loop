@@ -2,7 +2,7 @@
 
 고객 생애주기 캠페인을 기획하고 효과를 재는 포트폴리오입니다. 첫 방문을 만드는 캠페인, 관계를 깊게 하는 행사, 다시 오게 하는 메시지를 같은 기준으로 설계하고 측정합니다.
 
-[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [KPI 정의서](docs/KPI.md) | [사례 B 소개 PDF](public/downloads/SCENT-LOOP-Global-CRM-Portfolio.pdf) | [사례 B Excel 운영표](public/downloads/SCENT-LOOP-CRM-Operations.xlsx) | [문서 안내](docs/README.md)
+[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [KPI 정의서](docs/KPI.md) | [사례 B 소개 PDF](public/downloads/SCENT-LOOP-Case-B-Plan.pdf) | [사례 B Excel 운영표](public/downloads/SCENT-LOOP-CRM-Operations.xlsx) | [문서 안내](docs/README.md)
 
 ## 30초 안내
 
@@ -40,7 +40,7 @@
 | 문제 찾기 | 재구매가 끊기는 시점 (2차 작업) | 행사 후 담당 업무가 빠지는 지점 | 봄, 가을 주중에 떠날 이유가 약하고 할인만 남는 문제 |
 | 고객 나누기 | 고객군별 증분 효과, RFM과 CLV (2차 작업) | 네 고객군의 초청 이유와 제외 조건 | 동행, 목적, 활동으로 나눈 네 고객군과 제외 조건 |
 | 효과 측정 | 무작위 실험의 증분 효과, 업리프트, 예산 | 단계별 분모를 고정한 퍼널 | 맞춤 제안, 할인 제안, 미발송의 세 군 실험 설계 |
-| 운영 설계 | 측정 계획(홀드아웃과 표본 수), Journey 설계 (3차 작업) | 8주 전부터 행사 후 30일까지 일정, 누락 업무표 | 고르기부터 재방문 혜택까지 고객 여정, 화면 구성 (3차 작업) |
+| 운영 설계 | 측정 계획(홀드아웃과 표본 수), 웹 `사례 A 캠페인 측정` 화면 | 8주 전부터 행사 후 30일까지 일정, 누락 업무표 | 고르기부터 재방문 혜택까지 고객 여정, 웹 `사례 C 비수기 캠페인` 화면 |
 
 ### 사례 B: SCENT LOOP
 
@@ -83,7 +83,7 @@
 - 여성용 메일에서 하위 고객을 빼는 판단은 이익 차이가 신뢰구간 안에 있어 다음 실험으로 확인할 가설입니다.
 - 사례 B는 가상 데이터라 초청 기준과 후속 행동이 재방문을 늘리는지 검증하지 못했습니다.
 - 사례 C는 기획과 실험 설계까지입니다. 봄, 가을 주중 수요가 실제로 비어 있는지, 지점별 체험을 운영할 수 있는지는 내부 데이터와 운영 담당자 확인이 필요합니다.
-- 다음 작업: 2차는 실제 거래 데이터(Online Retail II)로 코호트 리텐션, RFM, CLV를 만들고, 3차는 웹 `캠페인 측정` 화면과 Journey 설계도, 캠페인 브리프를 만듭니다. 범위와 순서는 [제품 기획서](docs/PRD.md)에 있습니다.
+- 다음 작업: 2차는 실제 거래 데이터(Online Retail II)로 코호트 리텐션, RFM, CLV를 만들고, 3차는 Journey 설계도와 캠페인 브리프를 만듭니다. 웹의 사례 A, 사례 C 화면은 먼저 만들었습니다. 범위와 순서는 [제품 기획서](docs/PRD.md)에 있습니다.
 
 ## 실행
 
@@ -100,7 +100,7 @@ python -m venv .venv
 
 macOS와 Linux에서는 `.venv/Scripts/python`을 `.venv/bin/python`으로 바꿉니다.
 
-**사례 B 웹 화면** (Node.js 22 이상)
+**웹 화면** (Node.js 22 이상, 사례 A 측정, 사례 B 행사 운영, 사례 C 캠페인)
 
 ```sh
 npm ci

@@ -123,6 +123,10 @@ def test_readme_block_is_up_to_date():
     assert report.render_readme(text, R) == text, "python -I analysis/report.py 를 다시 실행하세요"
 
 
+def test_web_data_is_up_to_date():
+    assert report.WEB.read_text(encoding="utf-8") == report.web_data(R), "python -I analysis/report.py 를 다시 실행하세요"
+
+
 def test_docs_have_no_middle_dot():
     for p in [report.README, report.DOC, report.ROOT / "docs/KPI.md", report.ROOT / "docs/PRD.md", report.ROOT / "docs/CASE-C-SEASONAL-STAY.md"]:
         assert "·" not in p.read_text(encoding="utf-8"), p
