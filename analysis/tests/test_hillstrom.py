@@ -124,7 +124,7 @@ def test_readme_block_is_up_to_date():
 
 
 def test_docs_have_no_middle_dot():
-    for p in [report.README, report.DOC, report.ROOT / "docs/KPI.md", report.ROOT / "docs/PRD.md"]:
+    for p in [report.README, report.DOC, report.ROOT / "docs/KPI.md", report.ROOT / "docs/PRD.md", report.ROOT / "docs/CASE-C-SEASONAL-STAY.md"]:
         assert "·" not in p.read_text(encoding="utf-8"), p
 
 
