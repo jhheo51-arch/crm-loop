@@ -18,4 +18,4 @@ test('동의와 후속 성과는 방문 고객을 분모로 계산하고 미측�
 
 test('공개 후기 카드에는 출처와 표본 한계, 근거 공백이 남는다',()=>{assert.equal(portfolioCases.length,5);assert.equal(researchCases.length,5);assert.ok(researchCases.every(c=>c.sources.length&&c.interpretation&&c.experiment&&c.metric));assert.ok(researchCases.find(c=>c.id==='atiissu').scope.includes('미확보'));assert.ok(researchCases.find(c=>c.id==='nuflaat').scope.includes('팝업 아님'));});
 
-test('모든 CRM 화면은 사용자 문자열을 이스케이프하고 보고서에 포함한다',()=>{const p=project();p.crm.objective='<script>alert(1)</script>';for(const tab of crmTabs){const html=crmView(p,helpers,tab);assert.ok(html.includes('Global CRM')||html.includes('CRM'));assert.ok(!html.includes('<script>'));}const checked=validate(structuredClone(p),{draft:true});assert.ok(report(checked).includes('Global CRM 전략'));});
+test('모든 CRM 화면은 사용자 문자열을 이스케이프하고 보고서에 포함한다',()=>{const p=project();p.crm.objective='<script>alert(1)</script>';for(const tab of crmTabs){const html=crmView(p,helpers,tab);assert.ok(html.includes('CRM'));assert.ok(!html.includes('<script>'));}const checked=validate(structuredClone(p),{draft:true});assert.ok(report(checked).includes('## CRM 전략'));});
