@@ -1,4 +1,4 @@
-name: Global CRM checks
+name: CRM LOOP checks
 
 on:
   pull_request:
@@ -22,3 +22,12 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node verify-worker.mjs
+      # 원문 데이터는 내려받지 않습니다. 결과 파일과 문서의 일치, 계산식만 검사하고
+      # 원문이 필요한 재계산 검사는 건너뜁니다.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: analysis/requirements.txt
+      - run: pip install -r analysis/requirements.txt
+      - run: python -m pytest analysis/tests
