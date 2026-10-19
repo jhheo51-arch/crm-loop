@@ -1,1 +1,1 @@
-{"name":"popup-atelier","private":true,"version":"1.0.0","type":"module","scripts":{"start":"node server.mjs","test":"node --test tests/*.test.mjs","build":"node build.mjs"},"engines":{"node":">=22"},"dependencies":{"drizzle-orm":"^0.45.3"},"devDependencies":{"drizzle-kit":"^0.31.11"}}
+{"name":"crm-loop","private":true,"version":"1.0.0","type":"module","scripts":{"start":"node server.mjs","test":"node --test tests/*.test.mjs","build":"node build.mjs"},"engines":{"node":">=22"},"dependencies":{"drizzle-orm":"^0.45.3"},"devDependencies":{"drizzle-kit":"^0.31.11"}}

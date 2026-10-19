@@ -7,3 +7,7 @@ dist/
 .sites-runtime/
 output/
 tmp/
+.venv/
+data/external/
+__pycache__/
+.pytest_cache/
