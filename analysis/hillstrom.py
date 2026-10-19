@@ -285,6 +285,8 @@ def budget(rows: list, margin: float, send_cost: float, coupon_rate: float, base
         cum = rows[k - 1]["cum_spend_diff"]
         n_target = round(base * k / len(rows))
         by_k.append({"k_pct": k * 100 // len(rows), "n_target": n_target, "inc_spend_per": r(st - sc),
+                     # 웹 화면이 비용 가정을 바꿔 다시 계산할 때 쓰는 값
+                     "spend_t_per": r(st), "inc_lo": r(cum["lo"]), "inc_hi": r(cum["hi"]),
                      "profit_per": r(per), "profit_total": r(per * n_target, 1),
                      # 증분 매출의 95% 구간만 반영한 이익 범위(쿠폰 항의 변동은 무시)
                      "profit_total_lo": r((margin * cum["lo"] - coupon_rate * st - send_cost) * n_target, 1),

@@ -2,13 +2,14 @@
 
 고객 생애주기 캠페인을 기획하고 효과를 재는 포트폴리오입니다. 첫 방문을 만드는 캠페인, 관계를 깊게 하는 행사, 다시 오게 하는 메시지를 같은 기준으로 설계하고 측정합니다.
 
-[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [KPI 정의서](docs/KPI.md) | [사례 B 소개 PDF](public/downloads/SCENT-LOOP-Case-B-Plan.pdf) | [사례 B Excel 운영표](public/downloads/SCENT-LOOP-CRM-Operations.xlsx) | [문서 안내](docs/README.md)
+[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [고객 가치 분석](docs/CUSTOMER-VALUE.md) | [KPI 정의서](docs/KPI.md) | [캠페인 브리프](docs/CAMPAIGN-BRIEF.md) | [사례 B 소개 PDF](public/downloads/CRM-LOOP-Case-B-Plan.pdf) | [사례 B Excel 운영표](public/downloads/CRM-LOOP-Case-B-Operations.xlsx) | [문서 안내](docs/README.md)
 
 ## 30초 안내
 
 - **문제:** CRM 캠페인은 반응률로 성과를 말하기 쉽습니다. 그러나 반응한 고객 중 상당수는 메시지가 없어도 샀을 고객입니다. 누구에게 보내야 반응이 *늘어나는지*, 그 증분이 비용을 넘는지를 따로 재야 합니다.
 - **사례 A, 상시 캠페인:** 공개 이메일 실험 데이터 64,000명으로 증분 효과, 고객군별 효과, 업리프트 모델, 예산 계산을 했습니다.
-- **사례 B, VIP 행사:** 가상 VIP 프리뷰(SCENT LOOP)에서 초청 이유, 참석, 동의, 후속 업무가 끊기지 않도록 운영 흐름과 웹 화면을 만들었습니다.
+- **고객 가치 분석:** 영국 온라인몰의 실제 거래 기록(Online Retail II)으로 고객이 언제 떠나는지, 어떤 고객군이 다음 해 매출을 내는지, CLV 모델이 단순 기준선보다 나은지를 확인했습니다. 사례 A의 캠페인을 누구에게, 언제 보낼지 정하는 앞 단계입니다.
+- **사례 B, VIP 행사:** 가상 VIP 프리뷰에서 초청 이유, 참석, 동의, 후속 업무가 끊기지 않도록 운영 흐름과 웹 화면을 만들었습니다.
 - **사례 C, 비수기 체류 캠페인:** 가상 숙박 브랜드의 봄, 가을 주중 1박 캠페인(리셋 미드위크)을 기획하고, 할인 제안과 비교할 수 있는 세 군 실험까지 설계했습니다.
 - **공통 기준:** 세 사례가 같은 [KPI 정의서](docs/KPI.md)와 동의 기준을 씁니다. 열람은 반응으로 세지 않고, 비교군이 없으면 `효과`라고 부르지 않습니다.
 
@@ -37,14 +38,14 @@
 
 | 단계 | 사례 A 상시 캠페인 | 사례 B VIP 행사 | 사례 C 비수기 체류 캠페인 |
 |---|---|---|---|
-| 문제 찾기 | 재구매가 끊기는 시점 (2차 작업) | 행사 후 담당 업무가 빠지는 지점 | 봄, 가을 주중에 떠날 이유가 약하고 할인만 남는 문제 |
-| 고객 나누기 | 고객군별 증분 효과, RFM과 CLV (2차 작업) | 네 고객군의 초청 이유와 제외 조건 | 동행, 목적, 활동으로 나눈 네 고객군과 제외 조건 |
+| 문제 찾기 | 코호트 리텐션과 90일 재구매율로 본 재구매가 끊기는 시점 | 행사 후 담당 업무가 빠지는 지점 | 봄, 가을 주중에 떠날 이유가 약하고 할인만 남는 문제 |
+| 고객 나누기 | 고객군별 증분 효과, 다음 해로 검증한 RFM 고객군, CLV와 기준선 비교 | 네 고객군의 초청 이유와 제외 조건 | 동행, 목적, 활동으로 나눈 네 고객군과 제외 조건 |
 | 효과 측정 | 무작위 실험의 증분 효과, 업리프트, 예산 | 단계별 분모를 고정한 퍼널 | 맞춤 제안, 할인 제안, 미발송의 세 군 실험 설계 |
 | 운영 설계 | 측정 계획(홀드아웃과 표본 수), 웹 `사례 A 캠페인 측정` 화면 | 8주 전부터 행사 후 30일까지 일정, 누락 업무표 | 고르기부터 재방문 혜택까지 고객 여정, 웹 `사례 C 비수기 캠페인` 화면 |
 
-### 사례 B: SCENT LOOP
+### 사례 B: VIP 프리뷰에서 재방문까지
 
-가상의 탬버린즈 카디퓨저 프라이빗 프리뷰입니다. 현장에서 고른 향을 후속 상담, 예약과 재방문으로 이어가는 흐름을 뜻하며, 실제 브랜드가 사용한 행사명은 아닙니다.
+가상의 탬버린즈 카디퓨저 프라이빗 프리뷰입니다. 행사장에서 확인한 고객의 선택을 동의 기록으로 남기고 상담과 재방문 안내로 이어 갑니다. 실제 브랜드가 연 행사가 아닙니다.
 
 **초청, 현장 경험, 마케팅 동의, 후속 상담과 재방문**
 
@@ -83,11 +84,12 @@
 - 여성용 메일에서 하위 고객을 빼는 판단은 이익 차이가 신뢰구간 안에 있어 다음 실험으로 확인할 가설입니다.
 - 사례 B는 가상 데이터라 초청 기준과 후속 행동이 재방문을 늘리는지 검증하지 못했습니다.
 - 사례 C는 기획과 실험 설계까지입니다. 봄, 가을 주중 수요가 실제로 비어 있는지, 지점별 체험을 운영할 수 있는지는 내부 데이터와 운영 담당자 확인이 필요합니다.
-- 다음 작업: 2차는 실제 거래 데이터(Online Retail II)로 코호트 리텐션, RFM, CLV를 만들고, 3차는 Journey 설계도와 캠페인 브리프를 만듭니다. 웹의 사례 A, 사례 C 화면은 먼저 만들었습니다. 범위와 순서는 [제품 기획서](docs/PRD.md)에 있습니다.
+- 고객 가치 분석은 실험이 아닌 거래 기록이라 고객군 사이의 차이를 캠페인 효과라고 부르지 않습니다. 고객 중 도매상이 많아 개인 고객 업종과 숫자가 다를 수 있습니다.
+- 운영 설계: 고객 가치 분석의 이탈 위험 고객을 대상으로 [캠페인 브리프](docs/CAMPAIGN-BRIEF.md)와 [Journey 설계도](docs/JOURNEY.md)를 만들었습니다. 접촉 상한과 대기 기간은 제가 정한 설계 값이고, 실제 발송은 하지 않았습니다.
 
 ## 실행
 
-**사례 A 분석** (Python 3.12 이상)
+**분석** (사례 A와 고객 가치 분석, Python 3.12 이상)
 
 ```sh
 python -m venv .venv
@@ -95,6 +97,8 @@ python -m venv .venv
 .venv/Scripts/python -I analysis/fetch_data.py
 .venv/Scripts/python -I analysis/hillstrom.py
 .venv/Scripts/python -I analysis/report.py
+.venv/Scripts/python -I analysis/online_retail.py
+.venv/Scripts/python -I analysis/customer_report.py
 .venv/Scripts/python -m pytest analysis/tests
 ```
 
@@ -122,6 +126,8 @@ node verify-worker.mjs
 | 요구사항, 범위, 일정 | [제품 기획서](docs/PRD.md) |
 | 지표 정의 | [KPI 정의서](docs/KPI.md) |
 | 사례 A 분석 결과 | [캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md), [분석 코드](analysis/) |
+| 코호트, RFM, CLV 분석 결과 | [고객 가치 분석](docs/CUSTOMER-VALUE.md) |
+| 재방문 캠페인 기획과 운영 설계 | [캠페인 브리프](docs/CAMPAIGN-BRIEF.md), [Journey 설계도](docs/JOURNEY.md) |
 | 사례 B 고객군과 일정 | [프로젝트 기획안](docs/PROJECT-PLAN.md) |
 | 사례 B 조사 원문과 사용 범위 | [조사 자료](docs/RESEARCH-SOURCES.md), [기획 판단과 검증 과제](docs/PROJECT-NOTES.md) |
 | 사례 C 캠페인 기획과 실험 설계 | [비수기 체류 캠페인 기획안](docs/CASE-C-SEASONAL-STAY.md) |

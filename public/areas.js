@@ -1232,4 +1232,28 @@ export const places=[
     "lon": 126.97544
   }
 ];
-export const areas=Object.fromEntries(places.map(p=>[p.name,p]));
+// 서울 밖 숙박 휴양 지역. 시군 대표 좌표(근사)로 날씨 예보만 조회하며, 서울시 실시간 도시데이터는 제공되지 않습니다.
+export const stayGroups=["강원","경기","충청","전라","경상","부산","제주"];
+export const stays=[
+ {code:"STAY01",name:"강원 홍천",category:"숙박 휴양 지역",districts:["강원"],lat:37.697,lon:127.889,stay:true},
+ {code:"STAY02",name:"강원 고성",category:"숙박 휴양 지역",districts:["강원"],lat:38.38,lon:128.468,stay:true},
+ {code:"STAY03",name:"강원 양양",category:"숙박 휴양 지역",districts:["강원"],lat:38.075,lon:128.619,stay:true},
+ {code:"STAY04",name:"강원 삼척",category:"숙박 휴양 지역",districts:["강원"],lat:37.45,lon:129.165,stay:true},
+ {code:"STAY05",name:"강원 춘천",category:"숙박 휴양 지역",districts:["강원"],lat:37.8813,lon:127.7298,stay:true},
+ {code:"STAY06",name:"경기 고양",category:"숙박 휴양 지역",districts:["경기"],lat:37.6584,lon:126.832,stay:true},
+ {code:"STAY07",name:"경기 양평",category:"숙박 휴양 지역",districts:["경기"],lat:37.4917,lon:127.4875,stay:true},
+ {code:"STAY08",name:"충남 천안",category:"숙박 휴양 지역",districts:["충청"],lat:36.8151,lon:127.1139,stay:true},
+ {code:"STAY09",name:"충북 단양",category:"숙박 휴양 지역",districts:["충청"],lat:36.9845,lon:128.3655,stay:true},
+ {code:"STAY10",name:"전북 부안 변산",category:"숙박 휴양 지역",districts:["전라"],lat:35.636,lon:126.52,stay:true},
+ {code:"STAY11",name:"전남 여수",category:"숙박 휴양 지역",districts:["전라"],lat:34.7604,lon:127.6622,stay:true},
+ {code:"STAY12",name:"전남 진도",category:"숙박 휴양 지역",districts:["전라"],lat:34.4868,lon:126.2635,stay:true},
+ {code:"STAY13",name:"경남 남해",category:"숙박 휴양 지역",districts:["경상"],lat:34.8377,lon:127.8924,stay:true},
+ {code:"STAY14",name:"경남 거제",category:"숙박 휴양 지역",districts:["경상"],lat:34.8806,lon:128.6211,stay:true},
+ {code:"STAY15",name:"경북 경주",category:"숙박 휴양 지역",districts:["경상"],lat:35.8562,lon:129.2247,stay:true},
+ {code:"STAY16",name:"경북 청송",category:"숙박 휴양 지역",districts:["경상"],lat:36.436,lon:129.057,stay:true},
+ {code:"STAY17",name:"부산 해운대",category:"숙박 휴양 지역",districts:["부산"],lat:35.1631,lon:129.1636,stay:true},
+ {code:"STAY18",name:"제주 제주시",category:"숙박 휴양 지역",districts:["제주"],lat:33.4996,lon:126.5312,stay:true},
+ {code:"STAY19",name:"제주 서귀포",category:"숙박 휴양 지역",districts:["제주"],lat:33.2541,lon:126.5601,stay:true}
+];
+export const seoulAreas=Object.fromEntries(places.map(p=>[p.name,p]));
+export const areas=Object.fromEntries([...places,...stays].map(p=>[p.name,p]));
