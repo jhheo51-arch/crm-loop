@@ -20,3 +20,15 @@ test('사례 C 추천은 세 가지를 모두 골라야 나오고 고객군 표�
 test('증분 예약률과 표본 수를 손 계산과 맞춘다',()=>{const d=increment({n:10000,booked:420},{n:10000,booked:300});assert.ok(Math.abs(d.diff-0.012)<1e-12);assert.ok(d.lo<0.012&&0.012<d.hi);assert.equal(increment({n:0,booked:0},{n:10,booked:1}),null);assert.equal(increment({n:10,booked:11},{n:10,booked:1}),null);const n=sampleSize(0.03,0.005);const expect=Math.ceil((1.959963984540054+0.8416212335729143)**2*(0.03*0.97+0.035*0.965)/0.005**2);assert.equal(n,expect);assert.equal(sampleSize(0,0.01),null);assert.equal(sampleSize(0.5,0),null);});
 
 test('사례 C 화면은 일곱 구성과 가상 예시 표시를 갖춘다',()=>{const st=emptySeasonal();let html=seasonalView(st,h);for(const t of ['CASE C','문제','고객 여정','캠페인 화면','CRM 운영','측정 대시보드','한계와 다음 검증','특정 회사의 실제 캠페인'])assert.ok(html.includes(t),t);assert.ok(!html.includes('가상 예시 데이터</span>'));st.inputs=structuredClone(exampleInputs);st.example=true;st.choice={season:'봄',companion:'커플',purpose:'식음',activity:'바다'};html=seasonalView(st,h);assert.ok(html.includes('가상 예시 데이터'));assert.ok(html.includes('+1.20%p'));assert.ok(html.includes('추천 패키지'));const r=seasonalResults(st.inputs);assert.ok(r.n>0);for(const x of forbidden)assert.ok(!html.includes(x),x);});
+test('사례 A 비용 가정을 바꾸면 분석 스크립트와 같은 식으로 다시 계산한다',async()=>{
+ const {recompute,costInputs}=await import('../public/measurement-ui.js');
+ for(const key of ['womens','mens']){const arm=measurement.arms[key],b=recompute(arm,measurement.assumptions);
+  assert.equal(b.best_k_pct,arm.budget.best_k_pct);
+  arm.budget.by_k.forEach((x,i)=>{assert.ok(Math.abs(b.by_k[i].profit_total-x.profit_total)<1,`${key} ${x.k_pct}`);if(x.profit_total_lo!==undefined)assert.ok(Math.abs(b.by_k[i].profit_total_lo-x.profit_total_lo)<1);});
+  for(const sc of arm.coupon_scenario){const c=recompute(arm,{...measurement.assumptions,coupon_rate:sc.coupon_rate});assert.equal(c.best_k_pct,sc.best_k_pct);assert.ok(Math.abs(c.profit_best-sc.profit_best)<1);}}
+ assert.equal(costInputs({margin:0,send_cost:0.05,coupon_rate:0,base_customers:10000}),null);
+ assert.equal(costInputs({margin:0.3,send_cost:-1,coupon_rate:0,base_customers:10000}),null);
+ assert.equal(costInputs({margin:0.3,send_cost:0.05,coupon_rate:1,base_customers:10000}),null);
+ const html=measurementView(h,'womens',measurement,{...measurement.assumptions,send_cost:0.5});
+ assert.match(html,/바꾼 가정값/);assert.match(html,/data-cost="send_cost"/);assert.ok(!measurementView(h,'womens').includes('바꾼 가정값'));
+});

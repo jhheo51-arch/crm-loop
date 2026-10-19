@@ -1,13 +1,13 @@
 import {finalPlan} from './portfolio-final.js';
 import {researchCases} from './crm-cases.js';
 
-const PDF='/downloads/SCENT-LOOP-Case-B-Plan.pdf';
-const XLSX='/downloads/SCENT-LOOP-CRM-Operations.xlsx';
+const PDF='/downloads/CRM-LOOP-Case-B-Plan.pdf';
+const XLSX='/downloads/CRM-LOOP-Case-B-Operations.xlsx';
 
 export function portfolioView(h){const {btn,esc,note}=h,p=finalPlan;return `<div class="portfolio-flow" aria-label="프로젝트 기획안 전체 흐름">
  <nav class="portfolio-progress" aria-label="포트폴리오 구성"><button type="button" data-action="portfolio-scroll" data-target="portfolio-proposal"><b>01</b><span>프로젝트 기획안</span></button><button type="button" data-action="portfolio-scroll" data-target="portfolio-appeal"><b>02</b><span>제가 한 판단</span></button><button type="button" data-action="portfolio-scroll" data-target="portfolio-download"><b>03</b><span>내려받기</span></button></nav>
  <section class="portfolio-cover" id="portfolio-proposal"><div><div class="eyebrow">CRM LOOP / CASE B</div><span class="badge dark">${esc(p.status)}</span><h2>${esc(p.title)}</h2><h3>${esc(p.subtitle)}</h3><p>${esc(p.oneLine)}</p><div class="actions"><button type="button" class="button-link primary-link" data-action="portfolio-scroll" data-target="crm-decision-map">CRM 의사결정 보기</button><button type="button" class="button-link" data-action="portfolio-scroll" data-target="role-fit">협업 기준 보기</button>${btn('운영 화면에서 실행','crm-demo')}</div></div><div class="cover-meta"><span>PROJECT</span><strong>CRM LOOP<br>사례 B VIP 행사</strong><span>CASE</span><b>대표 프로젝트 1건 + 브랜드별 변형안 4건</b><span>SCOPE</span><b>Invite / Experience / Consent / Loyalty</b></div></section>
- <section class="project-name-explainer" aria-labelledby="project-name-title"><div><span>SCENT</span><strong>현장에서 발견한 향과 제품 경험</strong></div><i aria-hidden="true">→</i><div><span>LOOP</span><strong>동의, 후속, 관계 행동으로 이어지는 CRM 순환</strong></div><p id="project-name-title">${esc(p.nameMeaning)}</p><small>${esc(p.nameNotice)}</small></section>
+ <section class="project-name-explainer" aria-labelledby="project-name-title"><div><span>CRM</span><strong>동의한 고객의 선택과 반응 기록</strong></div><i aria-hidden="true">→</i><div><span>LOOP</span><strong>초청, 참석, 상담, 재방문으로 이어지는 순환</strong></div><p id="project-name-title">${esc(p.nameMeaning)}</p><small>${esc(p.nameNotice)}</small></section>
  ${overview(p,esc)}${decisionMap(p,esc)}${responsibilityFit(p,esc)}${performance(p,esc)}${evidence(researchCases,esc,note)}${appeal(p,esc)}${downloads()}
  <p class="portfolio-disclaimer">고객 수, 전환 결과, 목표는 계산 방법을 설명하기 위해 제가 만든 값입니다. 실제 브랜드의 CRM 정책, 고객 정보, 매출 또는 행사 성과가 아닙니다.</p>
  </div>`;}

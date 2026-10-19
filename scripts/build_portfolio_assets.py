@@ -12,7 +12,7 @@ from reportlab.platypus import KeepTogether, PageBreak, Paragraph, SimpleDocTemp
 
 ROOT = Path(__file__).resolve().parents[1]
 DOWNLOADS = ROOT / "public" / "downloads"
-NEW_PDF = DOWNLOADS / "SCENT-LOOP-Case-B-Plan.pdf"
+NEW_PDF = DOWNLOADS / "CRM-LOOP-Case-B-Plan.pdf"
 TOTAL_PAGES = 5
 
 
@@ -86,11 +86,11 @@ def build_pdf():
         canvas.line(16 * mm, 13 * mm, 194 * mm, 13 * mm)
         canvas.setFont("Malgun", 7.2)
         canvas.setFillColor(green)
-        canvas.drawString(16 * mm, 8.2 * mm, "SCENT LOOP")
+        canvas.drawString(16 * mm, 8.2 * mm, "CRM LOOP")
         canvas.drawRightString(194 * mm, 8.2 * mm, f"{doc.page} / {TOTAL_PAGES}")
         canvas.restoreState()
 
-    doc = SimpleDocTemplate(str(NEW_PDF), pagesize=A4, rightMargin=16 * mm, leftMargin=16 * mm, topMargin=15 * mm, bottomMargin=18 * mm, title="SCENT LOOP Case B Plan", author="Portfolio author")
+    doc = SimpleDocTemplate(str(NEW_PDF), pagesize=A4, rightMargin=16 * mm, leftMargin=16 * mm, topMargin=15 * mm, bottomMargin=18 * mm, title="CRM LOOP Case B Plan", author="Portfolio author")
 
     snapshot_rows = [
         ["구분", "제가 정한 범위", "확인할 수 있는 것"],
@@ -100,8 +100,8 @@ def build_pdf():
         ["산출물", "기획안, CRM 운영표, 웹 화면", "고객 누락과 후속 업무를 관리하는 구조"],
     ]
     name_rows = [
-        ["SCENT", "현장에서 확인한 고객의 향 선택과 사용 장면"],
-        ["LOOP", "동의한 고객의 선택을 상담/예약/재방문으로 이어가는 CRM 운영"],
+        ["CRM", "동의한 고객의 선택과 반응 기록"],
+        ["LOOP", "그 기록이 초청, 참석, 상담, 재방문으로 다시 이어지는 순환"],
     ]
     strength_rows = [
         ["01", "방문객 수 이후를 기록", "초대 이유부터 체험, 동의, 상담, 재방문까지 단계별로 셌습니다."],
@@ -184,11 +184,11 @@ def build_pdf():
     ]
 
     story = [
-        p("CRM LOOP / CASE B", eyebrow), p("SCENT LOOP", h1),
-        p("TAMBURINS Car Diffuser Private Preview to Loyalty", h3), Spacer(1, 1.5 * mm),
+        p("CRM LOOP / CASE B", eyebrow), p("VIP 프리뷰에서 재방문까지", h1),
+        p("향 브랜드 신제품 프리뷰를 가정한 고객 생애주기 운영안", h3), Spacer(1, 1.5 * mm),
         table(name_rows, [24 * mm, 154 * mm], font_size=10.2, compact=True, header=False, first_col_bold=True),
         Spacer(1, 3 * mm),
-        p("현장에서 확인한 향 선택을 고객의 동의 아래 상담, 예약과 재방문 기록으로 연결했습니다.", lead),
+        p("행사장에서 확인한 고객의 선택을 동의 기록으로 남기고, 상담과 재방문 안내로 이어 가는 흐름을 설계했습니다.", lead),
         p("실제 VIP 행사를 운영한 경험은 없습니다. 공식 자료와 공개 후기를 조사해 가상 고객 운영표와 측정 기준을 만들고, 사실과 가정을 구분했습니다.", quote),
         Spacer(1, 2.5 * mm), table(snapshot_rows, [31 * mm, 75 * mm, 72 * mm], font_size=9.7, first_col_bold=True),
         Spacer(1, 5 * mm), p("자료를 읽고 제가 내린 세 가지 판단", h3),
