@@ -80,26 +80,28 @@ def facts(r: dict) -> dict:
 def readme_block(r: dict) -> str:
     f = facts(r)
     m, w = f["m"], f["w"]
-    mu, wu = m["uplift"]["test"], w["uplift"]["test"]
+    wu = w["uplift"]["test"]
     mb, wb = m["budget"], w["budget"]
     a = r["assumptions"]
     wbest = next(b for b in wb["by_k"] if b["k_pct"] == wb["best_k_pct"])
     lines = [
         START,
-        f"공개 이메일 실험 데이터 {r['meta']['rows']:,}명 (남성용 메일, 여성용 메일, 미발송을 무작위 배정, 발송 후 2주 관찰)",
+        f"공개 이메일 실험 데이터 {r['meta']['rows']:,}명 (남성용 메일, 여성용 메일, 보내지 않음으로 무작위로 나누고 2주 관찰). 아래 숫자는 모두 메일을 보내지 않아도 샀을 고객을 빼고 계산했습니다.",
         "",
         "| 질문 | 남성용 메일 | 여성용 메일 |",
         "|---|---|---|",
-        f"| 방문률 증분 (95% 구간) | {ci_pp(m['ate']['visit'])} | {ci_pp(w['ate']['visit'])} |",
-        f"| 구매율 증분 | {ci_pp(m['ate']['conversion'])} | {ci_pp(w['ate']['conversion'])} |",
-        f"| 1인당 매출 증분 (USD) | {ci_usd(m['ate']['spend'])} | {ci_usd(w['ate']['spend'])} |",
-        f"| 업리프트 모델이 무작위 선정보다 나은가 (시험용 데이터) | {'예' if f['m_beats_random'] else '아니오'} (Qini {mu['qini_visit']:.4f}, 구간 {mu['qini_visit_lo']:.4f} ~ {mu['qini_visit_hi']:.4f}) | {'예' if f['w_beats_random'] else '아니오'} (Qini {wu['qini_visit']:.4f}, 구간 {wu['qini_visit_lo']:.4f} ~ {wu['qini_visit_hi']:.4f}) |",
+        f"| 메일 덕분에 늘어난 방문률 (95% 구간) | {ci_pp(m['ate']['visit'])} | {ci_pp(w['ate']['visit'])} |",
+        f"| 메일 덕분에 늘어난 구매율 | {ci_pp(m['ate']['conversion'])} | {ci_pp(w['ate']['conversion'])} |",
+        f"| 메일 덕분에 늘어난 1인당 매출 (USD) | {ci_usd(m['ate']['spend'])} | {ci_usd(w['ate']['spend'])} |",
+        f"| 반응할 고객을 점수로 골랐을 때 무작위로 고른 것보다 나았나 | {'예' if f['m_beats_random'] else '아니오'} | {'예' if f['w_beats_random'] else '아니오'} |",
         f"| 고객 1만 명 기준 이익이 가장 큰 발송 범위 | {scope(mb['best_k_pct'])} ({usd0(mb['profit_best'])}) | 상위 {wb['best_k_pct']}% ({usd0(wb['profit_best'])}, 전원 발송은 {usd0(wb['profit_all'])}) |",
         "",
-        f"- 여성용 메일은 남성용 상품만 사던 고객에게 거의 효과가 없었습니다 (방문률 {pp(f['w_men_only']['diff'])}, 여성용 상품만 사던 고객은 {pp(f['w_women_only']['diff'])}). 같은 메일이라도 받을 사람을 고르는 이유가 여기서 나옵니다.",
-        f"- 여성용 메일은 업리프트 순위 상위 30%에게만 보내도 시험용 데이터의 증분 방문 중 {mu_share(wu, 30)}를 얻었습니다. 남성용 메일은 효과가 고르게 퍼져 있어 순위를 매겨도 무작위와 차이가 없었고, 전원 발송이 낫습니다.",
-        f"- 이익 계산은 마진율 {a['margin'] * 100:.0f}%, 1통 발송 비용 ${a['send_cost']:.2f}, 쿠폰 없음이라는 **가정값**입니다. 같은 마진율에서 발송 비용이 $0.25로 오르면 남성용 메일도 상위 {cost_k(m, a['margin'], 0.25)}%만 보내는 편이 낫고, 20% 쿠폰을 붙이면 두 메일 모두 보내지 않는 편이 낫습니다. 전체 범위는 [캠페인 측정 문서](docs/CAMPAIGN-MEASUREMENT.md)의 민감도 표에 있습니다.",
-        f"- 여성용 메일의 상위 {wb['best_k_pct']}% 이익 {usd0(wbest['profit_total'])}의 95% 범위는 {usd0(wbest['profit_total_lo'])} ~ {usd0(wbest['profit_total_hi'])}입니다. 상위 60%, 80%, 전원 발송의 차이는 이 범위 안에 있어 하위 고객을 빼는 판단은 다음 실험으로 확인할 과제로 남깁니다.",
+        f"- 여성용 메일은 남성용 상품만 사던 고객에게 거의 효과가 없었습니다 (방문률 {pp(f['w_men_only']['diff'])}, 여성용 상품만 사던 고객은 {pp(f['w_women_only']['diff'])}). **판단:** 여성용 메일은 지난 구매 품목을 보고 받을 고객을 고릅니다.",
+        f"- 여성용 메일은 점수 상위 30%에게만 보내도 메일 덕분에 늘어난 방문의 {mu_share(wu, 30)}를 얻었습니다. 남성용 메일은 효과가 고객 전체에 고르게 퍼져 있어 점수로 골라도 무작위와 차이가 없었습니다. **판단:** 남성용 메일은 고객을 고르지 않고 전원에게 보냅니다.",
+        f"- 이익 계산은 마진율 {a['margin'] * 100:.0f}%, 1통 발송 비용 ${a['send_cost']:.2f}, 쿠폰 없음이라는 **가정값**입니다. 같은 마진율에서 발송 비용이 $0.25로 오르면 남성용 메일도 상위 {cost_k(m, a['margin'], 0.25)}%만 보내는 편이 낫고, 20% 쿠폰을 붙이면 두 메일 모두 보내지 않는 편이 낫습니다. **판단:** 이 캠페인에는 쿠폰을 붙이지 않고, 발송 비용이 바뀌면 발송 범위를 다시 계산합니다.",
+        f"- 여성용 메일의 상위 {wb['best_k_pct']}% 이익 {usd0(wbest['profit_total'])}의 95% 범위는 {usd0(wbest['profit_total_lo'])} ~ {usd0(wbest['profit_total_hi'])}입니다. 상위 60%, 80%, 전원 발송의 차이는 이 범위 안에 있습니다. **판단:** 하위 고객을 빼는 결정은 다음 실험에서 확인할 때까지 미룹니다.",
+        "",
+        "점수 모델, Qini 곡선, 민감도 표 같은 분석 세부 사항은 [캠페인 측정 문서](docs/CAMPAIGN-MEASUREMENT.md)에 있습니다.",
         END,
     ]
     return "\n".join(lines)
