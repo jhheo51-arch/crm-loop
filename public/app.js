@@ -91,7 +91,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-acti
  if(action==='season-clear'){seasonal.inputs=emptySeasonal().inputs;seasonal.example=false;render();return;}
  if(action==='crm-tab'){crmTab=crmTabs.includes(b.dataset.id)?b.dataset.id:'CRM 전략';render();return;}
  if(action==='crm-export'){download('global-crm-'+stamp()+'.md',crmReport(p));toast('CRM 기록 다운로드를 요청했습니다.');return;}
- if(action==='crm-demo'){save();p=upgrade(initial(true));seedFlagship(p);crmTab='CRM 전략';route='overview';history.pushState(null,'','#overview');save();render();window.scrollTo(0,0);toast('탬버린즈 대표 프로젝트를 가상 데이터로 불러왔습니다.');return;}
+ if(action==='crm-demo'){save();p=upgrade(initial(true));seedFlagship(p);crmTab='CRM 전략';route='overview';history.pushState(null,'','#overview');save();render();window.scrollTo(0,0);toast('향 브랜드 신제품 프리뷰 예시를 가상 데이터로 불러왔습니다.');return;}
  if(action==='crm-case-task'){const c=researchCases.find(x=>x.id===b.dataset.id);if(!c)throw Error('사례를 찾지 못했습니다.');if(p.event.tasks.some(t=>t.source===c.sources[0].url))throw Error('이 사례의 보완 업무가 이미 있습니다.');if(p.event.tasks.length>=500)throw Error('업무 한도를 초과합니다.');p.event.tasks.push({...newTask(),title:c.action,phase:c.phase,source:c.sources[0].url});eventTab='준비';save();render();toast('공개 후기에서 만든 보완 가설을 이벤트 업무에 추가했습니다.');return;}
  if(action.startsWith('event-')){
  const e=p.event,g=e.guests.find(g=>g.id===b.dataset.id),op=action.slice(6);
