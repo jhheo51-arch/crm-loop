@@ -12,7 +12,7 @@ from reportlab.platypus import KeepTogether, PageBreak, Paragraph, SimpleDocTemp
 
 ROOT = Path(__file__).resolve().parents[1]
 DOWNLOADS = ROOT / "public" / "downloads"
-NEW_PDF = DOWNLOADS / "SCENT-LOOP-Global-CRM-Portfolio.pdf"
+NEW_PDF = DOWNLOADS / "SCENT-LOOP-Case-B-Plan.pdf"
 TOTAL_PAGES = 5
 
 
@@ -90,11 +90,11 @@ def build_pdf():
         canvas.drawRightString(194 * mm, 8.2 * mm, f"{doc.page} / {TOTAL_PAGES}")
         canvas.restoreState()
 
-    doc = SimpleDocTemplate(str(NEW_PDF), pagesize=A4, rightMargin=16 * mm, leftMargin=16 * mm, topMargin=15 * mm, bottomMargin=18 * mm, title="SCENT LOOP Global CRM Portfolio", author="Portfolio author")
+    doc = SimpleDocTemplate(str(NEW_PDF), pagesize=A4, rightMargin=16 * mm, leftMargin=16 * mm, topMargin=15 * mm, bottomMargin=18 * mm, title="SCENT LOOP Case B Plan", author="Portfolio author")
 
     snapshot_rows = [
-        ["구분", "제가 정한 범위", "면접관이 확인할 역량"],
-        ["직무", "Global CRM Marketing Specialist", "공고의 업무를 고객 단계와 운영표로 구체화"],
+        ["구분", "제가 정한 범위", "확인할 수 있는 것"],
+        ["사례", "CRM LOOP 사례 B, VIP 행사", "행사 고객 여정을 단계와 운영표로 구체화"],
         ["행사", "탬버린즈 카디퓨저 VIP 프리뷰 가정", "초청부터 D+30까지 이어지는 고객 여정"],
         ["자료", "공식 자료, 공개 후기, 가상 데이터", "사실, 관찰, 가정의 출처와 한계 표시"],
         ["산출물", "기획안, CRM 운영표, 웹 화면", "고객 누락과 후속 업무를 관리하는 구조"],
@@ -108,12 +108,11 @@ def build_pdf():
         ["02", "누락 고객을 업무로 전환", "노쇼, 마감, 미동의, 무반응에 담당자와 처리 기한을 지정했습니다."],
         ["03", "가상값의 계산 기준 공개", "각 지표의 분자와 분모, 실제 데이터 확인 질문을 적었습니다."],
     ]
-    job_rows = [
-        ["공고의 담당업무", "프로젝트에서 한 일", "확인 자료"],
-        ["세그먼트, 시장별 CRM 캠페인", "네 고객군의 선정 이유, 혜택, 다음 연락 조건을 정의", "선정 규칙, KPI"],
-        ["VIP/VIC 행사 고객 여정", "초청 → 예약 → 방문 → 체험 → 동의 → 후속을 D+30까지 연결", "고객 여정, 누락 업무표"],
-        ["리테일, 콘텐츠, 디자인 협업", "대기, 재고, 공개 범위와 초청물 승인, 인계를 구분", "역할표, 일정표"],
-        ["결과 분석과 다음 시장 적용", "고정 분모, 이탈 구간, 다음 확인 질문을 함께 기록", "성과표, 시험안"],
+    team_rows = [
+        ["협업 부서", "먼저 확인할 것", "인계할 결과"],
+        ["리테일, 현장", "시간대별 수용량, 직원 배치, 혜택, 제품 재고, 품절 시 대체 가능 범위", "정원표, 인력표, 서비스 복구 기준"],
+        ["콘텐츠", "공개 전후 메시지 범위, 엠바고, 필수 제품 정보, 시장별 표현", "콘텐츠 캘린더, 메시지 승인본, 반응 태그"],
+        ["디자인, 공간", "초청장, 현장 사인, 체험물, 촬영, 동의 화면의 제작 조건", "제작물 목록, 설치 위치, 최종 승인 시점"],
     ]
     segment_rows = [
         ["고객군", "가상 인원", "초대한 이유", "행사 뒤 다음 행동"],
@@ -180,13 +179,12 @@ def build_pdf():
     ]
     source_rows = [
         ["자료", "확인한 범위", "사용한 방식"],
-        ["채용공고", "목표 Global CRM, 공식 인접 CRM 공고", "역할과 요구 역량 확인"],
-        ["공식 채널", "아이아이컴바인드와 5개 브랜드 공식 채널", "브랜드, 행사, 제품, 매장, 고객 접점 확인"],
+        ["공식 채널", "5개 브랜드 공식 채널", "브랜드, 행사, 제품, 매장, 고객 접점 확인"],
         ["기사, 공개 후기", "관련 기사, 후기, 에디터 방문기", "대기, 마감, 품절을 현장 검증 질문으로 전환"],
     ]
 
     story = [
-        p("GLOBAL CRM MARKETING PORTFOLIO", eyebrow), p("SCENT LOOP", h1),
+        p("CRM LOOP / CASE B", eyebrow), p("SCENT LOOP", h1),
         p("TAMBURINS Car Diffuser Private Preview to Loyalty", h3), Spacer(1, 1.5 * mm),
         table(name_rows, [24 * mm, 154 * mm], font_size=10.2, compact=True, header=False, first_col_bold=True),
         Spacer(1, 3 * mm),
@@ -195,10 +193,10 @@ def build_pdf():
         Spacer(1, 2.5 * mm), table(snapshot_rows, [31 * mm, 75 * mm, 72 * mm], font_size=9.7, first_col_bold=True),
         Spacer(1, 5 * mm), p("자료를 읽고 제가 내린 세 가지 판단", h3),
         table(strength_rows, [14 * mm, 52 * mm, 112 * mm], font_size=9.7, header=False, first_col_bold=True),
-        Spacer(1, 4 * mm), p("고객 수와 전환 결과는 모두 가상값입니다. 아이아이컴바인드의 실제 고객, 매출, 행사 성과를 사용하지 않았습니다.", warning),
+        Spacer(1, 4 * mm), p("고객 수와 전환 결과는 모두 가상값입니다. 실제 브랜드의 고객, 매출, 행사 성과를 사용하지 않았습니다.", warning),
         PageBreak(),
-        heading("01 ROLE FIT", "공고의 네 가지 업무에 맞춰 자료를 구성했습니다", "고객 선정, 행사 여정, 유관 부서 협업, 결과 분석을 PDF와 운영표에서 확인할 수 있습니다."),
-        table(job_rows, [52 * mm, 82 * mm, 44 * mm], font_size=9.4, first_col_bold=True),
+        heading("01 CROSS-TEAM", "행사 전에 팀마다 먼저 맞출 내용을 정했습니다", "각 팀이 확인할 값과 인계할 결과를 나눠, 행사 당일 판단이 늦어지지 않게 했습니다."),
+        table(team_rows, [30 * mm, 86 * mm, 62 * mm], font_size=9.4, first_col_bold=True),
         Spacer(1, 8 * mm), heading("02 AUDIENCE", "고객군마다 초대 이유와 후속 조건을 정했습니다"),
         table(segment_rows, [40 * mm, 20 * mm, 59 * mm, 59 * mm], font_size=9.4, compact=True, first_col_bold=True),
         Spacer(1, 7 * mm), p("본사와 현지팀이 같은 기준으로 움직이되 시장마다 바꿀 항목을 분리했습니다.", h3),
@@ -207,7 +205,7 @@ def build_pdf():
         table(decision_rows, [18 * mm, 49 * mm, 65 * mm, 46 * mm], font_size=9.2, first_col_bold=True),
         Spacer(1, 8 * mm), p("CRM 기록에서 지킨 세 가지 기준", h3),
         table(rule_rows, [35 * mm, 143 * mm], font_size=9.6, compact=True, first_col_bold=True),
-        Spacer(1, 4 * mm), p("실제 고객군, 시스템 필드, 보관 기간, 국가별 동의 문구는 입사 후 현지 법무, CRM 담당자와 확인합니다.", note), PageBreak(),
+        Spacer(1, 4 * mm), p("실제 고객군, 시스템 필드, 보관 기간, 국가별 동의 문구는 실제로 적용할 때 현지 법무, CRM 담당자와 확인해야 합니다.", note), PageBreak(),
         heading("04 MEASUREMENT", "지표의 분모와 누락 고객을 함께 관리합니다", "가상 수치도 같은 기준으로 계산하고, 단계별 누락 고객은 후속 업무표에 남겼습니다."),
         table(funnel_rows, [45 * mm, 25 * mm, 68 * mm, 40 * mm], font_size=9.5, compact=True, first_col_bold=True),
         Spacer(1, 7 * mm), p("단계 사이에서 놓친 고객과 해야 할 일", h3),
@@ -219,8 +217,8 @@ def build_pdf():
         table(experiment_rows, [58 * mm, 70 * mm, 50 * mm], font_size=9.2, compact=True),
         Spacer(1, 7 * mm), p("공개자료를 사용한 기준", h3),
         table(source_rows, [31 * mm, 61 * mm, 86 * mm], font_size=9.1, compact=True, first_col_bold=True),
-        Spacer(1, 3 * mm), p("입사 후 포부", h3), Spacer(1, 3 * mm),
-        p("입사 후에는 회사의 CRM 정의와 현장 운영 기준을 먼저 확인하겠습니다. 작은 행사 한 건에서 선정, 체험, 동의와 후속 기록을 실제 데이터로 검증하고, 리테일, 콘텐츠, 디자인과 현지팀이 사용할 수 있는 운영 기준으로 정리하겠습니다.", quote),
+        Spacer(1, 3 * mm), p("다음 검증", h3), Spacer(1, 3 * mm),
+        p("이 기준이 맞는지는 실제 CRM 정의와 현장 운영 기준을 확인한 뒤, 작은 행사 한 건에서 선정, 체험, 동의와 후속 기록을 실제 데이터로 확인해야 알 수 있습니다.", quote),
         Spacer(1, 4 * mm), p("상세 출처와 한계는 docs/RESEARCH-SOURCES.md와 Excel의 ‘근거 및 출처’ 시트에 있습니다.", note),
     ]
     doc.build(story, onFirstPage=footer, onLaterPages=footer)

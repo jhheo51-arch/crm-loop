@@ -2,7 +2,7 @@
 
 고객 생애주기 캠페인을 기획하고 효과를 재는 포트폴리오입니다. 첫 방문을 만드는 캠페인, 관계를 깊게 하는 행사, 다시 오게 하는 메시지를 같은 기준으로 설계하고 측정합니다.
 
-[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [KPI 정의서](docs/KPI.md) | [사례 B 소개 PDF](public/downloads/SCENT-LOOP-Global-CRM-Portfolio.pdf) | [사례 B Excel 운영표](public/downloads/SCENT-LOOP-CRM-Operations.xlsx) | [문서 안내](docs/README.md)
+[사례 A 캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md) | [KPI 정의서](docs/KPI.md) | [사례 B 소개 PDF](public/downloads/SCENT-LOOP-Case-B-Plan.pdf) | [사례 B Excel 운영표](public/downloads/SCENT-LOOP-CRM-Operations.xlsx) | [문서 안내](docs/README.md)
 
 ## 30초 안내
 
