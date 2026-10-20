@@ -96,6 +96,10 @@ body{font-family:var(--sans);letter-spacing:-.01em;-webkit-font-smoothing:antial
 .logo{color:#fff;letter-spacing:-.5px}
 .logo-mark{width:34px;height:34px;border:0;border-radius:50%;background:conic-gradient(from 210deg,var(--loop) 0 18%,transparent 18% 24%,var(--accent) 24% 100%);-webkit-mask:radial-gradient(circle,transparent 9px,#000 10px);mask:radial-gradient(circle,transparent 9px,#000 10px)}
 .logo-mark:after{content:none}
+.logo{gap:10px;line-height:1}
+.logo-mark{width:26px;height:26px;flex:none;-webkit-mask:radial-gradient(circle,transparent 8px,#000 8.5px);mask:radial-gradient(circle,transparent 8px,#000 8.5px)}
+.logo-type{font-size:17px;font-weight:800;letter-spacing:.08em;white-space:nowrap}
+.logo-type em{font-style:normal;font-weight:400;color:#9aa1bd;margin-left:.3em}
 nav button{color:#c9cee3;border-radius:10px}
 nav button:hover{background:#1f2540;color:#fff}
 nav button.active{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(59,91,219,.35)}
