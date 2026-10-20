@@ -75,6 +75,8 @@
 
 숫자는 모두 `analysis/results/hillstrom.json` 한 파일에서 나옵니다. 이 구간과 [캠페인 측정 문서](docs/CAMPAIGN-MEASUREMENT.md)는 스크립트가 만들고, 자동 검사가 파일과 다르면 실패합니다.
 
+같은 두 질문(방문 증분 대비 구매 증분, 업리프트 순위로 대상을 자를 때의 이익)을 2018년 공개된 Criteo 광고 실험 1,398만 명으로 다시 확인했습니다. 결과는 [캠페인 측정 문서 7장](docs/CAMPAIGN-MEASUREMENT.md)에, 계산은 [분석 코드](analysis/criteo.py)에 있고 숫자는 `analysis/results/criteo.json`에서 나옵니다.
+
 ### 고객 가치 분석. 거래 기록으로 본 연락 대상과 시점
 
 영국 온라인몰의 실제 거래 기록(Online Retail II, 2009-12-01 ~ 2011-11-30)으로 고객이 언제 떠나는지, 어떤 고객군이 다음 해에 다시 사는지, 고객이 앞으로 낼 매출을 예측하는 모델이 단순 기준보다 나은지를 확인했습니다.
@@ -157,6 +159,7 @@ node verify-worker.mjs
 | 기획서 2. VIP 행사 (사례 B) | [VIP 행사 기획안](docs/PROJECT-PLAN.md), [조사 자료](docs/RESEARCH-SOURCES.md), [기획 판단과 검증 과제](docs/PROJECT-NOTES.md) |
 | 기획서 3. 비수기 캠페인 (사례 C) | [비수기 캠페인 기획안](docs/CASE-C-SEASONAL-STAY.md) |
 | 기획 근거: 이메일 실험 (사례 A) | [캠페인 측정](docs/CAMPAIGN-MEASUREMENT.md), [분석 코드](analysis/) |
+| 기획 근거: 최근 데이터로 재확인 (Criteo 광고 실험) | [캠페인 측정 7장](docs/CAMPAIGN-MEASUREMENT.md), [분석 코드](analysis/criteo.py) |
 | 기획 근거: 고객 가치 | [고객 가치 분석](docs/CUSTOMER-VALUE.md) |
 | 지표 정의 | [KPI 정의서](docs/KPI.md) |
 | 요구사항, 범위, 일정 | [제품 기획서](docs/PRD.md) |

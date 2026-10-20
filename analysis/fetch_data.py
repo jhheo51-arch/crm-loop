@@ -18,6 +18,14 @@ SOURCES = {
         "sha256": "572e36277c2390fbfde10664750731e0a86f55e33470d91919085f0408e67bfb",
         "member": "online_retail_II.xlsx",
     },
+    # Criteo 공식 링크(go.criteo.net)는 2026-10 기준 404라 libuplift가 쓰는 미러에서 받는다. 해시는 libuplift와 같다.
+    "criteo": {
+        "url": "https://github.com/jszymon/uplift_sklearn_data/releases/download/Criteo/criteo-research-uplift-v2.1.csv.gz",
+        "page": "https://ailab.criteo.com/criteo-uplift-prediction-dataset/",
+        "path": ROOT / "data/external/criteo/criteo-research-uplift-v2.1.csv.gz",
+        "sha256": "2716e1bf0fd157a93b5bf86924d9088419dfbac2022c6cd90030220634f616dc",
+        "optional": True,  # 311MB라 이름을 줄 때만 받는다: python -I analysis/fetch_data.py criteo
+    },
 }
 
 
@@ -44,5 +52,5 @@ def fetch(name: str) -> Path:
 
 
 if __name__ == "__main__":
-    for name in sys.argv[1:] or SOURCES:
+    for name in sys.argv[1:] or [k for k, v in SOURCES.items() if not v.get("optional")]:
         print(name, fetch(name))
