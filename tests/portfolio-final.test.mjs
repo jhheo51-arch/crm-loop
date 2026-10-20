@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport,holdout,holdoutMde,holdoutRounds,HOLDOUT_Z} from '../public/portfolio-final.js';
+import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport,holdout,holdoutMde,holdoutRounds,HOLDOUT_Z,holdoutWait,holdoutGuardrailSource} from '../public/portfolio-final.js';
 import {portfolioView} from '../public/portfolio-final-ui.js';
 
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -42,4 +42,21 @@ test('비교군 설계는 손 계산과 같고 문서와 화면에 같은 숫자
  const mde=(holdout.mde1*100).toFixed(1)+'%p',md=finalPortfolioReport(),html=portfolioView(helpers),readme=readFileSync(new URL('../README.md',import.meta.url),'utf8');
  for(const s of [md,html,readme]){assert.ok(s.includes(mde));assert.ok(s.includes(`${k}회 행사`));}
  assert.match(md,/### 비교군 설계/);assert.ok(html.includes('portfolio-holdout'));
+});
+
+test('기다리는 동안의 운영 규칙은 효과 대신 표본과 보호 지표로 보고하고 가정값을 밝힌다',()=>{
+ const w=holdoutWait,p=holdout.base,k=holdout.rounds;
+ assert.equal(w.mid.round,3);assert.equal(w.mid.invited,630);assert.equal(w.mid.hold,270);assert.equal(w.mid.left,k-3);
+ // 3회 누적: 2.8016 * sqrt(p(1-p)(1/630+1/270)) = 6.5%p, 목표 5%p보다 커서 효과 판단을 내릴 수 없다
+ assert.ok(Math.abs(w.mid.mde-holdoutMde(p,630,270))<1e-12);assert.equal((w.mid.mde*100).toFixed(1),'6.5');assert.ok(w.mid.mde>holdout.target);
+ assert.equal(w.progress.length,k);assert.ok(w.progress.at(-1).mde<=holdout.target&&w.progress.at(-1).left===0);
+ for(const s of w.scenarios)assert.equal(s.rounds,holdoutRounds(s.base,210,90,0.05));
+ assert.ok(w.cannot.some(x=>x.includes('6.5%p')));
+ for(const g of w.guardrails)assert.match(g.basis,/가정값|설계 조건/);
+ assert.ok(w.guardrails.some(g=>g.source));assert.equal(holdoutGuardrailSource.url,'https://support.google.com/a/answer/81126');
+ for(const r of w.reporting)assert.ok(!/\d+(\.\d+)?%p/.test(r),'보고 문구에 효과 크기를 넣지 않는다');
+ const md=finalPortfolioReport(),html=portfolioView(helpers);
+ assert.match(md,/### 판단까지 기다리는 동안의 운영 규칙/);assert.match(md,/#### 중단 조건/);assert.ok(md.includes(holdoutGuardrailSource.url));assert.ok(md.includes(w.example));
+ assert.ok(html.includes('portfolio-holdout-wait'));assert.ok(html.includes(holdoutGuardrailSource.url));
+ for(const s of [md,html])for(const c of ['·','→'])assert.ok(!s.includes(c),c);
 });
