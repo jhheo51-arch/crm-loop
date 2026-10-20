@@ -34,15 +34,15 @@ export function crmGaps(p){
  if(!c.objective.trim()||!c.primarySegment.trim()||!c.valueExchange.trim())add('CRM 목표, 핵심 고객군, 정보 제공의 대가가 되는 고객 혜택을 정의하세요.','CRM 전략');
  if(!c.hqRule.trim()||!c.localRule.trim())add('모든 행사에 공통인 기준과 행사마다 바꿀 범위를 나누세요.','CRM 전략');
  if(!c.privacy.trim())add('동의 목적, 채널, 보관, 철회 처리 기준을 적으세요.','CRM 전략');
- for(const g of p.event.guests){const label=g.alias||'이름 미입력 고객';if(g.history.some(h=>h.to==='초청')&&(!g.market.trim()||!g.locale.trim()||!g.segment.trim()||g.channel==='미정'))add(label+' / 시장, 언어, 고객군, 선호 채널이 미완성입니다.','고객 신호');if(arrived(g)&&g.consent==='미확인')add(label+' / 마케팅 동의 여부가 확인되지 않았습니다.','고객 신호');if(g.consent==='동의'&&!g.consentScope.trim())add(label+' / 동의한 채널과 목적의 범위가 비어 있습니다.','고객 신호');if(g.consent==='동의'&&g.follow==='완료'&&!g.nextAction.trim())add(label+' / 완료한 후속의 다음 관계 행동이 비어 있습니다.','후속, 성과');}
+ for(const g of p.event.guests){const label=g.alias||'이름 미입력 고객';if(g.history.some(h=>h.to==='초청')&&(!g.market.trim()||!g.locale.trim()||!g.segment.trim()||g.channel==='미정'))add(label+': 시장, 언어, 고객군, 선호 채널이 미완성입니다.','고객 신호');if(arrived(g)&&g.consent==='미확인')add(label+': 마케팅 동의 여부가 확인되지 않았습니다.','고객 신호');if(g.consent==='동의'&&!g.consentScope.trim())add(label+': 동의한 채널과 목적의 범위가 비어 있습니다.','고객 신호');if(g.consent==='동의'&&g.follow==='완료'&&!g.nextAction.trim())add(label+': 완료한 후속의 다음 관계 행동이 비어 있습니다.','후속, 성과');}
  return result;
 }
 
 export function seedFlagship(p){
  upgradeCRM(p);p.example=true;p.name='향 브랜드 신제품 프리뷰 (가상 데이터 기반 모의 운영)';p.brand='향 브랜드 (가상)';p.sector='뷰티, 향수';p.theme='차량용 향 신제품 경험과 DIY 대체 경험';p.purpose='초청 고객의 향 선호와 체험 신호를 동의 기반 후속 관계로 연결';p.audience='향 제품 재구매 고객, 자동차 라이프스타일 관심 고객, 크리에이터를 가정한 모의 세그먼트';p.message='차 안의 기억을 향으로 설계하는 프라이빗 경험';
- Object.assign(p.event,{type:'프라이빗 프리뷰',kind:'가상 연습',owner:'CRM 총괄',invitation:'가상 초청 문안 / 행사 목적, 예약 시간, 동반 조건, 혜택 수량, 마케팅 동의를 각각 확인합니다.'});
+ Object.assign(p.event,{type:'프라이빗 프리뷰',kind:'가상 연습',owner:'CRM 총괄',invitation:'가상 초청 문안: 행사 목적, 예약 시간, 동반 조건, 혜택 수량, 마케팅 동의를 각각 확인합니다.'});
  Object.assign(p.crm,{objective:'VIP 프리뷰의 체험 신호를 동의 기반 상담, 구매, 재방문으로 연결',primarySegment:'향 제품 재구매 고객, 자동차 라이프스타일 관심 고객, 크리에이터',markets:'대한민국',valueExchange:'선호 향별 사용 팁, DIY 마감 시 대체 체험, 동의 고객의 재예약, 리필 안내',channelPlan:'초청 채널과 후속 채널을 분리 기록하고, 고객이 고른 채널로만 안내',hqRule:'브랜드 세계관, 핵심 메시지, 공통 고객 신호와 지표 정의',localRule:'예약 채널, 동의 문구, 혜택 재고와 발송 시간 조정',privacy:'행사 참석과 마케팅 동의를 분리하고 목적, 채널, 보관 기간, 철회 방법을 실제 운영 전에 법무 검토'});
- p.event.guests=[];const available=slots(p);for(let i=0;i<4;i++){const g=newGuest();Object.assign(g,{alias:'가상 고객 '+String.fromCharCode(65+i),reason:['향 제품 재구매 고객 가정','자동차 라이프스타일 관심 고객 가정','뷰티 콘텐츠 크리에이터 가정','휴면 VIP 재활성화 가정'][i],owner:'CRM 담당',party:1,slot:available[i]||'',market:'KR',locale:'ko-KR',segment:['재구매','라이프스타일','크리에이터','재활성화'][i],channel:['카카오','문자','이메일','전화'][i],preference:'확인 전 / 모의 입력',signal:'행사에서 확인할 항목',nextAction:'동의와 체험 결과에 따라 결정'});p.event.guests.push(g);transitionGuest(p,g.id,'초청');if(i<3)transitionGuest(p,g.id,'확정');}
+ p.event.guests=[];const available=slots(p);for(let i=0;i<4;i++){const g=newGuest();Object.assign(g,{alias:'가상 고객 '+String.fromCharCode(65+i),reason:['향 제품 재구매 고객 가정','자동차 라이프스타일 관심 고객 가정','뷰티 콘텐츠 크리에이터 가정','휴면 VIP 재활성화 가정'][i],owner:'CRM 담당',party:1,slot:available[i]||'',market:'KR',locale:'ko-KR',segment:['재구매','라이프스타일','크리에이터','재활성화'][i],channel:['카카오','문자','이메일','전화'][i],preference:'확인 전, 모의 입력',signal:'행사에서 확인할 항목',nextAction:'동의와 체험 결과에 따라 결정'});p.event.guests.push(g);transitionGuest(p,g.id,'초청');if(i<3)transitionGuest(p,g.id,'확정');}
  return p;
 }
 

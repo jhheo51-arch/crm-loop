@@ -12,13 +12,13 @@ export function memberSummary(b){
  if(b.complaints!==null&&b.counts[1]!==null&&b.complaints>b.counts[1])return{error:'안내 불편을 표시한 인원은 혜택을 안내받은 인원을 넘을 수 없습니다.'};
  const proof=b.kind==='가상 연습'||b.completionProof==='가입 완료 집계 확인',warnings=[];
  if(!classified)warnings.push('회원 여부 분류가 일부 미측정입니다. 전체 방문자 기준 회원 전환율은 계산하지 않습니다.');
- if(!proof)warnings.push('실제 가입 완료 근거 미확인 / 링크 클릭이나 QR 열기는 가입 완료가 아닙니다. 완료 이후 비율을 보류합니다.');
+ if(!proof)warnings.push('실제 가입 완료 근거 미확인. 링크 클릭이나 QR 열기는 가입 완료가 아닙니다. 완료 이후 비율을 보류합니다.');
  const followupReady=!!b.followupDefinition.trim()&&!!b.followupWindow.trim();
  if(!followupReady&&b.counts[4]!==null)warnings.push('후속 행동의 정의와 관찰 기간이 없어 후속 비율을 보류합니다.');
  const ratio=(n,d)=>n!==null&&d!==null&&d>0?n/d*100:null;
  const rows=b.counts.map((count,i)=>({name:memberStages[i],count,rate:i===0?null:(i>=3&&!proof)||(i===4&&!followupReady)?null:ratio(count,b.counts[i-1]),drop:i>0&&count!==null&&b.counts[i-1]!==null?b.counts[i-1]-count:null}));
  const eligibleDrops=rows.slice(1,proof?4:3).filter(x=>x.drop!==null&&x.drop>0);const max=eligibleDrops.length?Math.max(...eligibleDrops.map(x=>x.drop)):null;
- return {rows,classified,warnings,proof,conversion:proof?ratio(b.counts[3],b.counts[0]):null,completion:proof?ratio(b.counts[3],b.counts[2]):null,followup:proof&&followupReady?ratio(b.counts[4],b.counts[3]):null,complaintRate:ratio(b.complaints,b.counts[1]),largest:eligibleDrops.filter(x=>x.drop===max),note:b.kind==='가상 연습'?'가상 연습 / 실제 가입 성과가 아닙니다.':'사용자 입력 집계 / 이 서비스가 브랜드 회원 시스템에서 직접 검증한 값이 아닙니다.'};
+ return {rows,classified,warnings,proof,conversion:proof?ratio(b.counts[3],b.counts[0]):null,completion:proof?ratio(b.counts[3],b.counts[2]):null,followup:proof&&followupReady?ratio(b.counts[4],b.counts[3]):null,complaintRate:ratio(b.complaints,b.counts[1]),largest:eligibleDrops.filter(x=>x.drop===max),note:b.kind==='가상 연습'?'가상 연습이며 실제 가입 성과가 아닙니다.':'사용자 입력 집계입니다. 이 서비스가 브랜드 회원 시스템에서 직접 검증한 값이 아닙니다.'};
 }
 export function memberReadiness(p){const m=p.membership,v=p.venues.find(x=>x.id===p.recommended);return [
  {name:'장소와 목표 고객 연결',ok:!!v&&!!m.segment.trim()&&!!m.locationReason.trim()},
