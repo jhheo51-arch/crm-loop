@@ -87,7 +87,7 @@ def build_pdf():
         canvas.setFont("Malgun", 7.2)
         canvas.setFillColor(green)
         canvas.drawString(16 * mm, 8.2 * mm, "CRM LOOP")
-        canvas.drawRightString(194 * mm, 8.2 * mm, f"{doc.page} / {TOTAL_PAGES}")
+        canvas.drawRightString(194 * mm, 8.2 * mm, f"{TOTAL_PAGES}쪽 중 {doc.page}쪽")
         canvas.restoreState()
 
     doc = SimpleDocTemplate(str(NEW_PDF), pagesize=A4, rightMargin=16 * mm, leftMargin=16 * mm, topMargin=15 * mm, bottomMargin=18 * mm, title="CRM LOOP Case B Plan", author="Portfolio author")
@@ -205,7 +205,7 @@ def build_pdf():
     ]
 
     story = [
-        p("CRM LOOP / 기획서 2", eyebrow), p("VIP 프리뷰에서 재방문까지", h1),
+        p("CRM LOOP 기획서 2", eyebrow), p("VIP 프리뷰에서 재방문까지", h1),
         p("향 브랜드 신제품 프리뷰를 가정한 VIP 행사 기획안", h3), Spacer(1, 1.5 * mm),
         table(name_rows, [24 * mm, 154 * mm], font_size=10.2, compact=True, header=False, first_col_bold=True),
         Spacer(1, 3 * mm),
@@ -246,7 +246,7 @@ def build_pdf():
         table(role_rows, [35 * mm, 143 * mm], font_size=9.0, compact=True, first_col_bold=True),
         Spacer(1, 5 * mm), p("공개자료를 사용한 기준", h3),
         table(source_rows, [31 * mm, 61 * mm, 86 * mm], font_size=9.0, compact=True, first_col_bold=True),
-        Spacer(1, 3 * mm), p("실제 고객군, 시스템 필드, 보관 기간, 동의 문구는 실제로 적용할 때 법무, CRM 담당자와 확인해야 합니다. 상세 출처와 한계는 docs/RESEARCH-SOURCES.md와 Excel의 ‘근거 및 출처’ 시트에 있습니다.", note),
+        Spacer(1, 3 * mm), p("실제 고객군, 시스템 필드, 보관 기간, 동의 문구는 실제로 적용할 때 법무, CRM 담당자와 확인해야 합니다. 상세 출처와 한계는 GitHub 저장소의 조사 출처 문서(RESEARCH-SOURCES.md)와 Excel의 ‘근거 및 출처’ 시트에 있습니다.", note),
     ]
     doc.build(story, onFirstPage=footer, onLaterPages=footer)
 

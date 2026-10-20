@@ -1,0 +1,644 @@
+{
+ "source": "한국관광공사 빅데이터 지역별 방문자수 (기초지자체, 이동통신 데이터 추정)",
+ "period": [
+  "2024-01-01",
+  "2025-12-31"
+ ],
+ "visitor_kind": "외지인(b)",
+ "visitor_kinds_in_response": [
+  "1 현지인(a)",
+  "2 외지인(b)",
+  "3 외국인(c)"
+ ],
+ "rows": 578952,
+ "day_type_rule": "주중은 월~목 중 공휴일과 공휴일 전날이 아닌 날, 주말은 금, 토, 일, 공휴일, 공휴일 전날",
+ "season_rule": "봄 3~5월, 여름 6~8월, 가을 9~11월, 겨울 12~2월",
+ "index_rule": "지역의 기간 전체 하루 평균 방문자 수를 1로 둔 값",
+ "hypothesis_rule": "봄, 가을 주중 지수의 평균이 1보다 작고 봄, 가을 주말 지수의 평균보다 작으면 가설에 맞는다",
+ "summary": {
+  "regions": 19,
+  "supports": 19,
+  "not_supports": [],
+  "shoulder_weekday_vs_weekend_median": 0.601,
+  "shoulder_weekday_vs_weekend_range": [
+   0.46,
+   0.895
+  ],
+  "below_summer_weekday": 16,
+  "below_winter_weekday": 1,
+  "lowest_cell_counts": {
+   "겨울 주중": 16,
+   "봄 주중": 3
+  }
+ },
+ "regions": {
+  "STAY01": {
+   "name": "강원 홍천",
+   "days": 731,
+   "daily_mean": 58529.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 34323.0,
+    "봄 주말": 64984.0,
+    "여름 주중": 54379.0,
+    "여름 주말": 95936.0,
+    "가을 주중": 40409.0,
+    "가을 주말": 79441.0,
+    "겨울 주중": 35961.0,
+    "겨울 주말": 66119.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.586,
+    "봄 주말": 1.11,
+    "여름 주중": 0.929,
+    "여름 주말": 1.639,
+    "가을 주중": 0.69,
+    "가을 주말": 1.357,
+    "겨울 주중": 0.614,
+    "겨울 주말": 1.13
+   },
+   "shoulder_weekday_index": 0.638,
+   "shoulder_weekday_vs_weekend": 0.517,
+   "shoulder_weekday_vs_summer_weekday": 0.687,
+   "shoulder_weekday_vs_winter_weekday": 1.039,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "봄 주중",
+   "supports_hypothesis": true
+  },
+  "STAY02": {
+   "name": "강원 고성",
+   "days": 731,
+   "daily_mean": 34258.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 21449.0,
+    "봄 주말": 37989.0,
+    "여름 주중": 35755.0,
+    "여름 주말": 57023.0,
+    "가을 주중": 24777.0,
+    "가을 주말": 43636.0,
+    "겨울 주중": 20552.0,
+    "겨울 주말": 34483.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.626,
+    "봄 주말": 1.109,
+    "여름 주중": 1.044,
+    "여름 주말": 1.664,
+    "가을 주중": 0.723,
+    "가을 주말": 1.274,
+    "겨울 주중": 0.6,
+    "겨울 주말": 1.007
+   },
+   "shoulder_weekday_index": 0.675,
+   "shoulder_weekday_vs_weekend": 0.566,
+   "shoulder_weekday_vs_summer_weekday": 0.646,
+   "shoulder_weekday_vs_winter_weekday": 1.125,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY03": {
+   "name": "강원 양양",
+   "days": 731,
+   "daily_mean": 42055.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 26229.0,
+    "봄 주말": 50609.0,
+    "여름 주중": 42039.0,
+    "여름 주말": 71467.0,
+    "가을 주중": 29436.0,
+    "가을 주말": 54604.0,
+    "겨울 주중": 22987.0,
+    "겨울 주말": 41307.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.624,
+    "봄 주말": 1.203,
+    "여름 주중": 1.0,
+    "여름 주말": 1.699,
+    "가을 주중": 0.7,
+    "가을 주말": 1.298,
+    "겨울 주중": 0.547,
+    "겨울 주말": 0.982
+   },
+   "shoulder_weekday_index": 0.662,
+   "shoulder_weekday_vs_weekend": 0.529,
+   "shoulder_weekday_vs_summer_weekday": 0.662,
+   "shoulder_weekday_vs_winter_weekday": 1.211,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY04": {
+   "name": "강원 삼척",
+   "days": 731,
+   "daily_mean": 33048.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 25856.0,
+    "봄 주말": 41478.0,
+    "여름 주중": 32395.0,
+    "여름 주말": 49414.0,
+    "가을 주중": 24780.0,
+    "가을 주말": 39875.0,
+    "겨울 주중": 20589.0,
+    "겨울 주말": 31300.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.782,
+    "봄 주말": 1.255,
+    "여름 주중": 0.98,
+    "여름 주말": 1.495,
+    "가을 주중": 0.75,
+    "가을 주말": 1.207,
+    "겨울 주중": 0.623,
+    "겨울 주말": 0.947
+   },
+   "shoulder_weekday_index": 0.766,
+   "shoulder_weekday_vs_weekend": 0.622,
+   "shoulder_weekday_vs_summer_weekday": 0.782,
+   "shoulder_weekday_vs_winter_weekday": 1.23,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY05": {
+   "name": "강원 춘천",
+   "days": 731,
+   "daily_mean": 82569.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 68787.0,
+    "봄 주말": 103338.0,
+    "여름 주중": 68473.0,
+    "여름 주말": 103121.0,
+    "가을 주중": 68025.0,
+    "가을 주말": 107246.0,
+    "겨울 주중": 57329.0,
+    "겨울 주말": 87412.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.833,
+    "봄 주말": 1.252,
+    "여름 주중": 0.829,
+    "여름 주말": 1.249,
+    "가을 주중": 0.824,
+    "가을 주말": 1.299,
+    "겨울 주중": 0.694,
+    "겨울 주말": 1.059
+   },
+   "shoulder_weekday_index": 0.828,
+   "shoulder_weekday_vs_weekend": 0.65,
+   "shoulder_weekday_vs_summer_weekday": 0.999,
+   "shoulder_weekday_vs_winter_weekday": 1.193,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY06": {
+   "name": "경기 고양",
+   "days": 731,
+   "daily_mean": 394909.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 356502.0,
+    "봄 주말": 453581.0,
+    "여름 주중": 356022.0,
+    "여름 주말": 444964.0,
+    "가을 주중": 355644.0,
+    "가을 주말": 449407.0,
+    "겨울 주중": 332171.0,
+    "겨울 주말": 419990.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.903,
+    "봄 주말": 1.149,
+    "여름 주중": 0.902,
+    "여름 주말": 1.127,
+    "가을 주중": 0.901,
+    "가을 주말": 1.138,
+    "겨울 주중": 0.841,
+    "겨울 주말": 1.064
+   },
+   "shoulder_weekday_index": 0.902,
+   "shoulder_weekday_vs_weekend": 0.789,
+   "shoulder_weekday_vs_summer_weekday": 1.0,
+   "shoulder_weekday_vs_winter_weekday": 1.072,
+   "peak_cell": "봄 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY07": {
+   "name": "경기 양평",
+   "days": 731,
+   "daily_mean": 79892.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 57059.0,
+    "봄 주말": 108160.0,
+    "여름 주중": 63428.0,
+    "여름 주말": 120407.0,
+    "가을 주중": 57759.0,
+    "가을 주말": 111360.0,
+    "겨울 주중": 44966.0,
+    "겨울 주말": 80625.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.714,
+    "봄 주말": 1.354,
+    "여름 주중": 0.794,
+    "여름 주말": 1.507,
+    "가을 주중": 0.723,
+    "가을 주말": 1.394,
+    "겨울 주중": 0.563,
+    "겨울 주말": 1.009
+   },
+   "shoulder_weekday_index": 0.719,
+   "shoulder_weekday_vs_weekend": 0.523,
+   "shoulder_weekday_vs_summer_weekday": 0.905,
+   "shoulder_weekday_vs_winter_weekday": 1.277,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY08": {
+   "name": "충남 천안",
+   "days": 731,
+   "daily_mean": 230189.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 214006.0,
+    "봄 주말": 261871.0,
+    "여름 주중": 204291.0,
+    "여름 주말": 249760.0,
+    "가을 주중": 217743.0,
+    "가을 주말": 266587.0,
+    "겨울 주중": 194233.0,
+    "겨울 주말": 237517.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.93,
+    "봄 주말": 1.138,
+    "여름 주중": 0.887,
+    "여름 주말": 1.085,
+    "가을 주중": 0.946,
+    "가을 주말": 1.158,
+    "겨울 주중": 0.844,
+    "겨울 주말": 1.032
+   },
+   "shoulder_weekday_index": 0.938,
+   "shoulder_weekday_vs_weekend": 0.817,
+   "shoulder_weekday_vs_summer_weekday": 1.057,
+   "shoulder_weekday_vs_winter_weekday": 1.111,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY09": {
+   "name": "충북 단양",
+   "days": 731,
+   "daily_mean": 26127.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 16469.0,
+    "봄 주말": 34741.0,
+    "여름 주중": 20429.0,
+    "여름 주말": 39414.0,
+    "가을 주중": 19072.0,
+    "가을 주말": 42547.0,
+    "겨울 주중": 12725.0,
+    "겨울 주말": 25189.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.63,
+    "봄 주말": 1.33,
+    "여름 주중": 0.782,
+    "여름 주말": 1.509,
+    "가을 주중": 0.73,
+    "가을 주말": 1.628,
+    "겨울 주중": 0.487,
+    "겨울 주말": 0.964
+   },
+   "shoulder_weekday_index": 0.68,
+   "shoulder_weekday_vs_weekend": 0.46,
+   "shoulder_weekday_vs_summer_weekday": 0.87,
+   "shoulder_weekday_vs_winter_weekday": 1.396,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY10": {
+   "name": "전북 부안 변산",
+   "days": 731,
+   "daily_mean": 29164.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 20036.0,
+    "봄 주말": 39212.0,
+    "여름 주중": 23496.0,
+    "여름 주말": 39763.0,
+    "가을 주중": 21566.0,
+    "가을 주말": 43462.0,
+    "겨울 주중": 16977.0,
+    "겨울 주말": 30358.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.687,
+    "봄 주말": 1.345,
+    "여름 주중": 0.806,
+    "여름 주말": 1.363,
+    "가을 주중": 0.739,
+    "가을 주말": 1.49,
+    "겨울 주중": 0.582,
+    "겨울 주말": 1.041
+   },
+   "shoulder_weekday_index": 0.713,
+   "shoulder_weekday_vs_weekend": 0.503,
+   "shoulder_weekday_vs_summer_weekday": 0.885,
+   "shoulder_weekday_vs_winter_weekday": 1.225,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY11": {
+   "name": "전남 여수",
+   "days": 731,
+   "daily_mean": 73857.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 58079.0,
+    "봄 주말": 89869.0,
+    "여름 주중": 67213.0,
+    "여름 주말": 92872.0,
+    "가을 주중": 57261.0,
+    "가을 주말": 91346.0,
+    "겨울 주중": 55500.0,
+    "겨울 주말": 81382.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.786,
+    "봄 주말": 1.217,
+    "여름 주중": 0.91,
+    "여름 주말": 1.257,
+    "가을 주중": 0.775,
+    "가을 주말": 1.237,
+    "겨울 주중": 0.751,
+    "겨울 주말": 1.102
+   },
+   "shoulder_weekday_index": 0.781,
+   "shoulder_weekday_vs_weekend": 0.636,
+   "shoulder_weekday_vs_summer_weekday": 0.858,
+   "shoulder_weekday_vs_winter_weekday": 1.039,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY12": {
+   "name": "전남 진도",
+   "days": 731,
+   "daily_mean": 14774.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 11840.0,
+    "봄 주말": 17109.0,
+    "여름 주중": 13628.0,
+    "여름 주말": 17231.0,
+    "가을 주중": 12281.0,
+    "가을 주말": 19313.0,
+    "겨울 주중": 11328.0,
+    "겨울 주말": 15877.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.801,
+    "봄 주말": 1.158,
+    "여름 주중": 0.922,
+    "여름 주말": 1.166,
+    "가을 주중": 0.831,
+    "가을 주말": 1.307,
+    "겨울 주중": 0.767,
+    "겨울 주말": 1.075
+   },
+   "shoulder_weekday_index": 0.816,
+   "shoulder_weekday_vs_weekend": 0.662,
+   "shoulder_weekday_vs_summer_weekday": 0.885,
+   "shoulder_weekday_vs_winter_weekday": 1.065,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY13": {
+   "name": "경남 남해",
+   "days": 731,
+   "daily_mean": 23868.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 15723.0,
+    "봄 주말": 32235.0,
+    "여름 주중": 19843.0,
+    "여름 주말": 34118.0,
+    "가을 주중": 15760.0,
+    "가을 주말": 34437.0,
+    "겨울 주중": 13784.0,
+    "겨울 주말": 26423.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.659,
+    "봄 주말": 1.351,
+    "여름 주중": 0.831,
+    "여름 주말": 1.429,
+    "가을 주중": 0.66,
+    "가을 주말": 1.443,
+    "겨울 주중": 0.578,
+    "겨울 주말": 1.107
+   },
+   "shoulder_weekday_index": 0.66,
+   "shoulder_weekday_vs_weekend": 0.472,
+   "shoulder_weekday_vs_summer_weekday": 0.793,
+   "shoulder_weekday_vs_winter_weekday": 1.142,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY14": {
+   "name": "경남 거제",
+   "days": 731,
+   "daily_mean": 63198.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 46382.0,
+    "봄 주말": 76264.0,
+    "여름 주중": 56079.0,
+    "여름 주말": 82746.0,
+    "가을 주중": 47860.0,
+    "가을 주말": 80598.0,
+    "겨울 주중": 46606.0,
+    "겨울 주말": 71726.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.734,
+    "봄 주말": 1.207,
+    "여름 주중": 0.887,
+    "여름 주말": 1.309,
+    "가을 주중": 0.757,
+    "가을 주말": 1.275,
+    "겨울 주중": 0.737,
+    "겨울 주말": 1.135
+   },
+   "shoulder_weekday_index": 0.746,
+   "shoulder_weekday_vs_weekend": 0.601,
+   "shoulder_weekday_vs_summer_weekday": 0.84,
+   "shoulder_weekday_vs_winter_weekday": 1.011,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "봄 주중",
+   "supports_hypothesis": true
+  },
+  "STAY15": {
+   "name": "경북 경주",
+   "days": 731,
+   "daily_mean": 133107.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 97727.0,
+    "봄 주말": 171168.0,
+    "여름 주중": 109117.0,
+    "여름 주말": 167865.0,
+    "가을 주중": 102207.0,
+    "가을 주말": 183691.0,
+    "겨울 주중": 90256.0,
+    "겨울 주말": 149063.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.734,
+    "봄 주말": 1.286,
+    "여름 주중": 0.82,
+    "여름 주말": 1.261,
+    "가을 주중": 0.768,
+    "가을 주말": 1.38,
+    "겨울 주중": 0.678,
+    "겨울 주말": 1.12
+   },
+   "shoulder_weekday_index": 0.751,
+   "shoulder_weekday_vs_weekend": 0.563,
+   "shoulder_weekday_vs_summer_weekday": 0.916,
+   "shoulder_weekday_vs_winter_weekday": 1.108,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY16": {
+   "name": "경북 청송",
+   "days": 731,
+   "daily_mean": 13605.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 9039.0,
+    "봄 주말": 14814.0,
+    "여름 주중": 10616.0,
+    "여름 주말": 16735.0,
+    "가을 주중": 12311.0,
+    "가을 주말": 23006.0,
+    "겨울 주중": 8552.0,
+    "겨울 주말": 14341.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.664,
+    "봄 주말": 1.089,
+    "여름 주중": 0.78,
+    "여름 주말": 1.23,
+    "가을 주중": 0.905,
+    "가을 주말": 1.691,
+    "겨울 주중": 0.629,
+    "겨울 주말": 1.054
+   },
+   "shoulder_weekday_index": 0.785,
+   "shoulder_weekday_vs_weekend": 0.565,
+   "shoulder_weekday_vs_summer_weekday": 1.006,
+   "shoulder_weekday_vs_winter_weekday": 1.248,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY17": {
+   "name": "부산 해운대",
+   "days": 731,
+   "daily_mean": 193065.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 146937.0,
+    "봄 주말": 219775.0,
+    "여름 주중": 173718.0,
+    "여름 주말": 237936.0,
+    "가을 주중": 158479.0,
+    "가을 주말": 232244.0,
+    "겨울 주중": 157679.0,
+    "겨울 주말": 224724.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.761,
+    "봄 주말": 1.138,
+    "여름 주중": 0.9,
+    "여름 주말": 1.232,
+    "가을 주중": 0.821,
+    "가을 주말": 1.203,
+    "겨울 주중": 0.817,
+    "겨울 주말": 1.164
+   },
+   "shoulder_weekday_index": 0.791,
+   "shoulder_weekday_vs_weekend": 0.676,
+   "shoulder_weekday_vs_summer_weekday": 0.879,
+   "shoulder_weekday_vs_winter_weekday": 0.968,
+   "peak_cell": "여름 주말",
+   "lowest_cell": "봄 주중",
+   "supports_hypothesis": true
+  },
+  "STAY18": {
+   "name": "제주 제주시",
+   "days": 731,
+   "daily_mean": 162394.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 153505.0,
+    "봄 주말": 168717.0,
+    "여름 주중": 164683.0,
+    "여름 주말": 174823.0,
+    "가을 주중": 157486.0,
+    "가을 주말": 178588.0,
+    "겨울 주중": 144328.0,
+    "겨울 주말": 158028.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.945,
+    "봄 주말": 1.039,
+    "여름 주중": 1.014,
+    "여름 주말": 1.077,
+    "가을 주중": 0.97,
+    "가을 주말": 1.1,
+    "겨울 주중": 0.889,
+    "겨울 주말": 0.973
+   },
+   "shoulder_weekday_index": 0.958,
+   "shoulder_weekday_vs_weekend": 0.895,
+   "shoulder_weekday_vs_summer_weekday": 0.944,
+   "shoulder_weekday_vs_winter_weekday": 1.077,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  },
+  "STAY19": {
+   "name": "제주 서귀포",
+   "days": 731,
+   "daily_mean": 119831.0,
+   "daily_mean_by_cell": {
+    "봄 주중": 110932.0,
+    "봄 주말": 131795.0,
+    "여름 주중": 116315.0,
+    "여름 주말": 131897.0,
+    "가을 주중": 111503.0,
+    "가을 주말": 135694.0,
+    "겨울 주중": 101819.0,
+    "겨울 주말": 120313.0
+   },
+   "index_by_cell": {
+    "봄 주중": 0.926,
+    "봄 주말": 1.1,
+    "여름 주중": 0.971,
+    "여름 주말": 1.101,
+    "가을 주중": 0.93,
+    "가을 주말": 1.132,
+    "겨울 주중": 0.85,
+    "겨울 주말": 1.004
+   },
+   "shoulder_weekday_index": 0.928,
+   "shoulder_weekday_vs_weekend": 0.832,
+   "shoulder_weekday_vs_summer_weekday": 0.956,
+   "shoulder_weekday_vs_winter_weekday": 1.092,
+   "peak_cell": "가을 주말",
+   "lowest_cell": "겨울 주중",
+   "supports_hypothesis": true
+  }
+ }
+}

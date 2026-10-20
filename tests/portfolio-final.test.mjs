@@ -13,7 +13,7 @@ test('KPI 산식은 고정된 분모와 일치한다',()=>{const expected=[156/2
 
 test('단계 사이 이탈을 삭제하지 않고 모두 담당 업무로 남긴다',()=>{assert.equal(finalPlan.leaks.length,7);assert.ok(finalPlan.leaks.every(x=>x.lost>0&&x.care&&x.owner));assert.equal(finalPlan.leaks.find(x=>x.between==='참석과 동의 사이').lost,34);});
 
-test('화면이 프로젝트 기획안, 본인 판단, 내려받기로 이어진다',()=>{const html=portfolioView(helpers);assert.ok(html.includes('프로젝트 기획안'));assert.ok(html.includes('제가 한 판단'));assert.ok(html.includes('내려받기'));assert.ok(html.includes('.pdf'));assert.ok(html.includes('.xlsx'));assert.ok(html.includes('실제 브랜드의 CRM 정책, 고객 정보, 매출 또는 행사 성과가 아닙니다'));const report=finalPortfolioReport();assert.ok(report.includes('이 프로젝트를 만든 이유'));assert.ok(report.includes('가상 결과'));assert.ok(report.includes('실제 VIP 행사를 운영한 경험은 없습니다'));});
+test('화면이 프로젝트 기획안, 본인 판단, 내려받기로 이어진다',()=>{const html=portfolioView(helpers);assert.ok(html.includes('프로젝트 기획안'));assert.ok(html.includes('판단 근거'));assert.ok(html.includes('내려받기'));assert.ok(html.includes('.pdf'));assert.ok(html.includes('.xlsx'));assert.ok(html.includes('실제 브랜드의 CRM 정책, 고객 정보, 매출 또는 행사 성과가 아닙니다'));const report=finalPortfolioReport();assert.ok(report.includes('이 프로젝트를 만든 이유'));assert.ok(report.includes('가상 결과'));assert.ok(report.includes('실제 VIP 행사를 운영한 경험은 없습니다'));});
 
 test('담당자 질문이 데이터와 다음 행동으로 이어진다',()=>{assert.equal(finalPlan.decisionMap.length,7);assert.ok(finalPlan.decisionMap.every(x=>x.question&&x.data&&x.action&&x.owner&&x.sla));const html=portfolioView(helpers);assert.ok(html.includes('담당자가 묻는 7가지 질문'));assert.ok(html.includes('consent_status'));assert.ok(html.includes('동의 고객만 CRM 등록'));});
 
