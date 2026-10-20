@@ -515,6 +515,28 @@ def criteo_section(r: dict) -> list:
     return L
 
 
+def criteo_web(r: dict, c: dict) -> dict:
+    """사례 A 화면의 Criteo 비교 카드가 읽는 값. 같다, 다르다 판정도 문서와 같은 criteo_facts()로 정한다."""
+    f, u, b = criteo_facts(r, c), c["uplift"]["test"], c["budget"]
+    pt = f["per_target_cut"]
+    return {
+        "meta": {k: c["meta"][k] for k in ["dataset", "rows", "license"]},
+        "doc": "https://github.com/jhheo51-arch/crm-loop/blob/main/docs/CAMPAIGN-MEASUREMENT.md#7-최근-공개-데이터로-다시-확인-criteo-광고-실험-2018",
+        "ratio": f["ratio"],
+        "small_purchase": f["small_purchase"],
+        "qini_visit": {k: u[k] for k in ["qini_visit", "qini_visit_lo", "qini_visit_hi"]},
+        "beats_random_visit": f["beats_random_visit"],
+        "top30": {"criteo": u["share_of_incremental_visits_top30"],
+                  **{k: r["arms"][k]["uplift"]["test"]["share_of_incremental_visits_top30"] for k in ARM_KO}},
+        "assumptions": c["assumptions"],
+        "budget": {k: b[k] for k in ["best_k_pct", "profit_best", "profit_all"]},
+        "cut_pays": f["cut_pays"],
+        "top_exposure_share": f["top_exposure_share"],
+        "per_target": None if pt is None else {k: pt[k] for k in ["cost_per_target", "best_k_pct", "profit_best", "profit_all"]},
+        "best_k": {k: r["arms"][k]["budget"]["best_k_pct"] for k in ARM_KO},
+    }
+
+
 def web_data(r: dict) -> str:
     """웹의 사례 A 화면이 읽는 값만 골라 JS 모듈로 만든다. 화면에도 숫자를 손으로 옮기지 않는다."""
     keep_meta = ["dataset", "source", "sha256", "rows", "period", "currency", "note"]
@@ -535,7 +557,9 @@ def web_data(r: dict) -> str:
         }
     data = {"meta": {k: r["meta"][k] for k in keep_meta}, "assumptions": r["assumptions"],
             "assignment": r["assignment"], "arms": arms}
-    return ("// analysis/report.py가 analysis/results/hillstrom.json에서 만든 파일입니다. 직접 고치지 마세요.\n"
+    if CRITEO.exists():
+        data["criteo"] = criteo_web(r, json.loads(CRITEO.read_text(encoding="utf-8")))
+    return ("// analysis/report.py가 analysis/results/hillstrom.json과 criteo.json에서 만든 파일입니다. 직접 고치지 마세요.\n"
             "export const measurement=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
 
 

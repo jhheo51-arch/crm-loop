@@ -131,3 +131,11 @@ def test_readme_links_criteo_section():
     assert "analysis/criteo.py" in readme
     head, rest = readme.split(report.START)
     assert "Criteo" in head + rest.split(report.END)[1]
+
+def test_web_criteo_values_follow_results():
+    w, f = report.criteo_web(H, R), report.criteo_facts(H, R)
+    assert w["small_purchase"] == f["small_purchase"] and w["cut_pays"] == f["cut_pays"]
+    assert w["budget"]["best_k_pct"] == R["budget"]["best_k_pct"]
+    assert w["top30"]["criteo"] == R["uplift"]["test"]["share_of_incremental_visits_top30"]
+    assert w["doc"].endswith("#7-최근-공개-데이터로-다시-확인-criteo-광고-실험-2018")
+    assert '"criteo":' in report.WEB.read_text(encoding="utf-8")
