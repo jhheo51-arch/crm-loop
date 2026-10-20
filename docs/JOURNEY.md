@@ -10,7 +10,7 @@
 flowchart TD
   E[Entry Source<br>이탈 위험 고객 Data Extension] --> F{Decision Split<br>동의와 접촉 상한}
   F -- 제외 --> X1[Exit]
-  F -- 통과 --> R{Random Split<br>발송 80, 미발송 20}
+  F -- 통과 --> R{Random Split<br>발송 70, 미발송 30}
   R -- 미발송 --> H[Wait 90일] --> X2[Exit<br>미발송군으로 기록]
   R -- 발송 --> M1[Email 1<br>신상품과 재입고]
   M1 --> W1[Wait 7일]
@@ -31,7 +31,7 @@ Goal(구매)을 설정해 두어, 어느 단계에서든 구매가 생기면 남
 |---|---|---|
 | 진입 | Entry Source (Data Extension) | RFM 이탈 위험 고객(R 점수 2 이하, F 점수 3 이상). 매일 고객군을 다시 계산하고, 한 고객은 한 번만 진입합니다(Re-entry 없음). |
 | 진입 필터 | Decision Split | 마케팅 메일 동의가 있고, 최근 14일 안에 구매하지 않았고, 접촉 상한에 닿지 않은 고객만 통과합니다. |
-| 배정 | Random Split | 발송 80%, 미발송 20%. 배정 결과를 고객 속성에 남겨 분석에 씁니다. |
+| 배정 | Random Split | 발송 70%, 미발송 30%. 비율을 고른 근거는 [기획서 1](CAMPAIGN-BRIEF.md)의 표본 설계에 있습니다. 배정 결과를 고객 속성에 남겨 분석에 씁니다. |
 | 1차 발송 | Email Activity | 지난번에 산 품목의 신상품과 재입고 소식. 혜택 없음. |
 | 대기 | Wait by Duration | 7일 |
 | 분기 | Engagement Split | 1차 메일 클릭 여부. 클릭한 고객은 추가 발송 없이 기다립니다. |

@@ -12,7 +12,7 @@ export const loop={
  oneLine:'누구에게, 무엇을, 언제 보낼지 정하고, 그 판단이 맞았는지 확인합니다. 캠페인 기획서 세 편과 기획에 쓴 근거 분석으로 구성했습니다.',
  principle:'열람은 반응으로 세지 않고, 비교군이 없으면 효과라고 부르지 않습니다. 세 기획서가 같은 KPI 정의서를 씁니다.',
  cases:[
-  {key:'R',group:'plan',label:'기획서 1',stage:'다시 사게 하기',title:'이탈 위험 고객 재방문 캠페인',data:'실제 거래 기록에서 고른 666명',finding:'사다가 멈춘 고객 666명에게 쿠폰 없이 메일 세 단계를 보내고, 보내지 않는 고객을 20% 이상 남겨 메일 덕분에 늘어난 재구매만 확인합니다.',decision:`다음 해에 다시 산 비율이 휴면 고객의 두 배가 넘어(${customerValue.atRiskRepurchase}%, ${customerValue.dormantRepurchase}%) 이 고객에게 먼저 보냅니다.`,kind:'기획서',doc:'docs/CAMPAIGN-BRIEF.md'},
+  {key:'R',group:'plan',label:'기획서 1',stage:'다시 사게 하기',title:'이탈 위험 고객 재방문 캠페인',data:'실제 거래 기록에서 고른 666명',finding:'사다가 멈춘 고객 666명에게 쿠폰 없이 메일 세 단계를 보내고, 보내지 않는 고객을 30% 남기고 6회차를 합쳐 메일 덕분에 늘어난 재구매만 확인합니다.',decision:`다음 해에 다시 산 비율이 휴면 고객의 두 배가 넘어(${customerValue.atRiskRepurchase}%, ${customerValue.dormantRepurchase}%) 이 고객에게 먼저 보냅니다.`,kind:'기획서',doc:'docs/CAMPAIGN-BRIEF.md'},
   {key:'B',group:'plan',label:'기획서 2',stage:'관계 깊게 하기',title:'VIP 프리뷰에서 재방문까지',data:'가상 초청 240명',finding:'누구를 왜 초대할지, 현장에서 무엇을 경험하게 할지, 행사 뒤 어떤 메시지로 다시 오게 할지 정했습니다.',decision:'마케팅 동의는 행사 참여와 따로 묻고, 동의한 고객에게만 고른 향을 담은 후속 메시지를 보냅니다.',kind:'기획서, 가상 데이터',target:'portfolio-proposal'},
   {key:'C',group:'plan',label:'기획서 3',stage:'비수기에 오게 하기',title:'비수기 숙박 캠페인',data:'가상 예시',finding:'봄, 가을 주중 1박을 지점별 계절 체험과 멤버십 재방문 혜택으로 엮었습니다.',decision:'할인 대신 고객이 고른 동행, 목적, 활동에 맞춘 제안을 보내고, 할인 제안과 함께 비교합니다.',kind:'기획서, 가상 예시',route:'seasonal'},
   {key:'A',group:'basis',label:'사례 A',stage:'받을 고객 고르기',title:'이메일 실험으로 본 발송 대상',data:`공개 실험 데이터 ${measurement.meta.rows.toLocaleString('en-US')}명`,finding:`남성용 메일은 방문률을 ${pp(mens.ate.visit.diff)} 올렸고 효과가 고객 전체에 고르게 퍼져 있었습니다. 여성용 메일은 반응할 고객 상위 30%에게만 보내도 메일 덕분에 늘어난 방문의 ${Math.round(womens.uplift.share_of_incremental_visits_top30*100)}%를 얻었습니다.`,decision:'남성용 메일은 고객을 고르지 않고 전원에게 보내고, 여성용 메일은 받을 고객을 고릅니다.',kind:'공개 실제 데이터',route:'measure'},
@@ -115,13 +115,13 @@ export const finalPlan={
   {topic:'휴면 VIP의 기대치',source:'고객 가치 분석',body:`휴면 고객은 다음 해에 ${customerValue.dormantRepurchase}%만 다시 샀고, 이탈 위험 고객은 ${customerValue.atRiskRepurchase}%였습니다. 업종이 달라 숫자를 그대로 옮기지는 않습니다. 휴면 VIP 60명의 반응 기대를 다른 고객군과 따로 잡고, 반응이 없으면 반복 초청을 멈추는 근거로만 씁니다.`},
   {topic:'동의 기록',source:'Journey 설계도',body:'목적, 채널, 동의 시각, 정책 버전의 네 항목은 이탈 위험 고객 재방문 Journey의 진입 필터와 같습니다. 행사에서 받은 동의도 상시 캠페인과 같은 기준으로 확인합니다.'},
   {topic:'반응의 정의',source:'KPI 정의서',body:'후속 반응률은 KPI 정의서와 같이 클릭, 회신, 상담 요청만 세고 열람은 뺍니다. 그래서 행사와 상시 캠페인의 반응을 같은 기준으로 비교할 수 있습니다.'},
-  {topic:'효과와 반응의 구분',source:'사례 A',body:'이 퍼널에는 비교군이 없습니다. 관계 행동률 34.1%는 행사 덕분에 늘어난 효과가 아니라 반응입니다. 사례 A처럼 초청 대상의 일부를 무작위로 남겨 두어야 행사 덕분에 늘어난 재방문을 잴 수 있습니다.'}
+  {topic:'효과와 반응의 구분',source:'사례 A',body:'관계 행동률 34.1%는 동의한 고객 안의 반응이지 행사 덕분에 늘어난 효과가 아닙니다. 사례 A처럼 선정 고객의 일부를 무작위로 초청하지 않고 남겨, 초청 전체 기준으로 두 군을 비교해야 효과를 잴 수 있습니다. 인원과 필요한 행사 수는 5장의 비교군 설계에 있습니다.'}
  ],
  experiments:[
   {question:'현장 발견감을 해치지 않으면서 참석을 높일 수 있는가?',a:'제품 상세 선공개',b:'세계관 티저만 공개',metric:'참석률, 체험 참여율, 상담 요청률'},
   {question:'DIY 마감 고객에게 어떤 회복안이 관계를 더 잘 이어가는가?',a:'대체 샘플 즉시 제공',b:'우선 재예약',metric:'수락률, 7일 반응, 30일 재방문'},
   {question:'후속 메시지는 무엇을 기억시켜야 하는가?',a:'제품 기능 중심',b:'고객이 고른 향, 사용 장면 중심',metric:'클릭, 상담, 예약'},
-  {question:'행사가 없었어도 다시 왔을 고객은 얼마인가?',a:'초청',b:'초청 대상 중 무작위로 남긴 미초청군',metric:'30일 증분 재방문, 증분 구매. 한 회차는 표본이 작아 여러 회차를 합쳐 판단'}
+  {question:'행사가 없었어도 다시 왔을 고객은 얼마인가?',a:'초청',b:'초청 대상 중 무작위로 남긴 미초청군',metric:'30일 증분 관계 행동률 (초청 전체 기준). 5장의 비교군 설계대로 여러 행사를 합쳐 판단'}
  ],
  sources:[
   '젠틀몬스터, 탬버린즈, 누데이크, 어티슈, 누플랏의 공식 채널을 먼저 확인하고, 기사와 공개 방문 자료를 따로 읽었습니다. 독립 방문 후기가 없는 어티슈와 팝업 사례가 아닌 누플랏은 그 한계를 그대로 적었습니다.',
@@ -142,6 +142,71 @@ export const disclaimer='모든 고객 수와 전환 결과는 계산 구조를 
 
 export function percent(current,base){return base?current/base*100:null;}
 export function validateFinalPlan(plan=finalPlan){const invited=plan.segments.reduce((n,x)=>n+x.invited,0);if(invited!==plan.funnel[0].count)throw Error('세그먼트 초청 합계가 퍼널과 다릅니다.');for(let i=1;i<plan.funnel.length;i++)if(plan.funnel[i].count>plan.funnel[i-1].count)throw Error('퍼널 단계가 역전되었습니다.');if(!plan.status.includes('가상 데이터'))throw Error('가상 데이터 표시가 필요합니다.');return true;}
+
+// 비교군 설계. 초청 수는 현장 수용량에 묶여 있어 그대로 두고, 선정 고객 안에서 미초청군을 무작위로 남깁니다.
+// Z는 양측 5%, 검정력 80%의 정규분포 값(1.959964 + 0.841621)으로 analysis/brief_sample.py와 같습니다.
+export const HOLDOUT_Z=1.959964+0.841621;
+export function holdoutMde(p,nInvite,nHold){return HOLDOUT_Z*Math.sqrt(p*(1-p)*(1/nInvite+1/nHold));}
+export function holdoutRounds(p,nInvite,nHold,target,max=30){for(let k=1;k<=max;k++)if(holdoutMde(p,nInvite*k,nHold*k)<=target)return k;return null;}
+export function holdoutPlan(plan=finalPlan,share=0.3,target=0.05){
+ const groups=plan.segments.filter(x=>x.code!=='CREATOR').map(x=>{const hold=Math.round(x.invited*share/(1-share));return {code:x.code,name:x.name,invited:x.invited,hold,selected:x.invited+hold};});
+ const sum=k=>groups.reduce((n,x)=>n+x[k],0),invited=sum('invited'),hold=sum('hold');
+ const action=plan.funnel.at(-1).count,base=action/plan.funnel[0].count;
+ const mde1=holdoutMde(base,invited,hold);
+ return {share,target,total:plan.funnel[0].count,groups,invited,hold,selected:invited+hold,excluded:plan.segments.filter(x=>x.code==='CREATOR').map(x=>({name:x.name,invited:x.invited})),action,base,mde1,rounds:holdoutRounds(base,invited,hold,target)};
+}
+export const holdout=holdoutPlan();
+const pct1=x=>(x*100).toFixed(1);
+export function holdoutNotes(h=holdout){return [
+ {title:'초청 수는 그대로 두고 선정 범위를 넓힙니다.',body:`초청 ${h.total}명은 현장 수용량으로 정한 수라 줄이지 않습니다. 고객군마다 ${h.share*100}%를 무작위로 미초청군에 남기도록 비교 대상 ${h.groups.length}개 고객군에서 ${h.selected}명을 고르고, 그중 ${h.hold}명은 초청하지 않습니다.`},
+ {title:`${h.excluded.map(x=>x.name).join(', ')} ${h.excluded.reduce((n,x)=>n+x.invited,0)}명은 비교에서 뺍니다.`,body:'콘텐츠 확산이 목적인 고객군이라 재방문을 비교하지 않고 전원 초청합니다.'},
+ {title:'분모는 동의 고객이 아니라 초청 전체입니다.',body:`관계 행동률 34.1%는 동의한 82명 안의 비율입니다. 미초청군에는 참석과 동의 단계가 없어 이 비율과 비교할 수 없습니다. 그래서 30일 안에 상담, 예약, 구매가 있었던 고객 수를 초청군 ${h.invited}명과 미초청군 ${h.hold}명 전체로 나눠 비교합니다. 초청했지만 오지 않은 고객도 초청군에 그대로 둡니다. 가상 퍼널 전체로 계산하면 ${h.action} ÷ ${h.total} = ${pct1(h.base)}%입니다.`},
+ {title:'미초청군에는 연락하지 않습니다.',body:'미초청군의 30일 상담, 예약, 구매는 회원 ID로 CRM 기록에서 찾습니다. 행사 안내를 따로 보내면 비교군이 아니게 됩니다.'},
+ {title:'한 행사로는 판단하지 않습니다.',body:`기준 비율을 ${pct1(h.base)}%로 두면 한 행사에서 잡을 수 있는 최소 차이는 ${pct1(h.mde1)}%p입니다 (양측 5%, 검정력 80%). 목표 차이 ${h.target*100}%p는 제가 정한 설계 값이며, 같은 설계로 ${h.rounds}회 행사를 합쳐야 잡힙니다. 그 전에는 수신 거절과 불만만 매 행사 확인하고, 확대 여부는 ${h.rounds}회를 합친 뒤에 정합니다.`},
+ {title:'기준 비율은 첫 행사에서 다시 잽니다.',body:`${pct1(h.base)}%는 가상 퍼널에서 나온 값입니다. 첫 행사의 미초청군 비율을 확인한 뒤 필요한 행사 수를 다시 계산합니다.`}
+];}
+
+// 판단까지 기다리는 동안의 운영 규칙. 중간 점검은 효과가 아니라 설계 가정, 배정, 보호 지표만 봅니다.
+// 기준선 숫자는 가정값이며, 근거가 있는 것만 출처를 답니다.
+export const holdoutGuardrailSource={label:'Gmail 이메일 발신자 가이드라인',url:'https://support.google.com/a/answer/81126'};
+export function holdoutWaitRules(h=holdout,mid=Math.ceil(h.rounds/2)){
+ const at=k=>({round:k,invited:h.invited*k,hold:h.hold*k,mde:holdoutMde(h.base,h.invited*k,h.hold*k),left:h.rounds-k});
+ const m=at(mid),optOut=3,low=0.08,high=0.15,roundsAt=b=>holdoutRounds(b,h.invited,h.hold,h.target);
+ const groupHold=h.groups.map(x=>x.hold*mid);
+ return {mid:m,progress:Array.from({length:h.rounds},(_,i)=>at(i+1)),optOut,scenarios:[{base:low,rounds:roundsAt(low)},{base:high,rounds:roundsAt(high)}],
+ look:[
+  `미초청군의 실제 관계 행동률. 기준 비율 ${pct1(h.base)}%는 가상 퍼널 값이라 ${mid}회 누적 미초청 ${m.hold}명으로 다시 잽니다.`,
+  `배정이 설계대로 되었는지. 회차마다 고객군별 미초청 인원이 ${h.groups.map(x=>x.hold).join(', ')}명인지와 미초청군에 행사 안내가 나간 건수를 봅니다.`,
+  '아래 중단 조건의 보호 지표 누적. 수신 거부, 불만, 초청받지 못한 고객의 문의를 셉니다.',
+  '30일 결과를 회원 ID로 찾지 못한 고객 수. 초청군과 미초청군 중 한쪽에서만 많이 빠지면 비교가 기웁니다.'
+ ],
+ can:[
+  `기준 비율이 가정과 다르면 필요한 행사 수를 다시 계산합니다. 같은 인원으로 기준 비율이 ${pct1(low)}%면 ${roundsAt(low)}회, ${pct1(high)}%면 ${roundsAt(high)}회가 필요합니다. 두 비율은 계산을 보여 주려고 둔 가정값입니다.`,
+  '보호 지표가 기준선을 넘었으면 다음 회차 발송을 보류하거나 비교를 멈춥니다.',
+  '배정이나 명단 대조에 결함이 있으면 다음 회차 전에 고칩니다.'
+ ],
+ cannot:[
+  `효과가 있다, 없다는 판단. ${mid}회 누적으로 잡을 수 있는 최소 차이는 ${pct1(m.mde)}%p라 목표 ${h.target*100}%p보다 큽니다. 이 시점의 차이로 결론을 내리면 우연한 차이를 효과로 읽을 위험이 커집니다.`,
+  '효과가 커 보여 일찍 끝내는 판단. 그렇게 하려면 중간 점검 횟수와 유의수준 배분을 시작 전에 정해야 하는데, 이 설계는 그 배분을 두지 않았습니다.',
+  '초청군 반응이 좋아 보인다는 이유로 미초청군을 없애거나 비율을 줄이는 판단. 중간 결과를 보고 설계를 바꾸면 합산 결과도 믿기 어려워집니다.',
+  `고객군별 효과 비교. 고객군 하나의 미초청군은 ${mid}회를 합쳐도 ${Math.min(...groupHold)}명에서 ${Math.max(...groupHold)}명이라 고객군끼리 비교할 수 없습니다.`
+ ],
+ guardrails:[
+  {metric:'초청 관련 불만, 스팸 신고',who:'초청군',line:'한 회차 1건',action:'1건이면 연락을 원치 않았는지, 개인정보가 드러났는지, 문구 문제인지 원인을 확인합니다. 2건 이상이면 다음 회차 발송을 보류합니다.',basis:`Gmail 발신자 가이드라인은 스팸 신고율을 0.1% 아래로 두고 0.3%에 이르지 않게 하라고 안내합니다. 초청 ${h.invited}명의 0.3%는 ${(h.invited*0.003).toFixed(2)}명이라 비율 대신 건수로 둡니다. 이메일 기준을 초청 채널에 옮긴 가정값입니다.`,source:true},
+  {metric:'수신 거부',who:'초청군',line:`발송 후 7일 안 ${optOut}명 (초청 ${h.invited}명의 ${pct1(optOut/h.invited)}%)`,action:'넘으면 다음 회차 발송을 보류하고 초청 문구와 선정 기준을 다시 봅니다. 같은 기간 미초청군에서 상시 캠페인으로 생긴 수신 거부와 함께 봅니다.',basis:'근거로 삼을 공개 기준을 찾지 못해 정한 가정값입니다. 첫 행사의 실제 값을 보고 다시 정합니다.'},
+  {metric:'초청받지 못한 고객의 문의, 불만',who:'미초청군',line:'누적 3건',action:'문의마다 개별로 응대하되 배정은 바꾸지 않습니다. 그 고객이 행사에 오면 기록하고 미초청군으로 분석합니다. 누적 3건이면 미초청 비율과 선정 안내 방식을 다시 검토합니다.',basis:'가정값입니다. VIP가 초청에서 빠졌다고 느끼는 것이 비교군의 가장 큰 비용이라 따로 셉니다.'},
+  {metric:'미초청군 연락 누출',who:'미초청군',line:'0건',action:'1건이라도 나오면 다음 회차 전에 발송 명단과 미초청 명단의 대조 절차를 고칩니다. 누출된 고객도 미초청군에 그대로 두고 건수를 보고합니다.',basis:'설계 조건입니다. 미초청군에 안내가 가면 비교군이 아니게 됩니다.'}
+ ],
+ stop:'보류가 두 회차 연속이면 비교를 멈춥니다. 그때까지 모은 회차는 결론 없이 표본과 보호 지표만 보고합니다.',
+ example:`${h.rounds}회 중 ${mid}회 완료. 누적 초청 ${m.invited}명, 미초청 ${m.hold}명. 남은 ${m.left}회. 보호 지표는 기준선 안. 효과 판단은 ${h.rounds}회 뒤.`,
+ reporting:[
+  '매 회차 보고는 완료 회차, 누적 초청, 누적 미초청, 남은 회차, 보호 지표 상태의 다섯 가지로 합니다.',
+  `두 군의 관계 행동률 차이는 ${h.rounds}회가 끝나기 전에는 보고서에 넣지 않습니다. 분석 담당자는 데이터 수집 점검을 위해 볼 수 있지만 판단 자료로 공유하지 않습니다.`,
+  `매출 질문에는 초청 수가 줄지 않았다는 점으로 답합니다. 초청 ${h.total}명은 현장 수용량으로 정한 수이고, 미초청군 ${h.hold}명은 그 위에 더 고른 고객입니다. 수용량 때문에 어차피 초청하지 못했을 고객이라 행사 매출 기회는 그대로입니다.`,
+  '초청군의 참석, 동의, 구매는 운영 지표로 매 회차 그대로 보고합니다. 다만 이 숫자를 행사 덕분에 늘어난 매출이라고 부르지 않습니다.'
+ ]};
+}
+export const holdoutWait=holdoutWaitRules();
 
 const row=cells=>`| ${cells.join(' | ')} |`;
 const tbl=(head,rows)=>[row(head),row(head.map(()=>'---')),...rows.map(row)].join('\n');
@@ -190,6 +255,44 @@ ${tbl(['지표','가상 결과','가상 목표','계산','보려는 것'],p.kpis
 ### 가상 결과 퍼널
 
 ${tbl(['단계','가상 인원','분모','기준'],p.funnel.map(x=>[x.stage,x.count+'명',x.denominator,x.rule]))}
+
+### 비교군 설계
+
+${tbl(['고객군','선정','초청','미초청'],[...holdout.groups.map(x=>[x.name,x.selected+'명',x.invited+'명',x.hold+'명']),['합계',holdout.selected+'명',holdout.invited+'명',holdout.hold+'명']])}
+
+${holdoutNotes().map(x=>`- **${x.title}** ${x.body}`).join('\n')}
+
+### 판단까지 기다리는 동안의 운영 규칙
+
+목표 차이를 잡으려면 ${holdout.rounds}회 행사가 필요합니다. 그동안 무엇을 보고, 무엇을 멈추고, 어떻게 보고하는지 미리 정해 둡니다.
+
+#### ${holdoutWait.mid.round}회차 중간 점검
+
+볼 지표
+
+${holdoutWait.look.map(x=>`- ${x}`).join('\n')}
+
+내릴 수 있는 판단
+
+${holdoutWait.can.map(x=>`- ${x}`).join('\n')}
+
+내릴 수 없는 판단
+
+${holdoutWait.cannot.map(x=>`- ${x}`).join('\n')}
+
+#### 중단 조건
+
+${tbl(['보호 지표','대상','기준선','넘으면','기준선의 근거'],holdoutWait.guardrails.map(x=>[x.metric,x.who,x.line,x.action,x.basis]))}
+
+${holdoutWait.stop} 기준선은 모두 가정값이며 첫 행사의 실제 값을 본 뒤 다시 정합니다. 스팸 신고 기준의 출처는 [${holdoutGuardrailSource.label}](${holdoutGuardrailSource.url})입니다.
+
+#### 기다리는 동안의 보고
+
+${tbl(['회차','누적 초청','누적 미초청','그 시점에 잡을 수 있는 최소 차이','남은 회차'],holdoutWait.progress.map(x=>[x.round+'회',x.invited+'명',x.hold+'명',pct1(x.mde)+'%p',x.left+'회']))}
+
+${holdoutWait.reporting.map(x=>`- ${x}`).join('\n')}
+
+보고 예시: ${holdoutWait.example}
 
 ## 다음에 확인할 네 가지
 

@@ -1,0 +1,41 @@
+{
+  "n_round": 666,
+  "base": {
+    "winter": 0.3308,
+    "autumn": 0.4958
+  },
+  "p_plan": 0.4958,
+  "alpha": 0.05,
+  "power": 0.8,
+  "target": 0.05,
+  "half_visit": 0.0383,
+  "by_holdout": [
+    {
+      "holdout": 0.2,
+      "n_send": 533,
+      "n_holdout": 133,
+      "mde_1_winter": 0.1278,
+      "mde_1_autumn": 0.1358,
+      "rounds_target": 8,
+      "rounds_half_visit": 13
+    },
+    {
+      "holdout": 0.3,
+      "n_send": 466,
+      "n_holdout": 200,
+      "mde_1_winter": 0.1114,
+      "mde_1_autumn": 0.1184,
+      "rounds_target": 6,
+      "rounds_half_visit": 10
+    },
+    {
+      "holdout": 0.5,
+      "n_send": 333,
+      "n_holdout": 333,
+      "mde_1_winter": 0.1022,
+      "mde_1_autumn": 0.1086,
+      "rounds_target": 5,
+      "rounds_half_visit": 9
+    }
+  ]
+}

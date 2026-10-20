@@ -1,0 +1,853 @@
+{
+ "meta": {
+  "dataset": "Criteo Uplift Prediction Dataset v2.1 (Diemert et al., AdKDD 2018)",
+  "source": "https://github.com/jszymon/uplift_sklearn_data/releases/download/Criteo/criteo-research-uplift-v2.1.csv.gz",
+  "official_page": "https://ailab.criteo.com/criteo-uplift-prediction-dataset/",
+  "license": "CC BY-NC-SA 4.0",
+  "sha256": "2716e1bf0fd157a93b5bf86924d9088419dfbac2022c6cd90030220634f616dc",
+  "rows": 13979592,
+  "channel": "디스플레이 광고 (처치군은 광고 노출 대상, 대조군은 광고 제외)",
+  "currency": "USD",
+  "note": "공개 실험 데이터로 사례 A의 결론을 다시 확인하기 위한 분석이다. 금액 정보가 없어 이익 계산은 모두 가정값에 기댄다."
+ },
+ "official": {
+  "rows": 13979592,
+  "treatment_ratio": 0.85,
+  "visit": 0.046992,
+  "conversion": 0.00292
+ },
+ "observed": {
+  "treatment_ratio": 0.85,
+  "visit": 0.046992,
+  "conversion": 0.002917
+ },
+ "assignment": {
+  "treated": 11882655,
+  "control": 2096937
+ },
+ "ate": {
+  "visit": {
+   "treated": 0.048543,
+   "control": 0.038201,
+   "diff": 0.010342,
+   "lo": 0.010056,
+   "hi": 0.010629,
+   "p": 0.0
+  },
+  "conversion": {
+   "treated": 0.003089,
+   "control": 0.001938,
+   "diff": 0.001152,
+   "lo": 0.001085,
+   "hi": 0.001219,
+   "p": 0.0
+  },
+  "exposure": {
+   "treated": 0.036037,
+   "control": 0.0,
+   "diff": 0.036037,
+   "lo": 0.035931,
+   "hi": 0.036143,
+   "p": 0.0
+  }
+ },
+ "sample": {
+  "method": "처치, 방문, 전환 여덟 층에서 같은 비율로 뽑은 층화 표본",
+  "frac": 0.1,
+  "strata_full": [
+   2016832,
+   0,
+   76042,
+   4063,
+   11305831,
+   0,
+   540113,
+   36711
+  ],
+  "strata_sample": [
+   201683,
+   0,
+   7604,
+   406,
+   1130583,
+   0,
+   54011,
+   3671
+  ]
+ },
+ "assumptions": {
+  "currency": "USD",
+  "order_value": 50.0,
+  "margin": 0.3,
+  "cost_per_exposed": 0.1,
+  "base_customers": 100000
+ },
+ "uplift": {
+  "outcome_for_training": "visit",
+  "split": {
+   "dev": 1397958,
+   "eval": 12581634,
+   "folds": 5,
+   "seed": 42,
+   "frac": 0.1
+  },
+  "dev_qini": {
+   "two_model_logit": 0.002952,
+   "two_model_hgb": 0.00289,
+   "class_transform_hgb": 0.0023
+  },
+  "chosen": "two_model_logit",
+  "test": {
+   "qini_visit": 0.003111,
+   "qini_visit_lo": 0.003004,
+   "qini_visit_hi": 0.00322,
+   "qini_conversion": 0.000322,
+   "qini_conversion_lo": 0.000299,
+   "qini_conversion_hi": 0.000352,
+   "incremental_visits_total": 110603.4,
+   "share_of_incremental_visits_top30": 0.847,
+   "share_of_incremental_visits_top50": 0.924,
+   "curve": [
+    {
+     "frac": 0.0,
+     "model": 0.0,
+     "random": 0.0
+    },
+    {
+     "frac": 0.05,
+     "model": 52192.6,
+     "random": 5530.2
+    },
+    {
+     "frac": 0.1,
+     "model": 70215.0,
+     "random": 11060.3
+    },
+    {
+     "frac": 0.15,
+     "model": 78114.3,
+     "random": 16590.5
+    },
+    {
+     "frac": 0.2,
+     "model": 84416.5,
+     "random": 22120.7
+    },
+    {
+     "frac": 0.25,
+     "model": 89969.7,
+     "random": 27650.8
+    },
+    {
+     "frac": 0.3,
+     "model": 93715.2,
+     "random": 33181.0
+    },
+    {
+     "frac": 0.35,
+     "model": 96797.5,
+     "random": 38711.2
+    },
+    {
+     "frac": 0.4,
+     "model": 99034.9,
+     "random": 44241.4
+    },
+    {
+     "frac": 0.45,
+     "model": 100834.4,
+     "random": 49771.5
+    },
+    {
+     "frac": 0.5,
+     "model": 102148.7,
+     "random": 55301.7
+    },
+    {
+     "frac": 0.55,
+     "model": 103668.1,
+     "random": 60831.9
+    },
+    {
+     "frac": 0.6,
+     "model": 104881.4,
+     "random": 66362.0
+    },
+    {
+     "frac": 0.65,
+     "model": 105621.3,
+     "random": 71892.2
+    },
+    {
+     "frac": 0.7,
+     "model": 106333.6,
+     "random": 77422.4
+    },
+    {
+     "frac": 0.75,
+     "model": 107009.1,
+     "random": 82952.5
+    },
+    {
+     "frac": 0.8,
+     "model": 107404.7,
+     "random": 88482.7
+    },
+    {
+     "frac": 0.85,
+     "model": 107608.7,
+     "random": 94012.9
+    },
+    {
+     "frac": 0.9,
+     "model": 107873.3,
+     "random": 99543.1
+    },
+    {
+     "frac": 0.95,
+     "model": 108435.3,
+     "random": 105073.2
+    },
+    {
+     "frac": 1.0,
+     "model": 110603.4,
+     "random": 110603.4
+    }
+   ]
+  }
+ },
+ "groups": [
+  {
+   "group": 1,
+   "label": "상위 0-20%",
+   "n_treated": 2158745,
+   "n_control": 357582,
+   "visit_sum_t": 365321,
+   "visit_sum_c": 46530,
+   "conversion_sum_t": 23717,
+   "conversion_sum_c": 2329,
+   "exposure_sum_t": 307406,
+   "exposure_sum_c": 0,
+   "visit_diff": {
+    "treated": 0.169228,
+    "control": 0.130124,
+    "diff": 0.039104,
+    "lo": 0.037894,
+    "hi": 0.040315,
+    "p": 0.0
+   },
+   "conversion_diff": {
+    "treated": 0.010986,
+    "control": 0.006513,
+    "diff": 0.004473,
+    "lo": 0.004175,
+    "hi": 0.004771,
+    "p": 0.0
+   },
+   "cum_conversion_diff": {
+    "treated": 0.010986,
+    "control": 0.006513,
+    "diff": 0.004473,
+    "lo": 0.004175,
+    "hi": 0.004771,
+    "p": 0.0
+   }
+  },
+  {
+   "group": 2,
+   "label": "상위 20-40%",
+   "n_treated": 2133700,
+   "n_control": 382627,
+   "visit_sum_t": 43048,
+   "visit_sum_c": 6813,
+   "conversion_sum_t": 1699,
+   "conversion_sum_c": 204,
+   "exposure_sum_t": 47361,
+   "exposure_sum_c": 0,
+   "visit_diff": {
+    "treated": 0.020175,
+    "control": 0.017806,
+    "diff": 0.002369,
+    "lo": 0.00191,
+    "hi": 0.002829,
+    "p": 0.0
+   },
+   "conversion_diff": {
+    "treated": 0.000796,
+    "control": 0.000533,
+    "diff": 0.000263,
+    "lo": 0.000181,
+    "hi": 0.000345,
+    "p": 0.0
+   },
+   "cum_conversion_diff": {
+    "treated": 0.005921,
+    "control": 0.003422,
+    "diff": 0.002499,
+    "lo": 0.002348,
+    "hi": 0.002651,
+    "p": 0.0
+   }
+  },
+  {
+   "group": 3,
+   "label": "상위 40-60%",
+   "n_treated": 2132819,
+   "n_control": 383507,
+   "visit_sum_t": 15158,
+   "visit_sum_c": 2385,
+   "conversion_sum_t": 637,
+   "conversion_sum_c": 80,
+   "exposure_sum_t": 13403,
+   "exposure_sum_c": 0,
+   "visit_diff": {
+    "treated": 0.007107,
+    "control": 0.006219,
+    "diff": 0.000888,
+    "lo": 0.000615,
+    "hi": 0.001161,
+    "p": 0.0
+   },
+   "conversion_diff": {
+    "treated": 0.000299,
+    "control": 0.000209,
+    "diff": 9e-05,
+    "lo": 3.9e-05,
+    "hi": 0.000141,
+    "p": 0.000573
+   },
+   "cum_conversion_diff": {
+    "treated": 0.004055,
+    "control": 0.002325,
+    "diff": 0.001729,
+    "lo": 0.001628,
+    "hi": 0.001831,
+    "p": 0.0
+   }
+  },
+  {
+   "group": 4,
+   "label": "상위 60-80%",
+   "n_treated": 2134247,
+   "n_control": 382080,
+   "visit_sum_t": 8484,
+   "visit_sum_c": 1377,
+   "conversion_sum_t": 329,
+   "conversion_sum_c": 40,
+   "exposure_sum_t": 6684,
+   "exposure_sum_c": 0,
+   "visit_diff": {
+    "treated": 0.003975,
+    "control": 0.003604,
+    "diff": 0.000371,
+    "lo": 0.000163,
+    "hi": 0.000579,
+    "p": 0.000467
+   },
+   "conversion_diff": {
+    "treated": 0.000154,
+    "control": 0.000105,
+    "diff": 4.9e-05,
+    "lo": 1.3e-05,
+    "hi": 8.6e-05,
+    "p": 0.007851
+   },
+   "cum_conversion_diff": {
+    "treated": 0.003082,
+    "control": 0.001762,
+    "diff": 0.00132,
+    "lo": 0.001244,
+    "hi": 0.001397,
+    "p": 0.0
+   }
+  },
+  {
+   "group": 5,
+   "label": "상위 80-100%",
+   "n_treated": 2134879,
+   "n_control": 381448,
+   "visit_sum_t": 87131,
+   "visit_sum_c": 14990,
+   "conversion_sum_t": 6658,
+   "conversion_sum_c": 1004,
+   "exposure_sum_t": 10565,
+   "exposure_sum_c": 0,
+   "visit_diff": {
+    "treated": 0.040813,
+    "control": 0.039298,
+    "diff": 0.001515,
+    "lo": 0.000844,
+    "hi": 0.002187,
+    "p": 1e-05
+   },
+   "conversion_diff": {
+    "treated": 0.003119,
+    "control": 0.002632,
+    "diff": 0.000487,
+    "lo": 0.000308,
+    "hi": 0.000666,
+    "p": 0.0
+   },
+   "cum_conversion_diff": {
+    "treated": 0.003089,
+    "control": 0.001938,
+    "diff": 0.001152,
+    "lo": 0.001081,
+    "hi": 0.001223,
+    "p": 0.0
+   }
+  }
+ ],
+ "budget": {
+  "by_k": [
+   {
+    "k_pct": 0,
+    "n_target": 0,
+    "inc_conv_per": 0.0,
+    "exposure_t": 0.0,
+    "profit_per": 0.0,
+    "profit_total": 0.0,
+    "profit_total_lo": 0.0,
+    "profit_total_hi": 0.0
+   },
+   {
+    "k_pct": 20,
+    "n_target": 20000,
+    "inc_conv_per": 0.004473,
+    "exposure_t": 0.1424,
+    "profit_per": 0.052859,
+    "profit_total": 1057.2,
+    "profit_total_lo": 967.7,
+    "profit_total_hi": 1146.5
+   },
+   {
+    "k_pct": 40,
+    "n_target": 40000,
+    "inc_conv_per": 0.002499,
+    "exposure_t": 0.082649,
+    "profit_per": 0.029221,
+    "profit_total": 1168.9,
+    "profit_total_lo": 1078.2,
+    "profit_total_hi": 1260.0
+   },
+   {
+    "k_pct": 60,
+    "n_target": 60000,
+    "inc_conv_per": 0.001729,
+    "exposure_t": 0.0573,
+    "profit_per": 0.020212,
+    "profit_total": 1212.7,
+    "profit_total_lo": 1121.4,
+    "profit_total_hi": 1304.1
+   },
+   {
+    "k_pct": 80,
+    "n_target": 80000,
+    "inc_conv_per": 0.00132,
+    "exposure_t": 0.043794,
+    "profit_per": 0.015426,
+    "profit_total": 1234.0,
+    "profit_total_lo": 1142.4,
+    "profit_total_hi": 1326.0
+   },
+   {
+    "k_pct": 100,
+    "n_target": 100000,
+    "inc_conv_per": 0.001152,
+    "exposure_t": 0.036039,
+    "profit_per": 0.013672,
+    "profit_total": 1367.2,
+    "profit_total_lo": 1261.1,
+    "profit_total_hi": 1474.1
+   }
+  ],
+  "best_k_pct": 100,
+  "profit_best": 1367.2,
+  "profit_all": 1367.2
+ },
+ "sensitivity": [
+  {
+   "order_value": 25.0,
+   "cost_per_exposed": 0.05,
+   "best_k_pct": 100,
+   "profit_best": 683.6,
+   "profit_all": 683.6
+  },
+  {
+   "order_value": 25.0,
+   "cost_per_exposed": 0.1,
+   "best_k_pct": 100,
+   "profit_best": 503.4,
+   "profit_all": 503.4
+  },
+  {
+   "order_value": 25.0,
+   "cost_per_exposed": 0.25,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -37.2
+  },
+  {
+   "order_value": 25.0,
+   "cost_per_exposed": 0.5,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -938.2
+  },
+  {
+   "order_value": 25.0,
+   "cost_per_exposed": 1.0,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -2740.1
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_exposed": 0.05,
+   "best_k_pct": 100,
+   "profit_best": 1547.4,
+   "profit_all": 1547.4
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_exposed": 0.1,
+   "best_k_pct": 100,
+   "profit_best": 1367.2,
+   "profit_all": 1367.2
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_exposed": 0.25,
+   "best_k_pct": 100,
+   "profit_best": 826.6,
+   "profit_all": 826.6
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_exposed": 0.5,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -74.4
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_exposed": 1.0,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -1876.4
+  },
+  {
+   "order_value": 100.0,
+   "cost_per_exposed": 0.05,
+   "best_k_pct": 100,
+   "profit_best": 3275.0,
+   "profit_all": 3275.0
+  },
+  {
+   "order_value": 100.0,
+   "cost_per_exposed": 0.1,
+   "best_k_pct": 100,
+   "profit_best": 3094.8,
+   "profit_all": 3094.8
+  },
+  {
+   "order_value": 100.0,
+   "cost_per_exposed": 0.25,
+   "best_k_pct": 100,
+   "profit_best": 2554.2,
+   "profit_all": 2554.2
+  },
+  {
+   "order_value": 100.0,
+   "cost_per_exposed": 0.5,
+   "best_k_pct": 100,
+   "profit_best": 1653.2,
+   "profit_all": 1653.2
+  },
+  {
+   "order_value": 100.0,
+   "cost_per_exposed": 1.0,
+   "best_k_pct": 0,
+   "profit_best": 0.0,
+   "profit_all": -148.8
+  }
+ ],
+ "sensitivity_per_target": [
+  {
+   "order_value": 50.0,
+   "cost_per_target": 0.005,
+   "by_k": [
+    {
+     "k_pct": 0,
+     "n_target": 0,
+     "inc_conv_per": 0.0,
+     "exposure_t": 0.0,
+     "profit_per": 0.0,
+     "profit_total": 0.0,
+     "profit_total_lo": 0.0,
+     "profit_total_hi": 0.0
+    },
+    {
+     "k_pct": 20,
+     "n_target": 20000,
+     "inc_conv_per": 0.004473,
+     "exposure_t": 0.1424,
+     "profit_per": 0.062099,
+     "profit_total": 1242.0,
+     "profit_total_lo": 1152.5,
+     "profit_total_hi": 1331.3
+    },
+    {
+     "k_pct": 40,
+     "n_target": 40000,
+     "inc_conv_per": 0.002499,
+     "exposure_t": 0.082649,
+     "profit_per": 0.032486,
+     "profit_total": 1299.5,
+     "profit_total_lo": 1208.8,
+     "profit_total_hi": 1390.6
+    },
+    {
+     "k_pct": 60,
+     "n_target": 60000,
+     "inc_conv_per": 0.001729,
+     "exposure_t": 0.0573,
+     "profit_per": 0.020942,
+     "profit_total": 1256.5,
+     "profit_total_lo": 1165.2,
+     "profit_total_hi": 1347.9
+    },
+    {
+     "k_pct": 80,
+     "n_target": 80000,
+     "inc_conv_per": 0.00132,
+     "exposure_t": 0.043794,
+     "profit_per": 0.014805,
+     "profit_total": 1184.4,
+     "profit_total_lo": 1092.8,
+     "profit_total_hi": 1276.4
+    },
+    {
+     "k_pct": 100,
+     "n_target": 100000,
+     "inc_conv_per": 0.001152,
+     "exposure_t": 0.036039,
+     "profit_per": 0.012276,
+     "profit_total": 1227.6,
+     "profit_total_lo": 1121.5,
+     "profit_total_hi": 1334.5
+    }
+   ],
+   "best_k_pct": 40,
+   "profit_best": 1299.5,
+   "profit_all": 1227.6
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_target": 0.01,
+   "by_k": [
+    {
+     "k_pct": 0,
+     "n_target": 0,
+     "inc_conv_per": 0.0,
+     "exposure_t": 0.0,
+     "profit_per": 0.0,
+     "profit_total": 0.0,
+     "profit_total_lo": 0.0,
+     "profit_total_hi": 0.0
+    },
+    {
+     "k_pct": 20,
+     "n_target": 20000,
+     "inc_conv_per": 0.004473,
+     "exposure_t": 0.1424,
+     "profit_per": 0.057099,
+     "profit_total": 1142.0,
+     "profit_total_lo": 1052.5,
+     "profit_total_hi": 1231.3
+    },
+    {
+     "k_pct": 40,
+     "n_target": 40000,
+     "inc_conv_per": 0.002499,
+     "exposure_t": 0.082649,
+     "profit_per": 0.027486,
+     "profit_total": 1099.5,
+     "profit_total_lo": 1008.8,
+     "profit_total_hi": 1190.6
+    },
+    {
+     "k_pct": 60,
+     "n_target": 60000,
+     "inc_conv_per": 0.001729,
+     "exposure_t": 0.0573,
+     "profit_per": 0.015942,
+     "profit_total": 956.5,
+     "profit_total_lo": 865.2,
+     "profit_total_hi": 1047.9
+    },
+    {
+     "k_pct": 80,
+     "n_target": 80000,
+     "inc_conv_per": 0.00132,
+     "exposure_t": 0.043794,
+     "profit_per": 0.009805,
+     "profit_total": 784.4,
+     "profit_total_lo": 692.8,
+     "profit_total_hi": 876.4
+    },
+    {
+     "k_pct": 100,
+     "n_target": 100000,
+     "inc_conv_per": 0.001152,
+     "exposure_t": 0.036039,
+     "profit_per": 0.007276,
+     "profit_total": 727.6,
+     "profit_total_lo": 621.5,
+     "profit_total_hi": 834.5
+    }
+   ],
+   "best_k_pct": 20,
+   "profit_best": 1142.0,
+   "profit_all": 727.6
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_target": 0.02,
+   "by_k": [
+    {
+     "k_pct": 0,
+     "n_target": 0,
+     "inc_conv_per": 0.0,
+     "exposure_t": 0.0,
+     "profit_per": 0.0,
+     "profit_total": 0.0,
+     "profit_total_lo": 0.0,
+     "profit_total_hi": 0.0
+    },
+    {
+     "k_pct": 20,
+     "n_target": 20000,
+     "inc_conv_per": 0.004473,
+     "exposure_t": 0.1424,
+     "profit_per": 0.047099,
+     "profit_total": 942.0,
+     "profit_total_lo": 852.5,
+     "profit_total_hi": 1031.3
+    },
+    {
+     "k_pct": 40,
+     "n_target": 40000,
+     "inc_conv_per": 0.002499,
+     "exposure_t": 0.082649,
+     "profit_per": 0.017486,
+     "profit_total": 699.5,
+     "profit_total_lo": 608.8,
+     "profit_total_hi": 790.6
+    },
+    {
+     "k_pct": 60,
+     "n_target": 60000,
+     "inc_conv_per": 0.001729,
+     "exposure_t": 0.0573,
+     "profit_per": 0.005942,
+     "profit_total": 356.5,
+     "profit_total_lo": 265.2,
+     "profit_total_hi": 447.9
+    },
+    {
+     "k_pct": 80,
+     "n_target": 80000,
+     "inc_conv_per": 0.00132,
+     "exposure_t": 0.043794,
+     "profit_per": -0.000195,
+     "profit_total": -15.6,
+     "profit_total_lo": -107.2,
+     "profit_total_hi": 76.4
+    },
+    {
+     "k_pct": 100,
+     "n_target": 100000,
+     "inc_conv_per": 0.001152,
+     "exposure_t": 0.036039,
+     "profit_per": -0.002724,
+     "profit_total": -272.4,
+     "profit_total_lo": -378.5,
+     "profit_total_hi": -165.5
+    }
+   ],
+   "best_k_pct": 20,
+   "profit_best": 942.0,
+   "profit_all": -272.4
+  },
+  {
+   "order_value": 50.0,
+   "cost_per_target": 0.05,
+   "by_k": [
+    {
+     "k_pct": 0,
+     "n_target": 0,
+     "inc_conv_per": 0.0,
+     "exposure_t": 0.0,
+     "profit_per": 0.0,
+     "profit_total": 0.0,
+     "profit_total_lo": 0.0,
+     "profit_total_hi": 0.0
+    },
+    {
+     "k_pct": 20,
+     "n_target": 20000,
+     "inc_conv_per": 0.004473,
+     "exposure_t": 0.1424,
+     "profit_per": 0.017099,
+     "profit_total": 342.0,
+     "profit_total_lo": 252.5,
+     "profit_total_hi": 431.3
+    },
+    {
+     "k_pct": 40,
+     "n_target": 40000,
+     "inc_conv_per": 0.002499,
+     "exposure_t": 0.082649,
+     "profit_per": -0.012514,
+     "profit_total": -500.5,
+     "profit_total_lo": -591.2,
+     "profit_total_hi": -409.4
+    },
+    {
+     "k_pct": 60,
+     "n_target": 60000,
+     "inc_conv_per": 0.001729,
+     "exposure_t": 0.0573,
+     "profit_per": -0.024058,
+     "profit_total": -1443.5,
+     "profit_total_lo": -1534.8,
+     "profit_total_hi": -1352.1
+    },
+    {
+     "k_pct": 80,
+     "n_target": 80000,
+     "inc_conv_per": 0.00132,
+     "exposure_t": 0.043794,
+     "profit_per": -0.030195,
+     "profit_total": -2415.6,
+     "profit_total_lo": -2507.2,
+     "profit_total_hi": -2323.6
+    },
+    {
+     "k_pct": 100,
+     "n_target": 100000,
+     "inc_conv_per": 0.001152,
+     "exposure_t": 0.036039,
+     "profit_per": -0.032724,
+     "profit_total": -3272.4,
+     "profit_total_lo": -3378.5,
+     "profit_total_hi": -3165.5
+    }
+   ],
+   "best_k_pct": 20,
+   "profit_best": 342.0,
+   "profit_all": -3272.4
+  }
+ ]
+}

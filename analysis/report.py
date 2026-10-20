@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULT = ROOT / "analysis/results/hillstrom.json"
+CRITEO = ROOT / "analysis/results/criteo.json"
 DOC = ROOT / "docs/CAMPAIGN-MEASUREMENT.md"
 README = ROOT / "README.md"
 WEB = ROOT / "public/measurement-data.js"
@@ -266,16 +267,274 @@ def doc(r: dict) -> str:
         "",
         "매출 기준으로 효과를 확정하려면 방문 기준보다 열 배 넘는 고객이 필요합니다. 그래서 다음 캠페인은 방문률(또는 구매율)을 판단 지표로 두고, 매출은 여러 회차를 모아 확인하는 보조 지표로 둡니다. 홀드아웃 비율이 작을수록 필요한 전체 고객 수가 커지므로, 고객 수가 적은 캠페인에서는 홀드아웃을 20% 이상으로 둡니다.",
         "",
-        "## 7. 한계",
+        *criteo_section(r),
+        "## 8. 한계",
         "",
         "- 2008년 미국 온라인 소매업체 데이터이고 관찰 기간이 2주입니다. 지금의 채널 환경이나 다른 업종에 그대로 옮길 수 없습니다.",
         "- 수신거부, 스팸 신고, 장기 이탈은 기록되어 있지 않습니다. 보호 지표(수신거부율)는 이 데이터에서 `미측정`입니다.",
         "- 업리프트 모델은 방문으로 학습했습니다. 방문을 늘리는 고객과 매출을 늘리는 고객이 다를 수 있습니다.",
         "- 마진율, 발송 비용, 쿠폰율은 가정값입니다.",
         "- 고객군별 결과는 여러 비교를 동시에 한 결과라 우연한 차이가 섞여 있을 수 있습니다.",
+        *(["- 7장의 Criteo 분석은 금액이 없어 이익이 모두 가정값에 기대고, 고객 특성이 익명화되어 어떤 고객이 반응하는지는 해석할 수 없습니다. 모델은 10% 층화 표본으로만 학습했습니다."]
+          if CRITEO.exists() else []),
         "",
     ]
     return "\n".join(L)
+
+
+def pp3(x) -> str:
+    return f"{x * 100:+.3f}%p"
+
+
+def pct3(x) -> str:
+    return f"{x * 100:.3f}%"
+
+
+def ci_pp3(d) -> str:
+    return f"{pp3(d['diff'])} ({d['lo'] * 100:.3f} ~ {d['hi'] * 100:.3f})"
+
+
+def yes(x: bool) -> str:
+    return "예" if x else "아니오"
+
+
+def criteo_facts(r: dict, c: dict) -> dict:
+    """사례 A와 Criteo를 같은 기준으로 비교하는 재료. 문서의 '같다', '다르다'는 이 값으로 정한다."""
+    ratio = {k: r["arms"][k]["ate"]["conversion"]["diff"] / r["arms"][k]["ate"]["visit"]["diff"] for k in ARM_KO}
+    ratio["criteo"] = c["ate"]["conversion"]["diff"] / c["ate"]["visit"]["diff"]
+    u, b = c["uplift"]["test"], c["budget"]
+    best = next(x for x in b["by_k"] if x["k_pct"] == b["best_k_pct"])
+    wb = r["arms"]["womens"]["budget"]
+    wbest = next(x for x in wb["by_k"] if x["k_pct"] == wb["best_k_pct"])
+    g = c["groups"]
+    top = g[: len(g) // 5]  # 점수 상위 20%
+    rest = g[len(g) // 5:]
+    pts = [s for s in c.get("sensitivity_per_target", []) if 0 < s["best_k_pct"] < 100
+           and s["profit_all"] < next(x for x in s["by_k"] if x["k_pct"] == s["best_k_pct"])["profit_total_lo"]]
+    return {
+        "top_exposure_share": sum(x["exposure_sum_t"] for x in top) / sum(x["exposure_sum_t"] for x in g),
+        "rest_exposure": sum(x["exposure_sum_t"] for x in rest) / sum(x["n_treated"] for x in rest),
+        "per_target_cut": min(pts, key=lambda s: s["cost_per_target"]) if pts else None,
+        "w_sure": 0 < wb["best_k_pct"] < 100 and wb["profit_all"] < wbest["profit_total_lo"],
+        "ratio": ratio,
+        "small_purchase": all(v < 0.2 for v in ratio.values()),
+        "beats_random_visit": u["qini_visit_lo"] > 0,
+        "beats_random_conv": u["qini_conversion_lo"] > 0,
+        "best": best,
+        "cut_pays": 0 < b["best_k_pct"] < 100 and b["profit_best"] > b["profit_all"],
+        "cut_sure": 0 < b["best_k_pct"] < 100 and b["profit_all"] < best["profit_total_lo"],
+    }
+
+
+def criteo_interpret(r: dict, c: dict, f: dict) -> list:
+    b, m, w = c["budget"], r["arms"]["mens"], r["arms"]["womens"]
+    out = []
+    if f["beats_random_visit"]:
+        out.append("- **순위:** 업리프트 순위는 학습에 쓰지 않은 고객에서도 무작위 선정보다 방문 증분을 더 많이 모읍니다. 효과가 고객마다 다르다는 점은 사례 A 여성용 메일과 같습니다.")
+    else:
+        out.append("- **순위:** 업리프트 순위가 무작위 선정보다 낫다고 말할 수 없습니다. 사례 A 남성용 메일과 같은 결과입니다.")
+    if f["beats_random_conv"]:
+        out.append("- **전환으로 평가해도:** 방문으로 학습한 순위가 전환 증분도 무작위보다 많이 모읍니다.")
+        g = c["groups"]
+        if g[-1]["conversion_diff"]["lo"] > g[len(g) // 2]["conversion_diff"]["hi"]:
+            out.append(f"- **순서가 끝까지 맞지는 않습니다:** 점수 하위 20%의 전환율 증분({pp3(g[-1]['conversion_diff']['diff'])})이 중간 분위({pp3(g[len(g) // 2]['conversion_diff']['diff'])})보다 큽니다. 방문으로 학습한 점수는 상위 고객을 고르는 데는 맞지만, 하위 고객의 전환 효과 순서까지 맞히지는 못합니다.")
+    else:
+        out.append("- **전환으로 평가하면:** 방문으로 학습한 순위가 전환 증분까지 무작위보다 많이 모은다고는 말할 수 없습니다. 방문을 늘리는 고객과 구매를 늘리는 고객이 같다고 가정하면 안 된다는 뜻입니다.")
+    if f["cut_pays"] and f["cut_sure"]:
+        out.append(f"- **이익:** 기본 가정에서 {scope(b['best_k_pct'])}만 대상으로 할 때 이익이 가장 크고, 전원 대상 이익은 그 95% 범위 아래에 있습니다. 대상을 자르면 이익이 난다는 사례 A 여성용 메일의 결론과 같습니다.")
+    elif f["cut_pays"]:
+        out.append(f"- **이익:** 기본 가정에서 {scope(b['best_k_pct'])}만 대상으로 할 때 이익이 가장 큽니다 ({usd0(b['profit_best'])}, 전원 대상 {usd0(b['profit_all'])}). 다만 전원 대상 이익이 상위 {b['best_k_pct']}%의 95% 범위 ({usd0(f['best']['profit_total_lo'])} ~ {usd0(f['best']['profit_total_hi'])}) 안에 있어, 자르는 쪽이 확실히 낫다고는 말할 수 없습니다. 사례 A 여성용 메일에서 하위 고객을 빼는 결정을 미룬 것과 같은 상황입니다.")
+    elif b["best_k_pct"] == 100 and f["beats_random_visit"]:
+        out.append(f"- **이익:** 순위는 잘 맞는데도 기본 가정에서는 전원을 대상으로 할 때 이익이 가장 큽니다. 사례 A 여성용 메일({scope(w['budget']['best_k_pct'])})과 다른 결과입니다. "
+                   f"광고 비용은 실제로 노출된 고객에게만 드는데, 처치군 노출의 {f['top_exposure_share'] * 100:.0f}%가 점수 상위 20%에 몰려 있고 "
+                   f"하위 80%의 노출률은 {f['rest_exposure'] * 100:.2f}%에 그칩니다. 하위 고객은 효과가 작아도 비용이 거의 들지 않아 빼도 아낄 것이 없습니다.")
+        if f["per_target_cut"]:
+            pt = f["per_target_cut"]
+            out.append(f"- **비용을 대상 1명마다 매기면:** 이메일처럼 노출과 상관없이 대상 1명당 ${pt['cost_per_target']:.2f}가 든다고 두면 "
+                       f"{scope(pt['best_k_pct'])}만 대상으로 할 때 {usd0(pt['profit_best'])}로, 전원 대상 {usd0(pt['profit_all'])}보다 큽니다. "
+                       "업리프트 순위로 대상을 자르는 효과는 비용이 대상 수에 비례할 때 나타난다는 뜻이고, 사례 A 여성용 메일의 결론과 같은 방향입니다.")
+    elif b["best_k_pct"] == 100:
+        out.append(f"- **이익:** 기본 가정에서는 전원을 대상으로 할 때 이익이 가장 큽니다. 순위로 자르면 이익이 난다는 결론은 이 데이터에서 나오지 않았고, 사례 A 남성용 메일({scope(m['budget']['best_k_pct'])})과 같은 쪽입니다.")
+    else:
+        out.append("- **이익:** 기본 가정에서는 광고하지 않는 편이 낫습니다. 비용 가정에 따라 결론이 바뀌므로 민감도 표를 함께 봐야 합니다.")
+    middle = any(0 < x["best_k_pct"] < 100 for x in c["sensitivity"])
+    out.append("- **가정의 무게:** 금액이 없는 데이터라 이익의 부호와 최적 범위는 전환 1건 매출과 비용 가정에 크게 좌우됩니다. "
+               + ("노출 기준 민감도 표에서는 가정을 바꿔도 결론이 전원 대상과 광고하지 않음 둘 중 하나로만 바뀌고, 중간 범위가 최적인 경우는 없었습니다. "
+                  if not middle else "단가가 낮거나 비용이 높을수록 대상을 좁히는 쪽으로 움직입니다. ")
+               + "실제 캠페인에 쓰려면 자사 단가와 과금 방식(노출당인지 대상당인지)으로 다시 계산해야 합니다.")
+    return out
+
+
+def criteo_section(r: dict) -> list:
+    """7장. 최근 공개 데이터(Criteo)로 사례 A의 두 결론을 다시 확인한다. 결과 파일이 없으면 장을 넣지 않는다."""
+    if not CRITEO.exists():
+        return []
+    c = json.loads(CRITEO.read_text(encoding="utf-8"))
+    f = criteo_facts(r, c)
+    a, u, sp, ate = c["assumptions"], c["uplift"], c["uplift"]["split"], c["ate"]
+    m, w = r["arms"]["mens"], r["arms"]["womens"]
+    unit = a["order_value"] * a["margin"]
+
+    def rel(d):
+        return f"+{d['diff'] / d['control'] * 100:.0f}%"
+
+    costs = sorted({s["cost_per_exposed"] for s in c["sensitivity"]})
+    L = [
+        "## 7. 최근 공개 데이터로 다시 확인: Criteo 광고 실험 (2018)",
+        "",
+        "> 이 장의 숫자는 `analysis/criteo.py`가 만든 `analysis/results/criteo.json`에서 나옵니다.",
+        "",
+        "사례 A는 2008년 이메일 데이터입니다. 같은 결론이 더 최근의 큰 실험에서도 나오는지 Criteo 업리프트 데이터로 두 질문을 다시 확인했습니다.",
+        "",
+        "1. 방문 증분은 크지만 구매 증분은 작은가",
+        "2. 업리프트 순위로 대상을 자르면 전원 대상보다 이익이 나는가",
+        "",
+        "### 데이터와 사례 A와 다른 점",
+        "",
+        f"- **데이터:** Criteo Uplift Prediction Dataset v2.1 (Diemert 외, AdKDD 2018). 고객 {c['meta']['rows']:,}명을 광고 대상(처치)과 광고 제외(대조)로 무작위로 나누고 방문, 전환, 실제 노출 여부를 기록했습니다. 고객 특성 12개는 익명화되어 있습니다. 라이선스는 {c['meta']['license']} (비상업)입니다.",
+        f"- **원문 확인:** Criteo 공식 링크가 지금 열리지 않아 libuplift가 쓰는 미러에서 받았습니다. SHA-256이 libuplift에 적힌 값과 같고, 행 수 {c['official']['rows']:,}, 처치 비율 {c['observed']['treatment_ratio']:.3f}, 방문률 {c['observed']['visit']:.6f}, 전환율 {c['observed']['conversion']:.6f}이 [공식 페이지]({c['meta']['official_page']})의 값과 맞습니다. 원문은 저장소에 넣지 않습니다 (`python -I analysis/fetch_data.py criteo`).",
+        f"- **채널:** 이메일이 아니라 디스플레이 광고입니다. 처치군으로 정해도 실제로 광고를 본 고객은 {ate['exposure']['treated'] * 100:.1f}%뿐입니다. 사례 A의 메일은 받은 편지함 도착이 거의 확실했습니다.",
+        f"- **처치와 대조 비율:** {c['assignment']['treated']:,}명 대 {c['assignment']['control']:,}명 (약 85 대 15)입니다. 사례 A는 1 대 1이었습니다.",
+        "- **금액:** 구매 금액이 기록되지 않아 이익은 전환 수에 가정한 금액을 곱해 계산합니다.",
+        f"- **층화 표본:** 1,398만 행을 메모리에 한 번에 올리지 않으려고, 처치, 방문, 전환 조합 여덟 층에서 각각 {c['sample']['frac'] * 100:.0f}%를 뽑은 층화 표본 {sp['dev']:,}명으로 모델을 고르고 학습했습니다. 평균 증분 효과는 전체 행으로, 순위 평가와 예산 계산은 학습에 쓰지 않은 나머지 {sp['eval']:,}명 전부로 계산했습니다.",
+        "",
+        "### 결론 1: 방문 증분과 구매 증분",
+        "",
+        "| 지표 | 사례 A 남성용 메일 | 사례 A 여성용 메일 | Criteo 광고 |",
+        "|---|---|---|---|",
+        f"| 방문률 증분 (95% 구간) | {ci_pp(m['ate']['visit'])} | {ci_pp(w['ate']['visit'])} | {ci_pp3(ate['visit'])} |",
+        f"| 구매(전환)율 증분 | {ci_pp(m['ate']['conversion'])} | {ci_pp(w['ate']['conversion'])} | {ci_pp3(ate['conversion'])} |",
+        f"| 구매 증분 ÷ 방문 증분 | {f['ratio']['mens'] * 100:.1f}% | {f['ratio']['womens'] * 100:.1f}% | {f['ratio']['criteo'] * 100:.1f}% |",
+        f"| 대조군 대비 방문 증가율 | {rel(m['ate']['visit'])} | {rel(w['ate']['visit'])} | {rel(ate['visit'])} |",
+        f"| 대조군 대비 구매 증가율 | {rel(m['ate']['conversion'])} | {rel(w['ate']['conversion'])} | {rel(ate['conversion'])} |",
+        "",
+    ]
+    lo, hi = min(f["ratio"].values()), max(f["ratio"].values())
+    if f["small_purchase"]:
+        L.append(f"**같습니다.** 세 실험 모두 늘어난 구매는 늘어난 방문의 {lo * 100:.0f}% ~ {hi * 100:.0f}%에 그칩니다. 방문 증분만 보고 성과를 판단하면 안 된다는 사례 A의 결론이 광고 실험에서도 유지됩니다.")
+    else:
+        L.append(f"**다릅니다.** Criteo에서는 늘어난 구매가 늘어난 방문의 {f['ratio']['criteo'] * 100:.0f}%로, 사례 A만큼 작지 않습니다.")
+    L += [
+        "",
+    ]
+    if all(x["ate"]["conversion"]["diff"] / x["ate"]["conversion"]["control"] > x["ate"]["visit"]["diff"] / x["ate"]["visit"]["control"]
+           for x in (m, w, c)):
+        L.append("증가율로 보면 반대로, 세 실험 모두 구매 증가율이 방문 증가율보다 큽니다. 원래 구매가 드물어 작은 절대값도 큰 증가율이 되기 때문입니다. 그래서 보고에는 절대값(%p)과 증가율을 함께 적습니다.")
+    else:
+        L.append("증가율은 원래 비율이 낮을수록 크게 나오므로, 보고에는 절대값(%p)과 증가율을 함께 적습니다.")
+    L += [
+        "",
+        "### 결론 2: 업리프트 순위로 대상을 자르면 이익이 나는가",
+        "",
+        f"사례 A와 같이 방문을 학습 목표로 두고, 층화 표본 안에서 {sp['folds']}겹 교차 적합 Qini로 모델을 골랐습니다.",
+        "",
+        "| 후보 (층화 표본 교차 적합 Qini) | 값 |",
+        "|---|---:|",
+        *[f"| {MODEL_KO[k]} | {v:.5f} |" for k, v in u["dev_qini"].items()],
+        f"| **선택** | {MODEL_KO[u['chosen']]} |",
+        "",
+        f"| 학습에 쓰지 않은 {sp['eval']:,}명에서 평가 | 결과 |",
+        "|---|---|",
+        f"| Qini 계수, 방문 (95% 구간) | {u['test']['qini_visit']:.5f} ({u['test']['qini_visit_lo']:.5f} ~ {u['test']['qini_visit_hi']:.5f}) |",
+        f"| Qini 계수, 전환 (95% 구간) | {u['test']['qini_conversion']:.6f} ({u['test']['qini_conversion_lo']:.6f} ~ {u['test']['qini_conversion_hi']:.6f}) |",
+        f"| 상위 30%만 대상으로 할 때 확보하는 증분 방문 비율 | {mu_share(u['test'], 30)} |",
+        f"| 상위 50%만 대상으로 할 때 확보하는 증분 방문 비율 | {mu_share(u['test'], 50)} |",
+        f"| 무작위 선정보다 낫다고 말할 수 있는가 (방문 / 전환) | {yes(f['beats_random_visit'])} / {yes(f['beats_random_conv'])} |",
+        "",
+        "구간은 정렬을 그대로 두고 고객마다 포아송 가중치를 주는 부트스트랩 200번으로 구했습니다.",
+        "",
+        "| 점수 분위 | 처치 | 대조 | 방문률 (처치 / 대조) | 전환율 (처치 / 대조) | 전환율 증분 (95% 구간) | 처치군 노출률 |",
+        "|---|---:|---:|---|---|---|---:|",
+    ]
+    for g in c["groups"]:
+        nt, nc = g["n_treated"], g["n_control"]
+        L.append(f"| {g['label']} | {nt:,} | {nc:,} | {pct(g['visit_sum_t'] / nt)} / {pct(g['visit_sum_c'] / nc)} | "
+                 f"{pct3(g['conversion_sum_t'] / nt)} / {pct3(g['conversion_sum_c'] / nc)} | "
+                 f"{ci_pp3(g['conversion_diff'])}{sig(g['conversion_diff'])} | {pct(g['exposure_sum_t'] / nt)} |")
+    L += [
+        "",
+        "`*` 표시는 95% 구간이 0을 포함한다는 뜻입니다.",
+        "",
+        "**예산 계산.** 고객 1명당 증분 이익 = 전환 1건 매출 x 마진율 x 증분 전환율 - 노출 1명당 비용 x 처치군 노출률. 광고는 대상으로 정해도 실제로 보인 고객에게만 비용이 드는 것으로 보고, 비용에 데이터의 실측 노출률을 곱했습니다.",
+        "",
+        f"**기본 가정 (가정값):** 전환 1건 매출 ${a['order_value']:.0f}, 마진율 {a['margin'] * 100:.0f}% (전환 1건당 이익 ${unit:.0f}), 노출 1명당 비용 ${a['cost_per_exposed']:.2f}, 대상 고객 {a['base_customers']:,}명. 데이터에 금액이 없어 정한 값이며 실제 단가가 아닙니다.",
+        "",
+        "| 대상 범위 | 대상 수 | 1인당 증분 전환 | 처치군 노출률 | 1인당 증분 이익 | 총 증분 이익 (95% 범위) |",
+        "|---|---:|---:|---:|---:|---|",
+    ]
+    for x in c["budget"]["by_k"][1:]:
+        L.append(f"| {scope(x['k_pct']).replace('전원', '전원 (100%)')} | {x['n_target']:,} | {pp3(x['inc_conv_per'])} | {pct(x['exposure_t'])} | "
+                 f"{usd(x['profit_per'])} | {usd0(x['profit_total'])} ({usd0(x['profit_total_lo'])} ~ {usd0(x['profit_total_hi'])}) |")
+    L += [
+        "",
+        f"기본 가정에서 이익이 가장 큰 범위는 **{scope(c['budget']['best_k_pct'])}** ({usd0(c['budget']['profit_best'])})입니다."
+        + ("" if c["budget"]["best_k_pct"] == 100 else f" 전원 대상은 {usd0(c['budget']['profit_all'])}입니다."),
+        "",
+        f"**민감도: 이익이 가장 큰 대상 범위 (총 증분 이익).** 마진율 {a['margin'] * 100:.0f}%는 고정했습니다. `0%`는 광고하지 않는 편이 낫다는 뜻입니다.",
+        "",
+        "| 전환 1건 매출 \\ 노출 1명당 비용 | " + " | ".join(f"${x:.2f}" for x in costs) + " |",
+        "|---|" + "---|" * len(costs),
+    ]
+    for v in sorted({s["order_value"] for s in c["sensitivity"]}):
+        row = sorted((s for s in c["sensitivity"] if s["order_value"] == v), key=lambda s: s["cost_per_exposed"])
+        L.append(f"| ${v:.0f} | " + " | ".join(f"{s['best_k_pct']}% ({usd0(s['profit_best'])})" for s in row) + " |")
+    spt = c.get("sensitivity_per_target", [])
+    if spt:
+        L += [
+            "",
+            f"**비교: 비용을 대상 1명마다 매길 때 (가정값).** 이메일처럼 노출 여부와 상관없이 대상 1명당 비용이 든다고 두고 같은 순위로 다시 계산했습니다. 전환 1건 매출 ${a['order_value']:.0f}, 마진율 {a['margin'] * 100:.0f}%는 기본 가정과 같습니다.",
+            "",
+            "| 대상 1명당 비용 | " + " | ".join(scope(x["k_pct"]) for x in spt[0]["by_k"][1:]) + " | 이익이 가장 큰 범위 |",
+            "|---|" + "---:|" * (len(spt[0]["by_k"]) - 1) + "---|",
+        ]
+        for s in spt:
+            L.append(f"| ${s['cost_per_target']:.3f} | " + " | ".join(usd0(x["profit_total"]) for x in s["by_k"][1:])
+                     + f" | {scope(s['best_k_pct'])} |")
+    L += [
+        "",
+        "### 사례 A와 비교",
+        "",
+        "| 질문 | 사례 A (2008 이메일) | Criteo (2018 광고) | 결과 |",
+        "|---|---|---|---|",
+        f"| 구매 증분이 방문 증분의 20% 미만인가 | 예 (남성용 {f['ratio']['mens'] * 100:.1f}%, 여성용 {f['ratio']['womens'] * 100:.1f}%) | "
+        f"{yes(f['ratio']['criteo'] < 0.2)} ({f['ratio']['criteo'] * 100:.1f}%) | {'같음' if f['small_purchase'] else '다름'} |",
+        f"| 업리프트 순위가 무작위보다 나은가 (방문) | 남성용 {yes(m['uplift']['test']['qini_visit_lo'] > 0)}, 여성용 {yes(w['uplift']['test']['qini_visit_lo'] > 0)} | "
+        f"{yes(f['beats_random_visit'])} | {'여성용 메일과 같음' if f['beats_random_visit'] else '남성용 메일과 같음'} |",
+        f"| 기본 가정에서 이익이 가장 큰 범위 | 남성용 {scope(m['budget']['best_k_pct'])}, 여성용 {scope(w['budget']['best_k_pct'])} | "
+        f"{scope(c['budget']['best_k_pct'])} | {'자르는 쪽이 큼' if f['cut_pays'] else '자르지 않는 쪽이 큼'} |",
+        *([f"| 자르는 쪽이 전원 대상보다 이익 범위를 넘어 나은가 | 여성용 {yes(f['w_sure'])} | {yes(f['cut_sure'])} | {'같음' if f['cut_sure'] == f['w_sure'] else '다름'} |"]
+          if f["cut_pays"] else []),
+        *([f"| 비용을 대상 1명마다 매기면 자르는 쪽이 나은가 | 여성용 {yes(0 < w['budget']['best_k_pct'] < 100)} ({scope(w['budget']['best_k_pct'])}) | 예 (1명당 ${f['per_target_cut']['cost_per_target']:.2f}일 때 {scope(f['per_target_cut']['best_k_pct'])}) | {'같음' if 0 < w['budget']['best_k_pct'] < 100 else '다름'} |"]
+          if f["per_target_cut"] else []),
+        "",
+        "**해석.**",
+        "",
+        *criteo_interpret(r, c, f),
+        "",
+    ]
+    return L
+
+
+def criteo_web(r: dict, c: dict) -> dict:
+    """사례 A 화면의 Criteo 비교 카드가 읽는 값. 같다, 다르다 판정도 문서와 같은 criteo_facts()로 정한다."""
+    f, u, b = criteo_facts(r, c), c["uplift"]["test"], c["budget"]
+    pt = f["per_target_cut"]
+    return {
+        "meta": {k: c["meta"][k] for k in ["dataset", "rows", "license"]},
+        "doc": "https://github.com/jhheo51-arch/crm-loop/blob/main/docs/CAMPAIGN-MEASUREMENT.md#7-최근-공개-데이터로-다시-확인-criteo-광고-실험-2018",
+        "ratio": f["ratio"],
+        "small_purchase": f["small_purchase"],
+        "qini_visit": {k: u[k] for k in ["qini_visit", "qini_visit_lo", "qini_visit_hi"]},
+        "beats_random_visit": f["beats_random_visit"],
+        "top30": {"criteo": u["share_of_incremental_visits_top30"],
+                  **{k: r["arms"][k]["uplift"]["test"]["share_of_incremental_visits_top30"] for k in ARM_KO}},
+        "assumptions": c["assumptions"],
+        "budget": {k: b[k] for k in ["best_k_pct", "profit_best", "profit_all"]},
+        "cut_pays": f["cut_pays"],
+        "top_exposure_share": f["top_exposure_share"],
+        "per_target": None if pt is None else {k: pt[k] for k in ["cost_per_target", "best_k_pct", "profit_best", "profit_all"]},
+        "best_k": {k: r["arms"][k]["budget"]["best_k_pct"] for k in ARM_KO},
+    }
 
 
 def web_data(r: dict) -> str:
@@ -298,7 +557,9 @@ def web_data(r: dict) -> str:
         }
     data = {"meta": {k: r["meta"][k] for k in keep_meta}, "assumptions": r["assumptions"],
             "assignment": r["assignment"], "arms": arms}
-    return ("// analysis/report.py가 analysis/results/hillstrom.json에서 만든 파일입니다. 직접 고치지 마세요.\n"
+    if CRITEO.exists():
+        data["criteo"] = criteo_web(r, json.loads(CRITEO.read_text(encoding="utf-8")))
+    return ("// analysis/report.py가 analysis/results/hillstrom.json과 criteo.json에서 만든 파일입니다. 직접 고치지 마세요.\n"
             "export const measurement=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
 
 
