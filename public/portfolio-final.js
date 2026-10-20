@@ -23,12 +23,12 @@ export const loop={
 export const finalPlan={
  title:'VIP 프리뷰에서 재방문까지',
  subtitle:'향 브랜드 신제품 프리뷰를 가정한 VIP 행사 기획안',
- status:'개인 포트폴리오 / 공개 자료 조사 및 가상 데이터 사용',
+ status:'개인 포트폴리오, 공개 자료 조사와 가상 데이터 사용',
  nameMeaning:'CRM은 동의한 고객의 선택과 반응 기록을, LOOP는 그 기록이 초청, 참석, 상담, 재방문으로 다시 이어지는 순환을 뜻합니다. 연락은 마케팅 수신에 동의한 고객에게만 보낸다는 조건을 두었습니다.',
  nameNotice:'CRM LOOP는 제가 붙인 프로젝트 이름입니다. 공개 자료를 참고한 브랜드가 실제로 사용한 행사명은 아닙니다.',
  oneLine:'누구를 왜 초대하고, 현장에서 무엇을 경험하게 하고, 행사 뒤 어떤 메시지로 다시 오게 할지 정한 기획안입니다.',
- period:'가상 일정 / T-8주부터 행사 후 30일까지',
- location:'서울 성수 / 실제 공간 계약 전 가정',
+ period:'가상 일정, T-8주부터 행사 후 30일까지',
+ location:'서울 성수, 실제 공간 계약 전 가정',
  objective:'신제품 프리뷰에 초대한 고객이 행사 뒤 30일 안에 상담, 예약, 구매로 다시 찾아오게 합니다.',
  message:'차 안의 기억을 향으로 설계하고, 현장의 발견을 다음 경험으로 이어갑니다.',
  experience:[
@@ -45,13 +45,13 @@ export const finalPlan={
   {who:'동의하지 않은 고객',message:'후속 메시지를 보내지 않습니다',when:'없음',goal:'잘못된 발송 0건'}
  ],
  decisionMap:[
-  {stage:'선정',question:'왜 이 고객을 초대해야 하는가?',data:'customer_id / segment_code / selection_reason / suppression_status',action:'초청 적격이면 개인화 초청, 제외 조건이면 발송 중지',owner:'CRM Manager',sla:'T-6주'},
-  {stage:'RSVP',question:'방문 가능한 시간과 필요한 지원은 무엇인가?',data:'rsvp_status / slot_id / party_size / language / accessibility_request',action:'확정, 대기, 거절로 분기하고 시간 및 접근 안내',owner:'Guest Manager',sla:'응답 즉시'},
-  {stage:'체크인',question:'실제로 도착했고 얼마나 기다렸는가?',data:'checkin_at / queue_enter_at / experience_start_at / no_show_reason',action:'혼잡 시 도착 분산, 장기 대기 고객은 담당자 호출',owner:'Front Desk',sla:'현장 5분'},
-  {stage:'체험',question:'어떤 향을 선호했고 어디에서 경험이 끊겼는가?',data:'scent_preference / diy_status / issue_reason / consult_request',action:'선호 향별 안내, 향 만들기 체험(DIY)이 마감된 고객은 샘플 또는 재예약 선택',owner:'Experience Lead',sla:'퇴장 전'},
-  {stage:'동의',question:'어떤 목적과 채널로 연락받기를 원하는가?',data:'consent_status / consent_purpose / channel / consent_at / policy_version',action:'동의 고객만 CRM 등록, 거절과 미확인은 후속 발송 제외',owner:'CRM & Privacy',sla:'퇴장 전'},
-  {stage:'후속',question:'다음 결정을 위해 어떤 정보가 필요한가?',data:'message_variant / sent_at / click_at / reply_type / handoff_status',action:'사용 팁, 상담, 예약, 재입고 중 하나로 분기하고 담당자 인계',owner:'Lifecycle CRM',sla:'D+1~7일'},
-  {stage:'관계',question:'30일 안에 어떤 관계 행동이 일어났는가?',data:'outcome_type / outcome_at / order_value / revisit_at / opt_out_at',action:'구매, 예약, 상담은 유지 프로그램, 무반응은 빈도 축소',owner:'Client Care',sla:'D+30'}
+  {stage:'선정',question:'왜 이 고객을 초대해야 하는가?',data:'customer_id, segment_code, selection_reason, suppression_status',action:'초청 적격이면 개인화 초청, 제외 조건이면 발송 중지',owner:'CRM Manager',sla:'T-6주'},
+  {stage:'RSVP',question:'방문 가능한 시간과 필요한 지원은 무엇인가?',data:'rsvp_status, slot_id, party_size, language, accessibility_request',action:'확정, 대기, 거절로 분기하고 시간 및 접근 안내',owner:'Guest Manager',sla:'응답 즉시'},
+  {stage:'체크인',question:'실제로 도착했고 얼마나 기다렸는가?',data:'checkin_at, queue_enter_at, experience_start_at, no_show_reason',action:'혼잡 시 도착 분산, 장기 대기 고객은 담당자 호출',owner:'Front Desk',sla:'현장 5분'},
+  {stage:'체험',question:'어떤 향을 선호했고 어디에서 경험이 끊겼는가?',data:'scent_preference, diy_status, issue_reason, consult_request',action:'선호 향별 안내, 향 만들기 체험(DIY)이 마감된 고객은 샘플 또는 재예약 선택',owner:'Experience Lead',sla:'퇴장 전'},
+  {stage:'동의',question:'어떤 목적과 채널로 연락받기를 원하는가?',data:'consent_status, consent_purpose, channel, consent_at, policy_version',action:'동의 고객만 CRM 등록, 거절과 미확인은 후속 발송 제외',owner:'CRM & Privacy',sla:'퇴장 전'},
+  {stage:'후속',question:'다음 결정을 위해 어떤 정보가 필요한가?',data:'message_variant, sent_at, click_at, reply_type, handoff_status',action:'사용 팁, 상담, 예약, 재입고 중 하나로 분기하고 담당자 인계',owner:'Lifecycle CRM',sla:'D+1~7일'},
+  {stage:'관계',question:'30일 안에 어떤 관계 행동이 일어났는가?',data:'outcome_type, outcome_at, order_value, revisit_at, opt_out_at',action:'구매, 예약, 상담은 유지 프로그램, 무반응은 빈도 축소',owner:'Client Care',sla:'D+30'}
  ],
  segments:[
   {code:'VIP_REPEAT',name:'기존 우수, 재구매 고객',invited:70,reason:'기존 향 구매와 재구매 관계를 바탕으로 신제품 적합성을 확인',offer:'선호 향 기반 프리뷰와 리필 케어',next:'구매 여부에 따라 사용 팁, 리필 시점 안내'},
@@ -205,7 +205,7 @@ ${tbl(['주제','연결 문서','내용'],p.links.map(x=>[x.topic,linkDoc[x.sour
 
 ### 담당자가 묻는 7가지 질문
 
-${tbl(['단계','질문','남기는 데이터','다음 행동','담당','기한'],p.decisionMap.map(x=>[x.stage,x.question,x.data.split(' / ').map(d=>'`'+d+'`').join(', '),x.action,x.owner,x.sla]))}
+${tbl(['단계','질문','남기는 데이터','다음 행동','담당','기한'],p.decisionMap.map(x=>[x.stage,x.question,x.data.split(', ').map(d=>'`'+d+'`').join(', '),x.action,x.owner,x.sla]))}
 
 ### 단계 사이 누락 관리
 

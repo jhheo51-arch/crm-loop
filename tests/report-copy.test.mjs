@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {initial,simulate,report} from '../public/core.js';
+import {upgrade,newVisit,newFlow,newZone} from '../public/care.js';
+import {seedFlagship} from '../public/crm.js';
+import {newBatch} from '../public/membership.js';
+import {createCase,advanceCase,casesToBatch} from '../public/journey.js';
+import {createManual} from '../public/manual.js';
+import {planRunRows,signature} from '../public/preflight.js';
+import {newTask,transitionGuest} from '../public/event.js';
+const now='2026-10-06T03:00:00.000Z';
+function project(){const p=upgrade(initial(true));seedFlagship(p);p.recommended=p.venues[0].id;p.backup=p.venues[1].id;
+ const v=newVisit();v.store='합성 공간';p.care.visits.push(v);const f=newFlow();f.counts=[10,8,6,4,2];p.care.flows.push(f);p.care.zones.push(newZone());
+ p.care.decisions.push({id:crypto.randomUUID(),stage:'직원 응대',evidenceId:v.id,fact:'합성',hypothesis:'합성',action:'합성',owner:'총괄',metric:'대기',guardrail:'휴식',result:'',status:'가설'});
+ const b=newBatch(p);Object.assign(b,{cohort:'합성',period:'합성',source:'합성',total:150,existing:40,unknown:10,counts:[100,70,40,25,10],complaints:2,followupDefinition:'합성',followupWindow:'합성'});p.membership.batches.push(b);
+ Object.assign(p.journey,{title:'합성',brief:'합성',doneRule:'합성',nextAction:'합성',nextHelp:'합성',days:7});p.membership.program='합성';p.membership.benefit='합성';
+ const c=createCase(p,now);p.journey.cases.push(c);for(const t of ['experience','offer','enroll','followup'])advanceCase(c,t,now);p.membership.batches.push(casesToBatch(p,c.id));
+ p.manual.items=createManual(p.sector);p.manual.items[0].status='검토 완료';p.manual.items[1].sector='패션, 아이웨어';
+ p.preflight.chosen='spread';p.preflight.signature=signature(p);p.preflight.runs=planRunRows(p,simulate);p.preflight.chosen='base';
+ p.event.tasks.push({...newTask(),title:'합성 작업'});p.event.expenses.push({name:'합성 비용',amount:1000,evidence:'합성 영수증'});transitionGuest(p,p.event.guests[0].id,'대기');
+ return p;}
+test('내보내기 기획서는 빗금 나열, 가운데 점, 화살표 연결을 쓰지 않는다',()=>{const text=report(project());for(const w of [' / ','·','→'])assert.ok(!text.includes(w),w);assert.match(text,/\[조건 변경, 재검토 필요\]/);assert.match(text,/대상에서 초청 상태로/);});
