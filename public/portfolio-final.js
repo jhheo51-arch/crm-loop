@@ -115,13 +115,13 @@ export const finalPlan={
   {topic:'휴면 VIP의 기대치',source:'고객 가치 분석',body:`휴면 고객은 다음 해에 ${customerValue.dormantRepurchase}%만 다시 샀고, 이탈 위험 고객은 ${customerValue.atRiskRepurchase}%였습니다. 업종이 달라 숫자를 그대로 옮기지는 않습니다. 휴면 VIP 60명의 반응 기대를 다른 고객군과 따로 잡고, 반응이 없으면 반복 초청을 멈추는 근거로만 씁니다.`},
   {topic:'동의 기록',source:'Journey 설계도',body:'목적, 채널, 동의 시각, 정책 버전의 네 항목은 이탈 위험 고객 재방문 Journey의 진입 필터와 같습니다. 행사에서 받은 동의도 상시 캠페인과 같은 기준으로 확인합니다.'},
   {topic:'반응의 정의',source:'KPI 정의서',body:'후속 반응률은 KPI 정의서와 같이 클릭, 회신, 상담 요청만 세고 열람은 뺍니다. 그래서 행사와 상시 캠페인의 반응을 같은 기준으로 비교할 수 있습니다.'},
-  {topic:'효과와 반응의 구분',source:'사례 A',body:'이 퍼널에는 비교군이 없습니다. 관계 행동률 34.1%는 행사 덕분에 늘어난 효과가 아니라 반응입니다. 사례 A처럼 초청 대상의 일부를 무작위로 남겨 두어야 행사 덕분에 늘어난 재방문을 잴 수 있습니다.'}
+  {topic:'효과와 반응의 구분',source:'사례 A',body:'관계 행동률 34.1%는 동의한 고객 안의 반응이지 행사 덕분에 늘어난 효과가 아닙니다. 사례 A처럼 선정 고객의 일부를 무작위로 초청하지 않고 남겨, 초청 전체 기준으로 두 군을 비교해야 효과를 잴 수 있습니다. 인원과 필요한 행사 수는 5장의 비교군 설계에 있습니다.'}
  ],
  experiments:[
   {question:'현장 발견감을 해치지 않으면서 참석을 높일 수 있는가?',a:'제품 상세 선공개',b:'세계관 티저만 공개',metric:'참석률, 체험 참여율, 상담 요청률'},
   {question:'DIY 마감 고객에게 어떤 회복안이 관계를 더 잘 이어가는가?',a:'대체 샘플 즉시 제공',b:'우선 재예약',metric:'수락률, 7일 반응, 30일 재방문'},
   {question:'후속 메시지는 무엇을 기억시켜야 하는가?',a:'제품 기능 중심',b:'고객이 고른 향, 사용 장면 중심',metric:'클릭, 상담, 예약'},
-  {question:'행사가 없었어도 다시 왔을 고객은 얼마인가?',a:'초청',b:'초청 대상 중 무작위로 남긴 미초청군',metric:'30일 증분 재방문, 증분 구매. 한 회차는 표본이 작아 여러 회차를 합쳐 판단'}
+  {question:'행사가 없었어도 다시 왔을 고객은 얼마인가?',a:'초청',b:'초청 대상 중 무작위로 남긴 미초청군',metric:'30일 증분 관계 행동률 (초청 전체 기준). 5장의 비교군 설계대로 여러 행사를 합쳐 판단'}
  ],
  sources:[
   '젠틀몬스터, 탬버린즈, 누데이크, 어티슈, 누플랏의 공식 채널을 먼저 확인하고, 기사와 공개 방문 자료를 따로 읽었습니다. 독립 방문 후기가 없는 어티슈와 팝업 사례가 아닌 누플랏은 그 한계를 그대로 적었습니다.',
@@ -142,6 +142,29 @@ export const disclaimer='모든 고객 수와 전환 결과는 계산 구조를 
 
 export function percent(current,base){return base?current/base*100:null;}
 export function validateFinalPlan(plan=finalPlan){const invited=plan.segments.reduce((n,x)=>n+x.invited,0);if(invited!==plan.funnel[0].count)throw Error('세그먼트 초청 합계가 퍼널과 다릅니다.');for(let i=1;i<plan.funnel.length;i++)if(plan.funnel[i].count>plan.funnel[i-1].count)throw Error('퍼널 단계가 역전되었습니다.');if(!plan.status.includes('가상 데이터'))throw Error('가상 데이터 표시가 필요합니다.');return true;}
+
+// 비교군 설계. 초청 수는 현장 수용량에 묶여 있어 그대로 두고, 선정 고객 안에서 미초청군을 무작위로 남깁니다.
+// Z는 양측 5%, 검정력 80%의 정규분포 값(1.959964 + 0.841621)으로 analysis/brief_sample.py와 같습니다.
+export const HOLDOUT_Z=1.959964+0.841621;
+export function holdoutMde(p,nInvite,nHold){return HOLDOUT_Z*Math.sqrt(p*(1-p)*(1/nInvite+1/nHold));}
+export function holdoutRounds(p,nInvite,nHold,target,max=30){for(let k=1;k<=max;k++)if(holdoutMde(p,nInvite*k,nHold*k)<=target)return k;return null;}
+export function holdoutPlan(plan=finalPlan,share=0.3,target=0.05){
+ const groups=plan.segments.filter(x=>x.code!=='CREATOR').map(x=>{const hold=Math.round(x.invited*share/(1-share));return {code:x.code,name:x.name,invited:x.invited,hold,selected:x.invited+hold};});
+ const sum=k=>groups.reduce((n,x)=>n+x[k],0),invited=sum('invited'),hold=sum('hold');
+ const action=plan.funnel.at(-1).count,base=action/plan.funnel[0].count;
+ const mde1=holdoutMde(base,invited,hold);
+ return {share,target,total:plan.funnel[0].count,groups,invited,hold,selected:invited+hold,excluded:plan.segments.filter(x=>x.code==='CREATOR').map(x=>({name:x.name,invited:x.invited})),action,base,mde1,rounds:holdoutRounds(base,invited,hold,target)};
+}
+export const holdout=holdoutPlan();
+const pct1=x=>(x*100).toFixed(1);
+export function holdoutNotes(h=holdout){return [
+ {title:'초청 수는 그대로 두고 선정 범위를 넓힙니다.',body:`초청 ${h.total}명은 현장 수용량으로 정한 수라 줄이지 않습니다. 고객군마다 ${h.share*100}%를 무작위로 미초청군에 남기도록 비교 대상 ${h.groups.length}개 고객군에서 ${h.selected}명을 고르고, 그중 ${h.hold}명은 초청하지 않습니다.`},
+ {title:`${h.excluded.map(x=>x.name).join(', ')} ${h.excluded.reduce((n,x)=>n+x.invited,0)}명은 비교에서 뺍니다.`,body:'콘텐츠 확산이 목적인 고객군이라 재방문을 비교하지 않고 전원 초청합니다.'},
+ {title:'분모는 동의 고객이 아니라 초청 전체입니다.',body:`관계 행동률 34.1%는 동의한 82명 안의 비율입니다. 미초청군에는 참석과 동의 단계가 없어 이 비율과 비교할 수 없습니다. 그래서 30일 안에 상담, 예약, 구매가 있었던 고객 수를 초청군 ${h.invited}명과 미초청군 ${h.hold}명 전체로 나눠 비교합니다. 초청했지만 오지 않은 고객도 초청군에 그대로 둡니다. 가상 퍼널 전체로 계산하면 ${h.action} ÷ ${h.total} = ${pct1(h.base)}%입니다.`},
+ {title:'미초청군에는 연락하지 않습니다.',body:'미초청군의 30일 상담, 예약, 구매는 회원 ID로 CRM 기록에서 찾습니다. 행사 안내를 따로 보내면 비교군이 아니게 됩니다.'},
+ {title:'한 행사로는 판단하지 않습니다.',body:`기준 비율을 ${pct1(h.base)}%로 두면 한 행사에서 잡을 수 있는 최소 차이는 ${pct1(h.mde1)}%p입니다 (양측 5%, 검정력 80%). 목표 차이 ${h.target*100}%p는 제가 정한 설계 값이며, 같은 설계로 ${h.rounds}회 행사를 합쳐야 잡힙니다. 그 전에는 수신 거절과 불만만 매 행사 확인하고, 확대 여부는 ${h.rounds}회를 합친 뒤에 정합니다.`},
+ {title:'기준 비율은 첫 행사에서 다시 잽니다.',body:`${pct1(h.base)}%는 가상 퍼널에서 나온 값입니다. 첫 행사의 미초청군 비율을 확인한 뒤 필요한 행사 수를 다시 계산합니다.`}
+];}
 
 const row=cells=>`| ${cells.join(' | ')} |`;
 const tbl=(head,rows)=>[row(head),row(head.map(()=>'---')),...rows.map(row)].join('\n');
@@ -190,6 +213,12 @@ ${tbl(['지표','가상 결과','가상 목표','계산','보려는 것'],p.kpis
 ### 가상 결과 퍼널
 
 ${tbl(['단계','가상 인원','분모','기준'],p.funnel.map(x=>[x.stage,x.count+'명',x.denominator,x.rule]))}
+
+### 비교군 설계
+
+${tbl(['고객군','선정','초청','미초청'],[...holdout.groups.map(x=>[x.name,x.selected+'명',x.invited+'명',x.hold+'명']),['합계',holdout.selected+'명',holdout.invited+'명',holdout.hold+'명']])}
+
+${holdoutNotes().map(x=>`- **${x.title}** ${x.body}`).join('\n')}
 
 ## 다음에 확인할 네 가지
 

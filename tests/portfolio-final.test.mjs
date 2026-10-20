@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport} from '../public/portfolio-final.js';
+import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport,holdout,holdoutMde,holdoutRounds,HOLDOUT_Z} from '../public/portfolio-final.js';
 import {portfolioView} from '../public/portfolio-final-ui.js';
 
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -30,3 +30,16 @@ test('사례 B는 기획 항목을 앞에 두고 실행 항목을 부록으로 �
 test('포트폴리오 첫 부분에 다섯 요약과 연결 근거, 홀드아웃 실험이 있다',()=>{assert.equal(loop.cases.length,5);const html=portfolioView(helpers);assert.ok(html.indexOf('portfolio-loop')<html.indexOf('portfolio-proposal'));assert.equal(finalPlan.links.length,4);assert.match(html,/다른 사례와 이어지는 점/);assert.equal(finalPlan.experiments.length,4);assert.ok(finalPlan.experiments.some(x=>x.b.includes('미초청군')));assert.match(finalPortfolioReport(),/다음에 확인할 네 가지/);});
 
 test('이전 시장 구분과 화살표, 실제 브랜드 행사 표기가 남지 않는다',()=>{const all=portfolioView(helpers)+finalPortfolioReport();for(const w of ['→','·','중국','HQ','Local','본사','현지','국가별','Global CRM','카디퓨저 VIP 프리뷰'])assert.ok(!all.includes(w),w);});
+
+test('비교군 설계는 손 계산과 같고 문서와 화면에 같은 숫자가 나온다',()=>{
+ assert.ok(Math.abs(HOLDOUT_Z-2.8016)<1e-4);
+ // 기준 28/240, 초청 210명 미초청 90명: 2.8016 * sqrt(p(1-p)(1/210+1/90))
+ const p=28/240;assert.ok(Math.abs(holdoutMde(p,210,90)-HOLDOUT_Z*Math.sqrt(p*(1-p)*(1/210+1/90)))<1e-12);
+ assert.deepEqual(holdout.groups.map(x=>[x.code,x.invited,x.hold]),[['VIP_REPEAT',70,30],['HIGH_INTENT',80,34],['DORMANT_VIP',60,26]]);
+ assert.equal(holdout.invited+holdout.excluded[0].invited,finalPlan.funnel[0].count);
+ const k=holdout.rounds;assert.ok(holdoutMde(p,210*k,90*k)<=0.05&&holdoutMde(p,210*(k-1),90*(k-1))>0.05);
+ assert.equal(holdoutRounds(p,210,90,1),1);
+ const mde=(holdout.mde1*100).toFixed(1)+'%p',md=finalPortfolioReport(),html=portfolioView(helpers),readme=readFileSync(new URL('../README.md',import.meta.url),'utf8');
+ for(const s of [md,html,readme]){assert.ok(s.includes(mde));assert.ok(s.includes(`${k}회 행사`));}
+ assert.match(md,/### 비교군 설계/);assert.ok(html.includes('portfolio-holdout'));
+});
