@@ -10,8 +10,8 @@ const metricDefaults=()=>metricNames.map(name=>({name,target:null,source:'',note
 const guestDefaults={market:'KR',locale:'ko-KR',segment:'',channel:'미정',consent:'미확인',consentScope:'',preference:'',signal:'',crmOutcome:'미측정',crmValue:null,nextAction:''};
 
 export function upgradeCRM(p){
- p.crm??={version:1,objective:'',primarySegment:'',lifecycle:'관심 → 초청 → 참석 → 체험 → 동의 → 후속 → 재방문',markets:'대한민국',valueExchange:'',channelPlan:'',hqRule:'',localRule:'',privacy:'',metrics:metricDefaults(),researchNote:''};
- for(const [key,value] of Object.entries({objective:'',primarySegment:'',lifecycle:'관심 → 초청 → 참석 → 체험 → 동의 → 후속 → 재방문',markets:'대한민국',valueExchange:'',channelPlan:'',hqRule:'',localRule:'',privacy:'',researchNote:''}))p.crm[key]??=value;
+ p.crm??={version:1,objective:'',primarySegment:'',lifecycle:'관심, 초청, 참석, 체험, 동의, 후속, 재방문',markets:'대한민국',valueExchange:'',channelPlan:'',hqRule:'',localRule:'',privacy:'',metrics:metricDefaults(),researchNote:''};
+ for(const [key,value] of Object.entries({objective:'',primarySegment:'',lifecycle:'관심, 초청, 참석, 체험, 동의, 후속, 재방문',markets:'대한민국',valueExchange:'',channelPlan:'',hqRule:'',localRule:'',privacy:'',researchNote:''}))p.crm[key]??=value;
  if(!Array.isArray(p.crm.metrics))p.crm.metrics=metricDefaults();
  for(const name of metricNames)if(!p.crm.metrics.some(x=>x.name===name))p.crm.metrics.push({name,target:null,source:'',note:''});
  p.crm.metrics=p.crm.metrics.filter(x=>metricNames.includes(x.name)).map(x=>({name:x.name,target:x.target??null,source:x.source??'',note:x.note??''}));
