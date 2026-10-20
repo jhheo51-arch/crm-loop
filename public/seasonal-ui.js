@@ -1,6 +1,8 @@
-import {seasons,companions,purposes,crmSegments,journey,groups,limits,recommend,increment,sampleSize,emptyChoice} from './seasonal.js';
+import {seasons,companions,purposes,crmSegments,journey,groups,limits,recommend,increment,sampleSize,emptyChoice,exampleInputs} from './seasonal.js';
 
 export function emptySeasonal(){return {choice:emptyChoice(),inputs:{custom:{n:'',booked:''},discount:{n:'',booked:''},holdout:{n:'',booked:''},base:'',lift:''},example:false};}
+// 측정 대시보드는 가상 예시 값을 채운 상태로 엽니다. 값을 바꾸면 '직접 입력'으로 표시가 바뀝니다.
+export function exampleSeasonal(){return {...emptySeasonal(),inputs:structuredClone(exampleInputs),example:true};}
 
 const pp=x=>(x>=0?'+':'')+(x*100).toFixed(2)+'%p',rate=x=>(x*100).toFixed(2)+'%';
 const num=x=>x===''||x===null||x===undefined?NaN:Number(x);
@@ -31,5 +33,5 @@ ${err?note(esc(err),'error'):rec?`<div class="case-grid"><div><span>추천 패�
 <div class="event-kpis"><div><span>맞춤 제안 증분 예약률</span>${inc(r.custom)}</div><div><span>할인 제안 증분 예약률</span>${inc(r.discount)}</div><div><span>맞춤 - 할인</span>${r.custom&&r.discount?`<strong>${pp(r.custom.diff-r.discount.diff)}</strong><small class="muted">구간이 겹치면 둘을 구별했다고 말하지 않습니다.</small>`:'<strong>—</strong>'}</div><div><span>군마다 필요한 고객 수</span><strong>${r.n?r.n.toLocaleString('ko-KR')+'명':'—'}</strong><small class="muted">현재 예약률과 기대 증분을 넣으면 계산합니다.</small></div></div>
 <div class="form-grid">${input('base','현재 예약률 (%)',state.inputs.base,'내부 데이터로 넣을 값입니다.')}${input('lift','기대 증분 (%p)',state.inputs.lift,'양측 5%, 검정력 80% 기준')}</div>
 <div class="actions">${btn('가상 예시 값 넣기','season-example')}${btn('값 지우기','season-clear')}</div>
-<p class="compact muted">증분 예약률은 각 발송군 예약률에서 미발송군 예약률을 뺀 값입니다. 사례 A와 같은 방법으로 95% 구간을 함께 봅니다. 보호 지표로 수신거부율과 할인 기간에만 예약하는 고객 비율을 같이 봅니다. 가상 예시 값은 화면 동작을 보여 주기 위한 것이며 실제 결과가 아닙니다.</p></section>
+<p class="compact muted">증분 예약률은 각 발송군 예약률에서 미발송군 예약률을 뺀 값입니다. 사례 A와 같은 방법으로 95% 구간을 함께 봅니다. 보호 지표로 수신거부율과 할인 기간에만 예약하는 고객 비율을 같이 봅니다. 처음 열면 화면 동작을 보여 주는 가상 예시 값이 채워져 있으며 실제 결과가 아닙니다. 값을 바꾸면 직접 입력으로 계산합니다.</p></section>
 <section class="card"><div class="eyebrow">한계와 다음 검증</div><h2>내부 데이터와 운영 담당자 확인이 먼저입니다.</h2><ul class="action-list">${limits.map(x=>`<li><span class="dot"></span><span>${x}</span></li>`).join('')}</ul></section>`;}

@@ -7,8 +7,7 @@ import {researchCases} from './crm-cases.js';
 import {portfolioView} from './portfolio-final-ui.js';
 import {measurementView,measureArms,costInputs} from './measurement-ui.js';
 import {measurement} from './measurement-data.js';
-import {seasonalView,emptySeasonal} from './seasonal-ui.js';
-import {exampleInputs} from './seasonal.js';
+import {seasonalView,emptySeasonal,exampleSeasonal} from './seasonal-ui.js';
 import {preflightView} from './preflight-ui.js';
 import {comparePlans,signature,preflightReport,planRunRows} from './preflight.js';
 import {places,districts,stays,stayGroups} from './areas.js';
@@ -23,7 +22,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const money=x=>x===null||x===undefined?'미정':Math.round(x).toLocaleString('ko-KR')+'원';
 const safeURL=x=>{try{const u=new URL(x);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};
 const source=x=>safeURL(x)?`<a class="source-link" href="${safeURL(x)}" target="_blank" rel="noopener noreferrer">출처 열기 ↗</a>`:'<span class="compact muted">출처 미등록</span>';
-let measureCost={...measurement.assumptions},measureArm='womens',seasonal=emptySeasonal(),careTab='endtoend',crmTab='CRM 전략',eventTab='기획',eventFilter='전체',cloudMessage='필요할 때 작업을 보관하세요.',cloudProjects=[],cloudRevisions={};
+let measureCost={...measurement.assumptions},measureArm='womens',seasonal=exampleSeasonal(),careTab='endtoend',crmTab='CRM 전략',eventTab='기획',eventFilter='전체',cloudMessage='필요할 때 작업을 보관하세요.',cloudProjects=[],cloudRevisions={};
 let p,loadError='',saved='',route=location.hash.slice(1)||'report',selectedArea='',selectedDistrict='',areaMode='seoul',areaPage=0,remote={},busy=false;
 try{const id=localStorage.getItem(KEY),oldId=!id?localStorage.getItem('popup-atelier-v4'):null;p=id?validate(JSON.parse(localStorage.getItem('popup-project-v5:'+id)),{draft:true}):oldId?validate(JSON.parse(localStorage.getItem('popup-project-v4:'+oldId)),{draft:true}):initial(false);if(oldId){p.id=crypto.randomUUID();p.name+=' (가져온 사본)';saved='이전 자료를 사본으로 연결하고 원본은 보존했습니다';}else saved=id?'저장된 프로젝트':'새 기획';}catch{p=initial(false);loadError='저장 자료를 읽지 못했습니다. 원본은 보존했습니다.';}
 const titles={report:['CRM LOOP PORTFOLIO','포트폴리오','캠페인 기획서 세 편과 기획에 쓴 근거, VIP 행사 기획안을 한곳에서 확인할 수 있습니다.'],overview:['CRM WORKSPACE','CRM 전략','고객군, 연락 조건, 측정 기준을 먼저 정하세요.'],measure:['CASE A. CAMPAIGN MEASUREMENT','사례 A 캠페인 측정','공개 실험 데이터로 메일이 실제로 바꾼 방문과 매출을 잽니다.'],seasonal:['CASE C. SEASONAL STAY','사례 C 비수기 캠페인','봄과 가을 주중 체류 캠페인을 기획하고, 처음부터 측정할 수 있게 설계합니다.'],event:['EVENT OPERATIONS','이벤트 실행','초청부터 현장, 후속, 정산까지, 누락되는 고객과 업무를 확인하세요.'],preflight:['EVENT PREFLIGHT','운영 사전 점검','운영 조건과 대응안을 비교하세요.'],brief:['PROJECT OVERVIEW','프로젝트 개요','행사 목적, 대상 고객, 일정과 예산을 먼저 정하세요.'],venues:['LOCATION INTELLIGENCE','지역, 공간 비교','지역의 맥락과 실제 공간의 조건을 함께 확인하세요.'],experience:['EXPERIENCE DESIGN','경험, 초청 기획','초청 전 안내, 현장 체험, 행사 후 연락을 순서대로 정하세요.'],operations:['OPERATIONS LAB','운영, 예산 검토','가정을 바꿔 보며 대기, 인력, 비용의 균형을 확인하세요.']};
@@ -87,7 +86,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-acti
  if(action==='measure-arm'){measureArm=measureArms.some(([k])=>k===b.dataset.id)?b.dataset.id:'womens';render();return;}
  if(action==='season-pick'){const k=b.dataset.key;if(!['season','companion','purpose','activity'].includes(k))return;if(k==='season'&&seasonal.choice.season!==b.dataset.id)seasonal.choice.activity='';seasonal.choice[k]=b.dataset.id;render();return;}
  if(action==='season-reset'){seasonal.choice={...seasonal.choice,companion:'',purpose:'',activity:''};render();return;}
- if(action==='season-example'){seasonal.inputs=structuredClone(exampleInputs);seasonal.example=true;render();return;}
+ if(action==='season-example'){seasonal.inputs=exampleSeasonal().inputs;seasonal.example=true;render();return;}
  if(action==='season-clear'){seasonal.inputs=emptySeasonal().inputs;seasonal.example=false;render();toast('입력값을 지웠습니다.');return;}
  if(action==='crm-tab'){crmTab=crmTabs.includes(b.dataset.id)?b.dataset.id:'CRM 전략';render();return;}
  if(action==='crm-export'){download('global-crm-'+stamp()+'.md',crmReport(p));toast('CRM 기록 다운로드를 요청했습니다.');return;}
