@@ -1,9 +1,10 @@
 import test from 'node:test';
+import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {measurement} from '../public/measurement-data.js';
 import {measurementView,armSummary,qiniPath} from '../public/measurement-ui.js';
 import {recommend,segmentFor,increment,sampleSize,seasons,crmSegments,exampleInputs} from '../public/seasonal.js';
-import {seasonalView,emptySeasonal,seasonalResults} from '../public/seasonal-ui.js';
+import {seasonalView,emptySeasonal,exampleSeasonal,seasonalResults} from '../public/seasonal-ui.js';
 
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const h={btn:(t,a,c,e)=>`<button class="${c||''}" data-action="${a}" ${e||''}>${t}</button>`,esc,note:(x,t)=>`<div class="note ${t||''}">${x}</div>`};
@@ -32,6 +33,8 @@ test('사례 A 비용 가정을 바꾸면 분석 스크립트와 같은 식으�
  const html=measurementView(h,'womens',measurement,{...measurement.assumptions,send_cost:0.5});
  assert.match(html,/바꾼 가정값/);assert.match(html,/data-cost="send_cost"/);assert.ok(!measurementView(h,'womens').includes('바꾼 가정값'));
 });
+
+test('사례 C 측정 대시보드는 가상 예시 값을 채운 상태로 열린다',()=>{const st=exampleSeasonal();assert.equal(st.example,true);assert.deepEqual(st.inputs,exampleInputs);assert.notEqual(st.inputs,exampleInputs);const html=seasonalView(st,h);assert.ok(html.includes('가상 예시 데이터</span>'));assert.ok(html.includes('+1.20%p'));assert.ok(html.includes('처음 열면'));assert.ok(!html.includes('대상 수와 예약 수를 넣으면 계산합니다.'));const app=readFileSync(new URL('../public/app.js',import.meta.url),'utf8');assert.match(app,/seasonal=exampleSeasonal\(\)/);});
 test('사례 A 화면의 Criteo 비교는 결과 파일의 값과 판정을 그대로 보여 준다',async()=>{
  const {criteoCard}=await import('../public/measurement-ui.js');const c=measurement.criteo;assert.ok(c,'python -I analysis/report.py 를 다시 실행하세요');
  const html=measurementView(h,'womens');assert.ok(html.includes(criteoCard(c,esc)));assert.ok(html.indexOf('최근 공개 데이터로 다시 확인')<html.indexOf('다음 캠페인의 측정 계획'));
