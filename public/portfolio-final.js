@@ -157,8 +157,8 @@ export function holdoutPlan(plan=finalPlan,share=0.3,target=0.05){
 }
 export const holdout=holdoutPlan();
 const pct1=x=>(x*100).toFixed(1);
-export function holdoutNotes(h=holdout){return [
- {title:'초청 수는 그대로 두고 선정 범위를 넓힙니다.',body:`초청 ${h.total}명은 현장 수용량으로 정한 수라 줄이지 않습니다. 고객군마다 ${h.share*100}%를 무작위로 미초청군에 남기도록 비교 대상 ${h.groups.length}개 고객군에서 ${h.selected}명을 고르고, 그중 ${h.hold}명은 초청하지 않습니다.`},
+export function holdoutNotes(h=holdout){const ex=h.excluded.map(x=>`${x.name} ${x.invited}명`).join(', ');return [
+ {title:'초청 수는 그대로 두고 선정 범위를 넓힙니다.',body:`전체 초청 ${h.total}명은 현장 수용량으로 정한 수라 줄이지 않습니다. 이 중 비교 대상 ${h.groups.length}개 고객군의 초청은 ${h.invited}명이고, 나머지 ${ex}은 아래처럼 비교에서 뺍니다. 고객군마다 ${h.share*100}%를 무작위로 미초청군에 남기도록 비교 대상 고객군에서 ${h.selected}명을 고르고, 그중 ${h.hold}명은 초청하지 않습니다. 그래서 초청 ${h.invited}명과 미초청 ${h.hold}명을 비교합니다.`},
  {title:`${h.excluded.map(x=>x.name).join(', ')} ${h.excluded.reduce((n,x)=>n+x.invited,0)}명은 비교에서 뺍니다.`,body:'콘텐츠 확산이 목적인 고객군이라 재방문을 비교하지 않고 전원 초청합니다.'},
  {title:'분모는 동의 고객이 아니라 초청 전체입니다.',body:`관계 행동률 34.1%는 동의한 82명 안의 비율입니다. 미초청군에는 참석과 동의 단계가 없어 이 비율과 비교할 수 없습니다. 그래서 30일 안에 상담, 예약, 구매가 있었던 고객 수를 초청군 ${h.invited}명과 미초청군 ${h.hold}명 전체로 나눠 비교합니다. 초청했지만 오지 않은 고객도 초청군에 그대로 둡니다. 가상 퍼널 전체로 계산하면 ${h.action} ÷ ${h.total} = ${pct1(h.base)}%입니다.`},
  {title:'미초청군에는 연락하지 않습니다.',body:'미초청군의 30일 상담, 예약, 구매는 회원 ID로 CRM 기록에서 찾습니다. 행사 안내를 따로 보내면 비교군이 아니게 됩니다.'},
@@ -226,7 +226,7 @@ export function holdoutWaitRules(h=holdout,mid=Math.ceil(h.rounds/2)){
  reporting:[
   '매 회차 보고는 완료 회차, 누적 초청, 누적 미초청, 남은 회차, 보호 지표 상태의 다섯 가지로 합니다.',
   `두 군의 관계 행동률 차이는 ${h.rounds}회가 끝나기 전에는 보고서에 넣지 않습니다. ${mid}회차에는 경계를 넘었는지만 적고, 차이 값은 분석 담당자만 봅니다.`,
-  `매출 질문에는 초청 수가 줄지 않았다는 점으로 답합니다. 초청 ${h.total}명은 현장 수용량으로 정한 수이고, 미초청군 ${h.hold}명은 그 위에 더 고른 고객입니다. 수용량 때문에 어차피 초청하지 못했을 고객이라 행사 매출 기회는 그대로입니다.`,
+  `매출 질문에는 초청 수가 줄지 않았다는 점으로 답합니다. 전체 초청 ${h.total}명은 현장 수용량으로 정한 수이고, 그중 비교 대상 초청 ${h.invited}명도 그대로입니다. 미초청군 ${h.hold}명은 그 ${h.invited}명 위에 더 고른 고객입니다. 수용량 때문에 어차피 초청하지 못했을 고객이라 행사 매출 기회는 그대로입니다.`,
   '초청군의 참석, 동의, 구매는 운영 지표로 매 회차 그대로 보고합니다. 다만 이 숫자를 행사 덕분에 늘어난 매출이라고 부르지 않습니다.'
  ]};
 }
