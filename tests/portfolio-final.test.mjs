@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport,holdout,holdoutMde,holdoutRounds,HOLDOUT_Z,holdoutWait,holdoutGuardrailSource} from '../public/portfolio-final.js';
+import {finalPlan,loop,customerValue,validateFinalPlan,finalPortfolioReport,holdout,holdoutMde,holdoutRounds,HOLDOUT_Z,holdoutWait,holdoutGuardrailSource,holdoutEarlySource,obfBounds} from '../public/portfolio-final.js';
 import {portfolioView} from '../public/portfolio-final-ui.js';
 
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -59,4 +59,18 @@ test('기다리는 동안의 운영 규칙은 효과 대신 표본과 보호 지
  assert.match(md,/### 판단까지 기다리는 동안의 운영 규칙/);assert.match(md,/#### 중단 조건/);assert.ok(md.includes(holdoutGuardrailSource.url));assert.ok(md.includes(w.example));
  assert.ok(html.includes('portfolio-holdout-wait'));assert.ok(html.includes(holdoutGuardrailSource.url));
  for(const s of [md,html])for(const c of ['·','→'])assert.ok(!s.includes(c),c);
+});
+
+test("3회차 조기 종료 경계는 O'Brien-Fleming 값이고 필요한 행사 수를 바꾸지 않는다",()=>{
+ const b=obfBounds(0.5),e=holdoutWait.early;
+ // 두 번 보는 O'Brien-Fleming 경계의 교과서 값 2.797, 1.977
+ assert.equal(b.interim.toFixed(3),'2.797');assert.equal(b.final.toFixed(3),'1.977');
+ assert.equal(e.round,3);assert.ok(e.powerSeq>=0.8&&e.powerSeq<=e.powerFixed);assert.equal(holdout.rounds,6);
+ assert.equal((e.diffMid*100).toFixed(1),'6.5');
+ for(const g of holdoutWait.guardrails){assert.ok(g.check&&g.hold);assert.match(g.action,/확인: .*보류: /);}
+ const md=finalPortfolioReport(),html=portfolioView(helpers),readme=readFileSync(new URL('../README.md',import.meta.url),'utf8');
+ for(const s of [md,html]){assert.ok(s.includes('O&#39;Brien')||s.includes(holdoutEarlySource));assert.ok(s.includes('보류 기준'));}
+ assert.ok(md.includes(holdoutWait.earlyNote));
+ assert.ok(readme.includes('docs/PROJECT-PLAN.md#판단까지-기다리는-동안의-운영-규칙'));
+ for(const s of [md,html,readme])for(const c of ['·','→'])assert.ok(!s.includes(c),c);
 });
