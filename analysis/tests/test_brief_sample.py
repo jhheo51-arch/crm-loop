@@ -34,8 +34,17 @@ def test_result_file_is_up_to_date():
     assert b.plan(retail, hillstrom) == R, "python -I analysis/brief_sample.py 를 다시 실행하세요"
 
 
-def test_brief_uses_result_numbers():
+def test_brief_uses_deduplicated_pilot_counts_for_sample_size():
     text = BRIEF.read_text(encoding="utf-8")
-    for row in R["by_holdout"]:
-        assert f"{row['mde_1_autumn'] * 100:.1f}%p" in text
-        assert f"{row['rounds_target']}회차" in text
+    rows = [line.split("|") for line in text.splitlines() if line.startswith("| 2011-")]
+    assert len(rows) == 6
+    candidates = sum(int(row[-3].strip().removesuffix("명")) for row in rows)
+    repurchased = sum(int(row[-2].strip().removesuffix("명")) for row in rows)
+    assert (candidates, repurchased) == (1345, 414)
+
+    baseline = repurchased / candidates
+    assert f"{baseline:.1%}" in text
+    needed = next(n for n in range(100, 4000) if b.mde(baseline, n, 0.3) <= b.TARGET)
+    assert needed == 3185
+    assert f"{needed:,}명" in text
+    assert f"{b.mde(baseline, candidates, 0.3) * 100:.1f}%p" in text
