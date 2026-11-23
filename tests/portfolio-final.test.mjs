@@ -74,3 +74,16 @@ test("3회차 조기 종료 경계는 O'Brien-Fleming 값이고 필요한 행사
  assert.ok(readme.includes('docs/PROJECT-PLAN.md#판단까지-기다리는-동안의-운영-규칙'));
  for(const s of [md,html,readme])for(const c of ['·','→'])assert.ok(!s.includes(c),c);
 });
+
+test('전체 초청과 비교 대상 초청은 문서마다 같은 기준으로 설명한다',()=>{
+ const h=holdout,ex=h.excluded.reduce((n,x)=>n+x.invited,0);
+ // 전체 초청 240명 = 비교 대상 초청 210명 + 비교에서 뺀 크리에이터 30명, 선정 300명 = 210명 + 미초청 90명
+ assert.equal(h.invited+ex,h.total);assert.equal(h.invited+h.hold,h.selected);
+ const md=finalPortfolioReport(),readme=readFileSync(new URL('../README.md',import.meta.url),'utf8');
+ for(const s of [md,readme]){
+  for(const n of [h.total,h.invited,h.hold,h.selected])assert.ok(s.includes(n+'명'),n);
+  // 현장 수용량으로 240명을 말하는 문장은 비교 대상 210명도 함께 밝힌다
+  const cap=s.split(/(?<=다.)s/).filter(x=>x.includes('초청 '+h.total+'명')&&x.includes('수용량'));
+  assert.ok(cap.length>0);for(const line of cap)assert.ok(line.includes(h.invited+'명'),line);
+ }
+});
